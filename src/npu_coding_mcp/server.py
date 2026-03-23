@@ -309,10 +309,10 @@ def scaffold_custom_op(
     )
 
     op_host_inputs = "".join(
-        f".INPUT(x{i}, TensorType({{DT_{d.upper()}}}))\\n        " for i, d in enumerate(input_dtypes)
+        f".INPUT(x{i}, TensorType({{DT_{d.upper()}}}))\\n" for i, d in enumerate(input_dtypes)
     )
     op_host_outputs = "".join(
-        f".OUTPUT(y{i}, TensorType({{DT_{d.upper()}}}))\\n        " for i, d in enumerate(output_dtypes)
+        f".OUTPUT(y{i}, TensorType({{DT_{d.upper()}}}))\\n" for i, d in enumerate(output_dtypes)
     )
 
     return f"""\
