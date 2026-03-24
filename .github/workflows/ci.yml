@@ -34,7 +34,7 @@ jobs:
         run: uv python install ${{ matrix.python-version }}
 
       - name: Install system dependencies
-        run: apt-get install -y build-essential cmake python3-dev cmake pkg-config
+        run: apt update && apt-get install -yq build-essential python-is-python3 cmake python3-dev cmake pkg-config
 
       - name: Install dependencies
         run: uv sync --all-groups
