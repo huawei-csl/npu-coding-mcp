@@ -13,14 +13,6 @@ def client():
 
 
 _PTO_ISA_KERNEL_SIMPLE_MATMUL_CPP="""
-/**
-Copyright (c) 2026 Huawei Technologies Co., Ltd.
-All rights reserved.
-
-See LICENSE in the root of the software repository:
-https://github.com/huawei-csl/pto-kernels/
-for the full License text.
-*/
 #if defined __CCE_AICORE__ == 220 && defined(__DAV_C220_VEC__)
 
 // Placeholder for VEC compilation (the real kernel is CUBE-only).
@@ -186,7 +178,7 @@ async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa_kernel", {"kernel_source": kernel_source}
+            "compile_pto_isa", {"kernel_source": kernel_source}
         )
 
     assert result is not None

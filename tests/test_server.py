@@ -16,7 +16,7 @@ async def test_list_tools(client):
     async with client:
         tools = await client.list_tools()
     tool_names = {t.name for t in tools}
-    assert "compile_pto_isa_kernel" in tool_names
+    assert "compile_pto_isa" in tool_names
 
 
 @pytest.mark.asyncio

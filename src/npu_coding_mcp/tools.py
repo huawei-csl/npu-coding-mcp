@@ -25,7 +25,7 @@ class CompilationResult(BaseModel):
     stdout: str
     stderr: str
     duration_ms: float
-    binary_path: str | None = None  # None if compilation failed
+    dylib_path: str | None = None  # None if compilation failed
 
 
 def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
@@ -34,7 +34,7 @@ def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
 
 
 @mcp.tool()
-def compile_pto_isa_kernel(
+def compile_pto_isa(
     kernel_source: str,
     npu_arch: str = "dav-2201",
     define_membase: bool = False,
@@ -116,4 +116,5 @@ def compile_pto_isa_kernel(
         stdout=result.stdout,
         stderr=result.stderr,
         duration_ms=elapsed_ms,
+        dylib_path=lib_path,
     )

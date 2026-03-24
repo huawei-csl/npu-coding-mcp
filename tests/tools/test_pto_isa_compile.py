@@ -17,7 +17,7 @@ async def test_list_tools(client):
     async with client:
         tools = await client.list_tools()
     tool_names = {t.name for t in tools}
-    assert "compile_pto_isa_kernel" in tool_names
+    assert "compile_pto_isa" in tool_names
 
 
 @pytest.mark.asyncio
@@ -26,13 +26,14 @@ async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa_kernel", {"kernel_source": kernel_source}
+            "compile_pto_isa", {"kernel_source": kernel_source}
         )
 
     assert result is not None
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
     assert compile_result.exit_code == 0
+    assert compile_result.dylib_path is not None
 
 
 @pytest.mark.asyncio
@@ -41,7 +42,7 @@ async def test_mcp_tool_pto_isa_kernel_abs(client):
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa_kernel", {"kernel_source": kernel_source}
+            "compile_pto_isa", {"kernel_source": kernel_source}
         )
 
     assert result is not None
@@ -55,13 +56,14 @@ async def test_mcp_tool_pto_isa_kernel_batch_matrix_square(client):
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa_kernel", {"kernel_source": kernel_source}
+            "compile_pto_isa", {"kernel_source": kernel_source}
         )
 
     assert result is not None
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
     assert compile_result.exit_code == 0
+    assert compile_result.dylib_path is not None
 
 
 @pytest.mark.asyncio
@@ -70,7 +72,7 @@ async def test_mcp_tool_pto_isa_kernel_fast_hadamard(client):
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa_kernel",
+            "compile_pto_isa",
             {"kernel_source": kernel_source, "define_membase": True},
         )
 
@@ -78,6 +80,7 @@ async def test_mcp_tool_pto_isa_kernel_fast_hadamard(client):
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
     assert compile_result.exit_code == 0
+    assert compile_result.dylib_path is not None
 
 
 """
