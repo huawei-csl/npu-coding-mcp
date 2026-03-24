@@ -1,3 +1,4 @@
+import ctypes
 import json
 import logging
 import os
@@ -26,6 +27,7 @@ class CompilationResult(BaseModel):
     stderr: str
     duration_ms: float
     dylib_path: str | None = None  # None if compilation failed
+    dylib_functions: list[str] = []
 
 
 def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
@@ -105,10 +107,9 @@ def compile_pto_isa(
         os.unlink(src_path)
 
     elf = ELF(lib_path)
-    print(elf.symbols)  # all symbols
-    print(elf.functions)  # only functions
-    print(elf.plt)  # PLT entries
-    print(elf.got)  # GOT entries
+
+    # Read all functions from dynamic library ELF file
+    elf_functions = [str(f[0]) for f in elf.functions.items()]
 
     return CompilationResult(
         success=True,
@@ -117,4 +118,53 @@ def compile_pto_isa(
         stderr=result.stderr,
         duration_ms=elapsed_ms,
         dylib_path=lib_path,
+        dylib_functions=elf_functions,
     )
+
+
+def torch_to_ctypes(tensor):
+    return ctypes.c_void_p(tensor.data_ptr())
+
+
+@mcp.tool
+def load_dylib(lib_path: str):
+
+    lib_path = os.path.abspath(lib_path)
+    try:
+        lib = ctypes.CDLL(lib_path)
+
+        # call_kernel(blockDim, stream, a, b, c, matrix_size)
+        lib.call_kernel.argtypes = [
+            ctypes.c_uint32,  # blockDim
+            ctypes.c_void_p,  # stream
+            ctypes.c_void_p,  # a
+            ctypes.c_void_p,  # b
+            ctypes.c_void_p,  # c
+            ctypes.c_uint32,  # matrix_size
+        ]
+    except OSError as e:
+        print(e)
+        return None
+
+    return lib
+
+    """
+
+    lib.call_kernel.argstypes.extend( [ctypes.c_void_p] * num_kernel_args)
+    lib.call_kernel.argstypes.extend( [ctypes.c_uint32] * num_uint32_params)
+    lib.call_kernel.restype = None
+
+    def call_kernel_fnc(block_dim=block_dim, stream_ptr=None, *args):
+        if stream_ptr is None:
+            stream = torch.npu.current_stream()
+            stream_ptr = getattr(  # pylint: disable=protected-access
+                stream, "_as_parameter_", None
+            )
+
+        transformed_args = [torch_to_ctypes(arg) for arg in args]
+        lib.call_kernel(
+            block_dim,
+            stream_ptr,
+            *transformed_args,
+        )
+    """

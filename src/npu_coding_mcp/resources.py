@@ -26,7 +26,6 @@ def npu_smi_info() -> str:
         return "Error: npu-smi info timed out after 30 seconds."
 
 
-
 @mcp.resource("host://npu/driver-version")
 def npu_driver_version() -> str:
     """Read the Ascend NPU driver version from /usr/local/Ascend/version.info."""
@@ -34,7 +33,9 @@ def npu_driver_version() -> str:
     try:
         return version_file.read_text()
     except FileNotFoundError:
-        return f"Error: {version_file} not found. Ensure the Ascend driver is installed."
+        return (
+            f"Error: {version_file} not found. Ensure the Ascend driver is installed."
+        )
     except PermissionError:
         return f"Error: permission denied reading {version_file}."
 

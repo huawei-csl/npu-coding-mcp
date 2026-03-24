@@ -12,177 +12,207 @@ def client():
     return Client(mcp)
 
 
-_PTO_ISA_KERNEL_SIMPLE_MATMUL_CPP = """
-#if defined __CCE_AICORE__ == 220 && defined(__DAV_C220_VEC__)
-
-// Placeholder for VEC compilation (the real kernel is CUBE-only).
-#define MEMORY_BASE
-#include <pto/common/type.hpp>
-
-extern "C" __global__ AICORE void simple_matmul_fp16(__gm__ void* a,
-                                                     __gm__ void* b,
-                                                     __gm__ void* c,
-                                                     uint32_t matrix_size) {}
-
-extern "C" __global__ AICORE void simple_matmul_fp32(__gm__ void* a,
-                                                     __gm__ void* b,
-                                                     __gm__ void* c,
-                                                     uint32_t matrix_size) {}
-
-#elif (__CHECK_FEATURE_AT_PRECOMPILE) || \
-    (__CCE_AICORE__ == 220 && defined(__DAV_C220_CUBE__))
-
-#define MEMORY_BASE
-
+_PTO_ISA_KERNEL_CPP = """
 #include <pto/pto-inst.hpp>
-
-#define GM_ADDR __gm__ uint8_t*  // To avoid #include "kernel_operator.h"
 
 using namespace pto;
 
-constexpr unsigned NUM_BLOCKS = 20;    // number of AICs
-constexpr unsigned UB_SIZE = 0x30000;  // 192KB UB of A2A3
+#define DIV_ROUNDUP(x, y) (((x) + (y) - 1) / (y))
 
-template <pipe_t SrcPipe, pipe_t DstPipe>
-AICORE inline void SetFlag(uint32_t id) {
-  set_flag(SrcPipe, DstPipe, static_cast<event_t>(id));
-}
-template <pipe_t SrcPipe, pipe_t DstPipe>
-AICORE inline void WaitFlag(uint32_t id) {
-  wait_flag(SrcPipe, DstPipe, static_cast<event_t>(id));
-}
+constexpr uint32_t UB_ALLOC_BYTES = 32 * 1024;
+constexpr uint32_t UB_HALF_BYTES = UB_ALLOC_BYTES / 2;
+constexpr uint32_t ELEMENTS_PER_TILE = UB_ALLOC_BYTES / 2;  // half is 2 bytes
 
-template <typename InputT, typename OutputT, uint32_t matrix_size>
-AICORE void runKernelSimpleMatMul(__gm__ InputT* a, __gm__ InputT* b,
-                                  __gm__ OutputT* c) {
-  constexpr uint32_t tile_len = matrix_size * matrix_size;
+// Double-buffered UB memory layout (ping/pong):
+//   x buffer: 32KB (ELEMENTS_PER_TILE elements)
+//   even buffer: 16KB (ELEMENTS_PER_TILE/2 elements)
+//   odd buffer: 16KB (ELEMENTS_PER_TILE/2 elements)
+// Total per set: ~64KB + alignment gaps. Two sets: ~130KB (fits in 192KB UB).
+constexpr unsigned X_PING = 0x00000;
+constexpr unsigned EVEN_PING = (X_PING + 0x8000 + 0x100);
+constexpr unsigned ODD_PING = (EVEN_PING + 0x4000 + 0x100);
+constexpr unsigned X_PONG = (ODD_PING + 0x4000 + 0x100);
+constexpr unsigned EVEN_PONG = (X_PONG + 0x8000 + 0x100);
+constexpr unsigned ODD_PONG = (EVEN_PONG + 0x4000 + 0x100);
 
-  /* Global Memory / Tensors */
-  using TensorShapeIn =
-      TileShape2D<InputT, matrix_size, matrix_size, Layout::ND>;
-  using TensorStridesIn =
-      BaseShape2D<InputT, matrix_size, matrix_size, Layout::ND>;
-  using GlobalTensorIn =
-      GlobalTensor<InputT, TensorShapeIn, TensorStridesIn, Layout::ND>;
-
-  using TensorShapeOut =
-      TileShape2D<OutputT, matrix_size, matrix_size, Layout::ND>;
-  using TensorStridesOut =
-      BaseShape2D<OutputT, matrix_size, matrix_size, Layout::ND>;
-  using GlobalTensorOut =
-      GlobalTensor<OutputT, TensorShapeOut, TensorStridesOut, Layout::ND>;
-
-  /* L1 Memory */
-  using TileL1AB =
-      Tile<TileType::Mat, InputT, matrix_size, matrix_size, BLayout::ColMajor,
-           matrix_size, matrix_size, SLayout::RowMajor, 512>;
-
-  /* L0 Memory */
-  using TileL0A = TileLeft<InputT, matrix_size, matrix_size>;
-  using TileL0B = TileRight<InputT, matrix_size, matrix_size>;
-  using TileL0C = TileAcc<OutputT, matrix_size, matrix_size>;
-
-  GlobalTensorIn a_global_in(a);
-  GlobalTensorIn b_global_in(b);
-  GlobalTensorOut c_global_out(c);
-  TASSIGN(a_global_in, a);
-  TASSIGN(b_global_in, b);
-  TASSIGN(c_global_out, c);
-
-  TileL1AB a_l1_tile;
-  TileL1AB b_l1_tile;
-  TASSIGN(a_l1_tile, 0x0);
-  TASSIGN(b_l1_tile, 0x0 + tile_len * sizeof(InputT));
-
-  TileL0A a_l0_tile;
-  TileL0B b_l0_tile;
-  TileL0C c_l0_tile;
-  // L0A/L0B/L0C are distinct scratchpads
-  TASSIGN(a_l0_tile, 0x0);
-  TASSIGN(b_l0_tile, 0x0);
-  TASSIGN(c_l0_tile, 0x0);
-
-  // LOAD matrix A from GM -> L1 (MTE2)
-  TLOAD(a_l1_tile, a_global_in);
-  TLOAD(b_l1_tile, b_global_in);
-  SetFlag<PIPE_MTE2, PIPE_MTE1>(0);
-  WaitFlag<PIPE_MTE2, PIPE_MTE1>(0);
-
-  // Copy A from L1 -> L0 (MTE1)
-  // MatMul unit waits (using id:0) for MTE1 to load matrices into L0A/B
-  TMOV(a_l0_tile, a_l1_tile);
-  // Copy B from L1 -> L0B
-  // MatMul unit waits (using id:1) for MTE1 to load matrices into L0A/B
-  TMOV(b_l0_tile, b_l1_tile);
-  SetFlag<PIPE_MTE1, PIPE_M>(0);   // MTE1 pipe sets flag for MM pipe
-  WaitFlag<PIPE_MTE1, PIPE_M>(0);  // MM pipe waits for MTE1 pipe to set flag
-
-  // MATMUL (M)
-  TMATMUL(c_l0_tile, a_l0_tile, b_l0_tile);
-  pipe_barrier(PIPE_ALL);
-  SetFlag<PIPE_M, PIPE_FIX>(0);   // M pipe sets flag for FIX pipe
-  WaitFlag<PIPE_M, PIPE_FIX>(0);  // FIX pipe waits for M pipe to set flag
-  TSTORE(c_global_out, c_l0_tile);
-}
+namespace {
 
 template <typename T>
-AICORE void run_simple_matmul(__gm__ T* a, __gm__ T* b, __gm__ float* c,
-                              uint32_t matrix_size) {
-  static_assert(std::is_same_v<T, half> or std::is_same_v<T, float>,
-                "simple_matmul supports only fp16/fp32.");
+AICORE void runTFastHadamard(__gm__ T *x, uint32_t batch, uint32_t n,
+                             uint32_t log2_n) {
+#if defined(__DAV_VEC__)
+  set_mask_norm();
+  set_vector_mask(-1, -1);
 
-  switch (matrix_size) {
-    case 16:
-      runKernelSimpleMatMul<T, float, 16>(a, b, c);
-      break;
-    case 32:
-      runKernelSimpleMatMul<T, float, 32>(a, b, c);
-      break;
-
-    case 64:
-      runKernelSimpleMatMul<T, float, 64>(a, b, c);
-      break;
-
-    case 96:
-      runKernelSimpleMatMul<T, float, 96>(a, b, c);
-      break;
-
-    case 128:
-      runKernelSimpleMatMul<T, float, 128>(a, b, c);
-      break;
+  if (n == 0 || n > ELEMENTS_PER_TILE) {
+    return;
   }
-}
 
-extern "C" __global__ AICORE void simple_matmul_fp16(__gm__ void* a,
-                                                     __gm__ void* b,
-                                                     __gm__ void* c,
-                                                     uint32_t matrix_size) {
-  run_simple_matmul<half>((__gm__ half*)a, (__gm__ half*)b, (__gm__ float*)c,
-                          matrix_size);
-}
+  const uint32_t num_cores = get_block_num() * get_subblockdim();
+  const uint32_t vid = get_block_idx() * get_subblockdim() + get_subblockid();
 
-extern "C" __global__ AICORE void simple_matmul_fp32(__gm__ void* a,
-                                                     __gm__ void* b,
-                                                     __gm__ void* c,
-                                                     uint32_t matrix_size) {
-  run_simple_matmul<float>((__gm__ float*)a, (__gm__ float*)b, (__gm__ float*)c,
-                           matrix_size);
-}
+  const uint32_t samples_per_core = DIV_ROUNDUP(batch, num_cores);
+  const uint32_t sample_offset = samples_per_core * vid;
+  if (sample_offset >= batch) {
+    return;
+  }
 
+  uint32_t samples_to_process = samples_per_core;
+  if (sample_offset + samples_to_process > batch) {
+    samples_to_process = batch - sample_offset;
+  }
+  if (samples_to_process == 0) {
+    return;
+  }
+
+  using ShapeDim5 = pto::Shape<1, 1, 1, 1, ELEMENTS_PER_TILE>;
+  using StridDim5 = pto::Stride<1, 1, 1, 1, 1>;
+  using GlobalData = pto::GlobalTensor<T, ShapeDim5, StridDim5>;
+
+  using FullTile =
+      Tile<TileType::Vec, T, 1, ELEMENTS_PER_TILE, BLayout::RowMajor, -1, -1>;
+
+  using HalfTile = Tile<TileType::Vec, T, 1, ELEMENTS_PER_TILE / 2,
+                        BLayout::RowMajor, -1, -1>;
+
+  const uint32_t samples_per_load =
+      (n < ELEMENTS_PER_TILE) ? ELEMENTS_PER_TILE / n : 1;
+
+  const uint32_t n_half = n >> 1;
+
+  set_flag(PIPE_V, PIPE_MTE2, EVENT_ID0);
+  set_flag(PIPE_V, PIPE_MTE2, EVENT_ID1);
+  set_flag(PIPE_MTE3, PIPE_V, EVENT_ID0);
+  set_flag(PIPE_MTE3, PIPE_V, EVENT_ID1);
+
+  uint32_t gm_offset = sample_offset * n;
+
+  for (uint32_t sample_done = 0, ping = 1; sample_done < samples_to_process;
+       sample_done += samples_per_load) {
+    const event_t ev = ping ? (event_t)EVENT_ID0 : (event_t)EVENT_ID1;
+
+    uint32_t cur_samples = samples_per_load;
+    if (sample_done + cur_samples > samples_to_process) {
+      cur_samples = samples_to_process - sample_done;
+    }
+    uint32_t elements_to_load = cur_samples * n;
+
+    const unsigned x_base = ping ? X_PING : X_PONG;
+    const unsigned even_base = ping ? EVEN_PING : EVEN_PONG;
+    const unsigned odd_base = ping ? ODD_PING : ODD_PONG;
+
+    FullTile xBulkTile(1, elements_to_load);
+    TASSIGN(xBulkTile, x_base);
+
+    GlobalData xGlobal(x + gm_offset);
+    TASSIGN(xGlobal, (x + gm_offset));
+
+    HalfTile evenTile(1, n_half);
+    HalfTile oddTile(1, n_half);
+    TASSIGN(evenTile, even_base);
+    TASSIGN(oddTile, odd_base);
+
+    wait_flag(PIPE_V, PIPE_MTE2, ev);
+
+    TLOAD(xBulkTile, xGlobal);
+
+    set_flag(PIPE_MTE2, PIPE_V, ev);
+    wait_flag(PIPE_MTE2, PIPE_V, ev);
+
+    wait_flag(PIPE_MTE3, PIPE_V, ev);
+
+    for (uint32_t s = 0; s < cur_samples; ++s) {
+      unsigned row_base = x_base + s * n * sizeof(T);
+
+      FullTile xRowTile(1, n);
+      TASSIGN(xRowTile, row_base);
+
+      HalfTile xFirstHalf(1, n_half);
+      HalfTile xSecondHalf(1, n_half);
+      TASSIGN(xFirstHalf, row_base);
+      TASSIGN(xSecondHalf, row_base + n_half * sizeof(T));
+
+      for (uint32_t iter_m = 0; iter_m < log2_n; ++iter_m) {
+        TGATHER<HalfTile, FullTile, MaskPattern::P0101>(evenTile, xRowTile);
+        TGATHER<HalfTile, FullTile, MaskPattern::P1010>(oddTile, xRowTile);
+
+        pipe_barrier(PIPE_V);
+
+        TADD(xFirstHalf, evenTile, oddTile);
+        TSUB(xSecondHalf, evenTile, oddTile);
+
+        pipe_barrier(PIPE_V);
+      }
+    }
+
+    set_flag(PIPE_V, PIPE_MTE3, ev);
+    wait_flag(PIPE_V, PIPE_MTE3, ev);
+
+    TSTORE(xGlobal, xBulkTile);
+
+    set_flag(PIPE_MTE3, PIPE_V, ev);
+    set_flag(PIPE_V, PIPE_MTE2, ev);
+
+    gm_offset += elements_to_load;
+    ping = 1 - ping;
+  }
+
+  wait_flag(PIPE_V, PIPE_MTE2, EVENT_ID0);
+  wait_flag(PIPE_V, PIPE_MTE2, EVENT_ID1);
+  wait_flag(PIPE_MTE3, PIPE_V, EVENT_ID0);
+  wait_flag(PIPE_MTE3, PIPE_V, EVENT_ID1);
 #endif
+}
+
+}  // namespace
+
+__global__ AICORE void fast_hadamard_fp16(__gm__ void *x, uint32_t batch,
+                                          uint32_t n, uint32_t log2_n) {
+  runTFastHadamard<half>((__gm__ half *)x, batch, n, log2_n);
+}
+
+extern "C" void call_kernel(uint32_t blockDim, void *stream, uint8_t *x,
+                            uint32_t batch, uint32_t n, uint32_t log2_n) {
+  blockDim = blockDim * 2;
+  fast_hadamard_fp16<<<blockDim, nullptr, stream>>>(x, batch, n, log2_n);
+}
 """
 
 
 @pytest.mark.asyncio
 async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
-    kernel_source = _PTO_ISA_KERNEL_SIMPLE_MATMUL_CPP
+    kernel_source = _PTO_ISA_KERNEL_CPP
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa", {"kernel_source": kernel_source}
+            "compile_pto_isa", {"kernel_source": kernel_source, "define_membase": True}
+        )
+
+    assert result is not None
+    compile_result: CompilationResult = parse_tool_result(result)
+    assert compile_result.success
+    assert "call_kernel" in compile_result.dylib_functions
+    assert compile_result.exit_code == 0
+
+
+@pytest.mark.asyncio
+async def test_compile_and_load_lib(client):
+    kernel_source = _PTO_ISA_KERNEL_CPP
+
+    async with client:
+        result = await client.call_tool(
+            "compile_pto_isa", {"kernel_source": kernel_source, "define_membase": True}
         )
 
     assert result is not None
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
     assert compile_result.exit_code == 0
+
+    async with client:
+        result = await client.call_tool(
+            "load_dylib", {"lib_path": compile_result.dylib_path}
+        )
+      
+    assert result is not None
+    
