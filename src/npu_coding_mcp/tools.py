@@ -1,23 +1,16 @@
-import subprocess
-import tempfile
-
-from . import mcp
-
+import json
+import logging
 import os
 import subprocess
 import tempfile
-import logging
-import requests
-from pwn import ELF  # Required for dylibs inspection
-
-from pydantic import BaseModel
-from typing import Optional
-import json
-
 import time
-
 from subprocess import CalledProcessError
 
+import requests
+from pwn import ELF  # Required for dylibs inspection
+from pydantic import BaseModel
+
+from . import mcp
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +25,7 @@ class CompilationResult(BaseModel):
     stdout: str
     stderr: str
     duration_ms: float
-    binary_path: Optional[str] = None  # None if compilation failed
+    binary_path: str | None = None  # None if compilation failed
 
 
 def parse_tool_result(result, model: type[BaseModel] = CompilationResult):

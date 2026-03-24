@@ -2,7 +2,6 @@
 
 from fastmcp import FastMCP
 
-
 mcp = FastMCP(
     name="npu-coding-mcp",
     instructions=(
@@ -14,6 +13,6 @@ mcp = FastMCP(
     ),
 )
 
-import npu_coding_mcp.resources  # noqa: F401
-import npu_coding_mcp.prompts  # noqa: F401
-import npu_coding_mcp.tools  # noqa: F401
+import npu_coding_mcp.prompts  # noqa
+import npu_coding_mcp.resources  # noqa
+import npu_coding_mcp.tools  # noqa
