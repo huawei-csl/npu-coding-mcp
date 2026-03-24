@@ -12,7 +12,7 @@ def client():
     return Client(mcp)
 
 
-_PTO_ISA_KERNEL_SIMPLE_MATMUL_CPP="""
+_PTO_ISA_KERNEL_SIMPLE_MATMUL_CPP = """
 #if defined __CCE_AICORE__ == 220 && defined(__DAV_C220_VEC__)
 
 // Placeholder for VEC compilation (the real kernel is CUBE-only).
@@ -172,6 +172,7 @@ extern "C" __global__ AICORE void simple_matmul_fp32(__gm__ void* a,
 #endif
 """
 
+
 @pytest.mark.asyncio
 async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
     kernel_source = _PTO_ISA_KERNEL_SIMPLE_MATMUL_CPP
@@ -185,4 +186,3 @@ async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
     assert compile_result.exit_code == 0
-

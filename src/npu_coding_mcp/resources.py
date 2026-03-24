@@ -1,6 +1,42 @@
 """MCP resources for Ascend NPU kernel development."""
 
+import subprocess
+from pathlib import Path
+
 from . import mcp
+
+
+@mcp.resource("host://npu-smi/info")
+def npu_smi_info() -> str:
+    """Run `npu-smi info` and return its output."""
+    try:
+        result = subprocess.run(
+            ["npu-smi", "info"],
+            capture_output=True,
+            text=True,
+            timeout=30,
+        )
+        output = result.stdout
+        if result.stderr:
+            output += f"\nstderr:\n{result.stderr}"
+        return output
+    except FileNotFoundError:
+        return "Error: npu-smi not found. Check if Ascend toolkit is installed."
+    except subprocess.TimeoutExpired:
+        return "Error: npu-smi info timed out after 30 seconds."
+
+
+
+@mcp.resource("host://npu/driver-version")
+def npu_driver_version() -> str:
+    """Read the Ascend NPU driver version from /usr/local/Ascend/version.info."""
+    version_file = Path("/usr/local/Ascend/version.info")
+    try:
+        return version_file.read_text()
+    except FileNotFoundError:
+        return f"Error: {version_file} not found. Ensure the Ascend driver is installed."
+    except PermissionError:
+        return f"Error: permission denied reading {version_file}."
 
 
 @mcp.resource("ascend://docs/memory-hierarchy")

@@ -15,5 +15,11 @@ lint:
 test:
 	uv run pytest
 
+test-resources:
+	uv run pytest -v tests/resources
+
+test-tools:
+	uv run pytest -v tests/tools
+
 run:
 	uv run npu-coding-mcp
