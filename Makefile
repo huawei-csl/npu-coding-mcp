@@ -9,5 +9,11 @@ install-local:
 build:
 	uv build
 
+lint:
+	uv run ruff check . 
+
 test:
 	uv run pytest
+
+run:
+	uv run npu-coding-mcp

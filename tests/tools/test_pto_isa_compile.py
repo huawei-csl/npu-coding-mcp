@@ -32,6 +32,7 @@ async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
     assert result is not None
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
+    assert compile_result.exit_code == 0
 
 
 @pytest.mark.asyncio
@@ -60,6 +61,7 @@ async def test_mcp_tool_pto_isa_kernel_batch_matrix_square(client):
     assert result is not None
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
+    assert compile_result.exit_code == 0
 
 
 @pytest.mark.asyncio
@@ -75,6 +77,7 @@ async def test_mcp_tool_pto_isa_kernel_fast_hadamard(client):
     assert result is not None
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
+    assert compile_result.exit_code == 0
 
 
 """
