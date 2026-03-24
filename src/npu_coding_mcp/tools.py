@@ -1,57 +1,125 @@
-import shutil
 import subprocess
 import tempfile
-from pathlib import Path
 
 from . import mcp
 
-_PTO_ISA_COMPILER = "pto-isa-compiler"  # expected on PATH
+import os
+import subprocess
+import tempfile
+import logging
+import requests
+from pwn import ELF  # Required for dylibs inspection
+
+from pydantic import BaseModel
+from typing import Optional
+import json
+
+import time
+
+from subprocess import CalledProcessError
+
+
+logger = logging.getLogger(__name__)
+
+
+ASCEND_TOOLKIT_HOME = os.environ["ASCEND_TOOLKIT_HOME"]
+PTO_LIB_PATH = os.environ.get("PTO_LIB_PATH", ASCEND_TOOLKIT_HOME)
+
+
+class CompilationResult(BaseModel):
+    success: bool
+    exit_code: int
+    stdout: str
+    stderr: str
+    duration_ms: float
+    binary_path: Optional[str] = None  # None if compilation failed
+
+
+def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
+    data = json.loads(result.content[0].text)
+    return model(**data)
 
 
 @mcp.tool()
 def compile_pto_isa_kernel(
     kernel_source: str,
-    target_core: str = "Ascend910B",
-    extra_flags: str = "",
-) -> str:
+    npu_arch: str = "dav-2201",
+    define_membase: bool = False,
+    timeout: int = 120,
+) -> CompilationResult:
     """Compile a PTO-ISA kernel source string and return the compiler output.
 
     Args:
         kernel_source: The PTO-ISA kernel source code to compile.
-        target_core: Target Ascend core variant (default: Ascend910B).
-        extra_flags: Optional additional compiler flags (space-separated string).
+        npu_arch: Target NPU architecture (default: Ascend910B).
+        timeout: Maximum time in seconds to wait for compilation to complete (default: 120).
 
     Returns:
         A string containing stdout, stderr, and exit status from the compiler.
     """
-    compiler = shutil.which(_PTO_ISA_COMPILER)
-    if compiler is None:
-        return (
-            f"Error: compiler '{_PTO_ISA_COMPILER}' not found on PATH. "
-            "Please install the PTO-ISA toolchain and ensure the compiler binary is accessible."
-        )
+    print("compile_pto_isa_kernel is called.")
 
-    with tempfile.TemporaryDirectory() as tmpdir:
-        src_path = Path(tmpdir) / "kernel.isa"
-        src_path.write_text(kernel_source, encoding="utf-8")
+    flags = [
+        "-fPIC",
+        "-shared",
+        "-xcce",
+        "-O2",
+        "-std=c++17",
+        f"--npu-arch={npu_arch}",
+        f"-I{PTO_LIB_PATH}/include",
+    ]
 
-        cmd = [compiler, str(src_path), f"--target={target_core}"]
-        if extra_flags.strip():
-            cmd.extend(extra_flags.split())
+    if define_membase:
+        flags.append("-DMEMORY_BASE")
 
+    if kernel_source.startswith("http"):
+        print(f"Input CPP kernel is URL: {kernel_source}")
+        kernel_source = requests.get(kernel_source).text
+
+    src_path = None
+    with tempfile.NamedTemporaryFile(suffix=".cpp", mode="w", delete=False) as src_file:
+        src_file.write(kernel_source)
+        src_path = src_file.name
+
+    lib_path = src_path.replace(".cpp", ".so")
+
+    elapsed_ms: int = 0
+    result = None
+    try:
+        command = ["bisheng", *flags, src_path, "-o", lib_path]
+        print(f"Running CMD: {command}")
+
+        start = time.perf_counter()
         result = subprocess.run(
-            cmd,
+            command,
+            timeout=timeout,
+            check=True,
             capture_output=True,
             text=True,
-            timeout=60,
         )
+        elapsed_ms = (time.perf_counter() - start) * 1000
+    except CalledProcessError as e:
+        print(f"Compilation command failed: {e}")
+        return CompilationResult(
+            success=False,
+            exit_code=e.returncode,
+            stdout=e.stdout,
+            stderr=e.stderr,
+            duration_ms=elapsed_ms,
+        )
+    finally:
+        os.unlink(src_path)
 
-    lines = []
-    if result.stdout:
-        lines.append("=== stdout ===")
-        lines.append(result.stdout.rstrip())
-    if result.stderr:
-        lines.append("=== stderr ===")
-        lines.append(result.stderr.rstrip())
-    lines.append(f"=== exit code: {result.returncode} ===")
-    return "\n".join(lines)
+    elf = ELF(lib_path)
+    print(elf.symbols)  # all symbols
+    print(elf.functions)  # only functions
+    print(elf.plt)  # PLT entries
+    print(elf.got)  # GOT entries
+
+    return CompilationResult(
+        success=True,
+        exit_code=result.returncode,
+        stdout=result.stdout,
+        stderr=result.stderr,
+        duration_ms=elapsed_ms,
+    )

@@ -11,6 +11,8 @@ license = { file = "LICENSE" }
 requires-python = ">=3.10"
 dependencies = [
     "fastmcp>=2.0.0",
+    "pwn>=1.0",
+    "requests>=2.32.5",
 ]
 
 [project.scripts]
