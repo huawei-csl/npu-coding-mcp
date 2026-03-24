@@ -58,6 +58,7 @@ def compile_pto_isa_kernel(
         "-xcce",
         "-O2",
         "-std=c++17",
+        "-Wno-ignored-attributes",
         f"--npu-arch={npu_arch}",
         f"-I{PTO_LIB_PATH}/include",
     ]
