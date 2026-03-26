@@ -30,7 +30,9 @@ from . import mcp
 
 @mcp.resource("host://npu-smi/info")
 def npu_smi_info() -> str:
-    """Run `npu-smi info` on host where MCP server runs. It returns information most notably the Ascend driver version: 25.5.0."""
+    """Run `npu-smi info` on host where MCP server runs.
+    
+    Return string contains the Ascend driver version"""
     try:
         result = subprocess.run(
             ["npu-smi", "info"],
