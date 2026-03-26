@@ -15,15 +15,13 @@ An [MCP](https://modelcontextprotocol.io/) server for **Ascend NPU kernel develo
 
 | URI | Description |
 |-----|-------------|
-| `host://npu-smi/info` | Run `npu-smi info` and return the live output |
+| `host://npu-smi/info` | Run `npu-smi info` on the MCP server host and return the output (includes driver version) |
 | `host://npu/driver-version` | Read the Ascend NPU driver version from `/usr/local/Ascend/version.info` |
-| `ascend://docs/memory-hierarchy` | Reference docs for the Ascend NPU memory hierarchy (L0A/B/C, L1, UB, L2, GM) including alignment constraints |
-| `ascend://docs/910b-architecture` | Hardware architecture overview of the Ascend 910B (specs, AI Core sub-units, interconnect, multi-card) |
-| `ascend://docs/daVinci-compute-units` | Detailed description of Da Vinci core compute units (Cube, Vector, Scalar) and their instruction sets |
-| `ascend://docs/ascend-c-programming-model` | Ascend C kernel programming model: entry points, execution model, memory allocation, DMA, double buffering, and sync |
-| `ascend://docs/cann-api-reference` | Key CANN SDK APIs for host-side management, memory, kernel launch, and Python/PyTorch integration |
-| `ascend://docs/performance-tuning` | Performance tuning guidelines: Cube utilization, double buffering, occupancy, alignment, profiling tools, and pitfalls |
-| `ascend://docs/operator-development-workflow` | End-to-end workflow for developing and deploying a custom Ascend C operator (env setup, build, OPP install, PyTorch integration) |
+| `npu://device` | Ascend 910B chip identity: AI core count, clock, HBM type/capacity/bandwidth, TDP, PTO backend tag |
+| `npu://memory-map` | Per-AI-Core on-chip buffer hierarchy (L0A/B/C, UB, L1, L2) with sizes, data paths, and Manual-mode notes |
+| `npu://compute-units` | Cube / Vector / Scalar throughput, supported dtypes, MACs/cycle, and AIC↔AIV architecture rules |
+| `npu://pipeline` | Canonical 5-stage Manual-mode pipeline (MTE2→MTE1→Cube→Vector→MTE3), double-buffer overlap rules, and bottleneck checklist |
+| `npu://constraints` | Hard limits for PTO-ISA kernel authors: tile divisibility, buffer alignment, size caps, layout contracts, and ordering rules |
 
 ### Prompts
 
