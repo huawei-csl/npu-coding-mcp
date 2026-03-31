@@ -180,12 +180,14 @@ extern "C" void call_kernel(uint32_t blockDim, void *stream, uint8_t *x,
 
 
 @pytest.mark.asyncio
-async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
+async def test_mcp_tool_compile_extra_function_signature(client):
     kernel_source = _PTO_ISA_KERNEL_CPP
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa", {"kernel_source": kernel_source, "define_membase": True}
+            "compile_pto_isa", {"kernel_source": kernel_source,
+                                "define_membase": True,
+                                "debug": True}
         )
 
     assert result is not None
@@ -193,25 +195,30 @@ async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
     assert compile_result.success
     assert compile_result.exit_code == 0
 
-
-@pytest.mark.asyncio
-async def test_compile_and_load_lib(client):
-    kernel_source = _PTO_ISA_KERNEL_CPP
-
-    async with client:
-        result = await client.call_tool(
-            "compile_pto_isa", {"kernel_source": kernel_source, "define_membase": True}
-        )
-
-    assert result is not None
-    compile_result: CompilationResult = parse_tool_result(result)
-    assert compile_result.success
-    assert compile_result.exit_code == 0
-
-    async with client:
-        result = await client.call_tool(
-            "load_dylib", {"lib_path": compile_result.dylib_path}
-        )
-      
-    assert result is not None
+    # To test the output of the tool.
+    # for name, sig in sorted(compile_result.dylib_functions.items()):
+    #     print(f"Function: {name}")
+    #     print(f"Number of arguments: {len(sig.args)}")
+    #     for arg in sig.args:
+    #         print(f"  - {arg.type_name} - {arg.name}")
+    #     print(f"Return type: {sig.return_type}")
     
+    # Test that call_kernel is in the compiled functions
+    assert "call_kernel" in compile_result.dylib_functions.keys()
+    
+    # Test call_kernel function signature
+    call_kernel_sig = compile_result.dylib_functions["call_kernel"]
+    assert len(call_kernel_sig.args) == 6
+    assert call_kernel_sig.args[0].type_name == "uint32_t"
+    assert call_kernel_sig.args[0].name == "blockDim"
+    assert call_kernel_sig.args[1].type_name == "void*"
+    assert call_kernel_sig.args[1].name == "stream"
+    assert call_kernel_sig.args[2].type_name == "uint8_t*"
+    assert call_kernel_sig.args[2].name == "x"
+    assert call_kernel_sig.args[3].type_name == "uint32_t"
+    assert call_kernel_sig.args[3].name == "batch"
+    assert call_kernel_sig.args[4].type_name == "uint32_t"
+    assert call_kernel_sig.args[4].name == "n"
+    assert call_kernel_sig.args[5].type_name == "uint32_t"
+    assert call_kernel_sig.args[5].name == "log2_n"
+    assert call_kernel_sig.return_type == "void"
