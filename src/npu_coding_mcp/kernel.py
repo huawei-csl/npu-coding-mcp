@@ -3,9 +3,21 @@ Tools to extract function signatures from ELF shared libraries with DWARF debug 
 """
 
 from dataclasses import dataclass, field
+from pydantic import BaseModel
 
 from elftools.elf.elffile import ELFFile
 from elftools.elf.sections import SymbolTableSection
+
+
+class InputShapes(BaseModel):
+    """Input tensor shapes provided by the user after compilation."""
+
+    shapes: str = ""
+    """Comma-separated list of shapes, one per tensor argument.
+    Example: '1024x1024, 512x512' or '(B,N,C)=(4,128,64)'"""
+
+    dtype: str = "float16"
+    """Element data type for all input tensors (e.g. float16, float32, int8)."""
 
 
 @dataclass

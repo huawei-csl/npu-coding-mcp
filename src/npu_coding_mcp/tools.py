@@ -8,10 +8,12 @@ import time
 from subprocess import CalledProcessError
 
 import requests
+from fastmcp import Context
+from fastmcp.exceptions import ToolError
 from pydantic import BaseModel
 
 from . import mcp
-from .kernel import FunctionSignature, extract_signatures
+from .kernel import FunctionSignature, extract_signatures, InputShapes
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +30,9 @@ class CompilationResult(BaseModel):
     duration_ms: float
     dylib_path: str | None = None  # None if compilation failed
     dylib_functions: dict[str, FunctionSignature] = {}
+    input_shapes: InputShapes | None = (
+        None  # Elicited input shapes from user after compilation
+    )
 
 
 def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
@@ -36,8 +41,9 @@ def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
 
 
 @mcp.tool()
-def compile_pto_isa(
+async def compile_pto_isa(
     kernel_source: str,
+    ctx: Context,
     npu_arch: str = "dav-2201",
     define_membase: bool = False,
     debug: bool = False,
@@ -113,6 +119,7 @@ def compile_pto_isa(
         os.unlink(src_path)
 
     sigs = extract_signatures(lib_path)
+    elicited_shapes = await elicit_input_shapes(ctx, sigs)
 
     return CompilationResult(
         success=True,
@@ -122,7 +129,42 @@ def compile_pto_isa(
         duration_ms=elapsed_ms,
         dylib_path=lib_path,
         dylib_functions=sigs,
+        input_shapes=elicited_shapes,
     )
+
+
+async def elicit_input_shapes(
+    ctx: Context, sigs: dict[str, FunctionSignature]
+) -> InputShapes | None:
+    # Build a human-readable summary of detected kernel signatures to
+    # guide the user when answering the elicitation.
+    if sigs:
+        sig_lines = "\n".join(f"  • {sig}" for sig in sigs.values())
+        elicit_message = (
+            "Compilation succeeded. The following kernel functions were detected:\n"
+            f"{sig_lines}\n\n"
+            "Please provide the input tensor shapes you want to use for profiling or testing."
+        )
+    else:
+        elicit_message = (
+            "Compilation succeeded. Please provide the input tensor shapes "
+            "you want to use for profiling or testing."
+        )
+
+    try:
+        elicit_response = await ctx.elicit(elicit_message, response_type=InputShapes)
+    except Exception as e:
+        logger.warning(
+            "Elicitation not supported by client, skipping input shapes: %s", e
+        )
+        return None
+
+    if elicit_response.action == "accept":
+        return elicit_response.data
+    elif elicit_response.action == "decline":
+        raise ToolError("User declined")
+    else:  # cancel
+        return None
 
 
 def torch_to_ctypes(tensor):
