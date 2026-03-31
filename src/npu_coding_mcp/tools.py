@@ -163,7 +163,7 @@ async def elicit_input_shapes(
         return elicit_response.data
     elif elicit_response.action == "decline":
         raise ToolError("User declined")
-    else:  # cancel
+    elif elicit_response.action == "cancel":
         return None
 
 
