@@ -2,37 +2,17 @@ import ctypes
 import json
 import logging
 import os
-import subprocess
-import tempfile
-import time
 from subprocess import CalledProcessError
 
-import requests
 from fastmcp import Context
 from fastmcp.exceptions import ToolError
 from pydantic import BaseModel
 
 from . import mcp
 from .kernel import FunctionSignature, extract_signatures, InputShapes
+from .compile import jit_compile_pto_isa, CompilationResult
 
 logger = logging.getLogger(__name__)
-
-
-ASCEND_TOOLKIT_HOME = os.environ["ASCEND_TOOLKIT_HOME"]
-PTO_LIB_PATH = os.environ.get("PTO_LIB_PATH", ASCEND_TOOLKIT_HOME)
-
-
-class CompilationResult(BaseModel):
-    success: bool
-    exit_code: int
-    stdout: str
-    stderr: str
-    duration_ms: float
-    dylib_path: str | None = None  # None if compilation failed
-    dylib_functions: dict[str, FunctionSignature] = {}
-    input_shapes: InputShapes | None = (
-        None  # Elicited input shapes from user after compilation
-    )
 
 
 def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
@@ -61,76 +41,32 @@ async def compile_pto_isa(
     Returns:
         A string containing stdout, stderr, and exit status from the compiler.
     """
-    print("compile_pto_isa_kernel is called.")
-
-    flags = [
-        "-fPIC",
-        "-shared",
-        "-xcce",
-        "-O2",
-        "-std=c++17",
-        "-Wno-ignored-attributes",
-        f"--npu-arch={npu_arch}",
-        f"-I{PTO_LIB_PATH}/include",
-    ]
-
-    if debug:
-        flags.append("-g")
-
-    if define_membase:
-        flags.append("-DMEMORY_BASE")
-
-    if kernel_source.startswith("http"):
-        print(f"Input CPP kernel is URL: {kernel_source}")
-        kernel_source = requests.get(kernel_source).text
-
-    src_path = None
-    with tempfile.NamedTemporaryFile(suffix=".cpp", mode="w", delete=False) as src_file:
-        src_file.write(kernel_source)
-        src_path = src_file.name
-
-    lib_path = src_path.replace(".cpp", ".so")
-
-    elapsed_ms: int = 0
-    result = None
     try:
-        command = ["bisheng", *flags, src_path, "-o", lib_path]
-        print(f"Running CMD: {command}")
-
-        start = time.perf_counter()
-        result = subprocess.run(
-            command,
-            timeout=timeout,
-            check=True,
-            capture_output=True,
-            text=True,
+        lib_path, elapsed_ms, result = await jit_compile_pto_isa(
+            kernel_source, npu_arch, define_membase, debug, timeout
         )
-        elapsed_ms = (time.perf_counter() - start) * 1000
+
+        sigs = extract_signatures(lib_path)
+        elicited_shapes = await elicit_input_shapes(ctx, sigs)
+
+        return CompilationResult(
+            success=True,
+            exit_code=result.returncode,
+            stdout=result.stdout,
+            stderr=result.stderr,
+            duration_ms=elapsed_ms,
+            dylib_path=lib_path,
+            dylib_functions=sigs,
+            input_shapes=elicited_shapes,
+        )
     except CalledProcessError as e:
-        print(f"Compilation command failed: {e}")
         return CompilationResult(
             success=False,
             exit_code=e.returncode,
             stdout=e.stdout,
             stderr=e.stderr,
-            duration_ms=elapsed_ms,
+            duration_ms=-1,
         )
-    finally:
-        os.unlink(src_path)
-
-    sigs = extract_signatures(lib_path)
-    elicited_shapes = await elicit_input_shapes(ctx, sigs)
-
-    return CompilationResult(
-        success=True,
-        exit_code=result.returncode,
-        stdout=result.stdout,
-        stderr=result.stderr,
-        duration_ms=elapsed_ms,
-        dylib_path=lib_path,
-        dylib_functions=sigs,
-        input_shapes=elicited_shapes,
-    )
 
 
 async def elicit_input_shapes(
@@ -173,6 +109,8 @@ def torch_to_ctypes(tensor):
 
 @mcp.tool
 def load_dylib(lib_path: str):
+
+    # TODO: infer the correct argtypes and restype for the call_kernel function instead of hardcoding void* and uint32
 
     lib_path = os.path.abspath(lib_path)
     try:

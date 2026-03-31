@@ -185,9 +185,8 @@ async def test_mcp_tool_compile_extra_function_signature(client):
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa", {"kernel_source": kernel_source,
-                                "define_membase": True,
-                                "debug": True}
+            "compile_pto_isa",
+            {"kernel_source": kernel_source, "define_membase": True, "debug": True},
         )
 
     assert result is not None
@@ -202,10 +201,10 @@ async def test_mcp_tool_compile_extra_function_signature(client):
     #     for arg in sig.args:
     #         print(f"  - {arg.type_name} - {arg.name}")
     #     print(f"Return type: {sig.return_type}")
-    
+
     # Test that call_kernel is in the compiled functions
     assert "call_kernel" in compile_result.dylib_functions.keys()
-    
+
     # Test call_kernel function signature
     call_kernel_sig = compile_result.dylib_functions["call_kernel"]
     assert len(call_kernel_sig.args) == 6

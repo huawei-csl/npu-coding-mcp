@@ -11,7 +11,9 @@ def client():
     return Client(mcp)
 
 
-@pytest.mark.xfail(reason="Fails when there are no NPUs or npu-smi is not working.", strict=False)
+@pytest.mark.xfail(
+    reason="Fails when there are no NPUs or npu-smi is not working.", strict=False
+)
 @pytest.mark.asyncio
 async def test_npu_smi_info(client):
     async with client:
@@ -29,4 +31,3 @@ async def test_npu_driver_version(client):
 
     assert result is not None
     assert result[0].text.startswith("version=")
-

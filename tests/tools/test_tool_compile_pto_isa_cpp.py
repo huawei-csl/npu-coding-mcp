@@ -212,6 +212,5 @@ async def test_compile_and_load_lib(client):
         result = await client.call_tool(
             "load_dylib", {"lib_path": compile_result.dylib_path}
         )
-      
+
     assert result is not None
-    

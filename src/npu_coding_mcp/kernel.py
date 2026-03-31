@@ -227,6 +227,7 @@ def extract_signatures(library_path: str) -> dict[str, FunctionSignature]:
 
 
 def get_extern_c_functions(library_path: str) -> list[str]:
+    "Return a list of non-mangled function names exported by the shared library (requires -g)."
     with open(library_path, "rb") as f:
         elf = ELFFile(f)
         results = []
