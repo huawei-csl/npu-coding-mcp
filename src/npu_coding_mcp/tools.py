@@ -8,11 +8,10 @@ import time
 from subprocess import CalledProcessError
 
 import requests
-from pwn import ELF  # Required for dylibs inspection
 from pydantic import BaseModel
 
 from . import mcp
-from .kernel import extract_signatures, FunctionSignature
+from .kernel import FunctionSignature, extract_signatures
 
 logger = logging.getLogger(__name__)
 
@@ -113,10 +112,6 @@ def compile_pto_isa(
     finally:
         os.unlink(src_path)
 
-    elf = ELF(lib_path)
-
-    # Read all functions from dynamic library ELF file
-    elf_functions = [str(f[0]) for f in elf.functions.items()]
     sigs = extract_signatures(lib_path)
 
     return CompilationResult(

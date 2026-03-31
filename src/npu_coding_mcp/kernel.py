@@ -3,6 +3,7 @@ Tools to extract function signatures from ELF shared libraries with DWARF debug 
 """
 
 from dataclasses import dataclass, field
+
 from elftools.elf.elffile import ELFFile
 from elftools.elf.sections import SymbolTableSection
 

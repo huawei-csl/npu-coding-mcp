@@ -185,7 +185,9 @@ async def test_mcp_tool_compile_extra_function_signature(client):
 
     async with client:
         result = await client.call_tool(
-            "compile_pto_isa", {"kernel_source": kernel_source, "define_membase": True, "debug": True}
+            "compile_pto_isa", {"kernel_source": kernel_source,
+                                "define_membase": True,
+                                "debug": True}
         )
 
     assert result is not None

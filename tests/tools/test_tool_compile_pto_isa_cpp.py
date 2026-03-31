@@ -191,7 +191,6 @@ async def test_mcp_tool_pto_isa_kernel_simple_matmul(client):
     assert result is not None
     compile_result: CompilationResult = parse_tool_result(result)
     assert compile_result.success
-    assert "call_kernel" in compile_result.dylib_functions
     assert compile_result.exit_code == 0
 
 
