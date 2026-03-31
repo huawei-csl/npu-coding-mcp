@@ -28,10 +28,11 @@ from pathlib import Path
 
 from . import mcp
 
+
 @mcp.resource("host://npu-smi/info")
 def npu_smi_info() -> str:
     """Run `npu-smi info` on host where MCP server runs.
-    
+
     Return string contains the Ascend driver version"""
     try:
         result = subprocess.run(
@@ -92,7 +93,7 @@ GM → L1 → L0A/L0B → Cube Unit → L0C → UB → GM
 - L1/L0A/L0B memory alignment: tiles must be 512-bytes aligned.
 """
 
- 
+
 @mcp.resource("npu://device")
 def device() -> str:
     return """\
@@ -111,9 +112,8 @@ tdp           : 400 W
 PTO target string  : a3
 CANN min version   : 8.x  (HBM3e features require 8.5.0+)
 """
- 
- 
- 
+
+
 @mcp.resource("npu://memory-map")
 def memory_map() -> str:
     return """\
@@ -135,8 +135,8 @@ Data path (Manual mode):
   HBM ──MTE2──▶ L1 ──MTE1──▶ L0A/L0B ──Cube──▶ L0C ──MTE3──▶ UB ──Vector──▶ UB ──MTE3──▶ HBM
   HBM ──MTE2──▶ UB ──Vector──▶ UB ──MTE3──▶ HBM          (vector-only path)
 """
- 
-  
+
+
 @mcp.resource("npu://compute-units")
 def compute_units() -> str:
     return """\
@@ -163,9 +163,8 @@ def compute_units() -> str:
   purpose      : control flow, address arithmetic, loop counters
   do not use   : for bulk tensor math — overhead is O(N) not O(N/SIMD_width)
 """
- 
- 
- 
+
+
 @mcp.resource("npu://pipeline")
 def pipeline() -> str:
     return """\
@@ -199,8 +198,8 @@ Bottleneck checklist
   Vector bound→ fuse activation with drain, or use INT8 path
   Sync bound  → reduce pipe_barrier granularity
 """
- 
-  
+
+
 @mcp.resource("npu://constraints")
 def constraints() -> str:
     return """\

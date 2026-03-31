@@ -12,6 +12,7 @@ from pwn import ELF  # Required for dylibs inspection
 from pydantic import BaseModel
 
 from . import mcp
+from .kernel import extract_signatures, FunctionSignature
 
 logger = logging.getLogger(__name__)
 
@@ -27,7 +28,7 @@ class CompilationResult(BaseModel):
     stderr: str
     duration_ms: float
     dylib_path: str | None = None  # None if compilation failed
-    dylib_functions: list[str] = []
+    dylib_functions: dict[str, FunctionSignature] = {}
 
 
 def parse_tool_result(result, model: type[BaseModel] = CompilationResult):
@@ -40,6 +41,7 @@ def compile_pto_isa(
     kernel_source: str,
     npu_arch: str = "dav-2201",
     define_membase: bool = False,
+    debug: bool = False,
     timeout: int = 120,
 ) -> CompilationResult:
     """Compile a PTO-ISA kernel source string and return the compiler output.
@@ -47,6 +49,8 @@ def compile_pto_isa(
     Args:
         kernel_source: The PTO-ISA kernel source code to compile.
         npu_arch: Target NPU architecture (default: Ascend910B).
+        define_membase: Whether to define MEMORY_BASE macro (default: False).
+        debug: Whether to include debug symbols in the compiled output (default: False).
         timeout: Maximum time in seconds to wait for compilation to complete (default: 120).
 
     Returns:
@@ -64,6 +68,9 @@ def compile_pto_isa(
         f"--npu-arch={npu_arch}",
         f"-I{PTO_LIB_PATH}/include",
     ]
+
+    if debug:
+        flags.append("-g")
 
     if define_membase:
         flags.append("-DMEMORY_BASE")
@@ -110,6 +117,7 @@ def compile_pto_isa(
 
     # Read all functions from dynamic library ELF file
     elf_functions = [str(f[0]) for f in elf.functions.items()]
+    sigs = extract_signatures(lib_path)
 
     return CompilationResult(
         success=True,
@@ -118,7 +126,7 @@ def compile_pto_isa(
         stderr=result.stderr,
         duration_ms=elapsed_ms,
         dylib_path=lib_path,
-        dylib_functions=elf_functions,
+        dylib_functions=sigs,
     )
 
 
