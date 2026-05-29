@@ -1,0 +1,50 @@
+# MultiCoreMatmulGetTmpBufSizeV2
+
+> **Section**: 2  
+> **PDF Pages**: 2460–2460  
+
+---
+
+<!-- page 2460 -->
+
+...  // 初始化tilingData，详见MatmulTiling类使用说明int ret = tiling.GetTiling(tilingData);    // 获取Tiling参数SysTilingTempBufSize bufSize;MultiCoreMatmulGetTmpBufSize(tilingData, bufSize);
+
+## ?.2. MultiCoreMatmulGetTmpBufSizeV2
+
+功能说明
+
+多核Matmul Tiling调用GetTiling接口获取Tiling参数后，根据Tiling结构体信息获取L1 Buffer/Unified Buffer/L0C Buffer的使用大小。
+
+函数原型
+
+```cpp
+int32_t MultiCoreMatmulGetTmpBufSizeV2(AscendC::tiling::TCubeTiling &tiling, matmul_tiling::SysTilingTempBufSize &bufSize)
+```
+
+参数说明
+
+表6-1110参数说明
+
+参数名输入/输出
+
+描述
+
+tiling输入Matmul多核Tiling的结构体，即MultiCoreMatmulTiling对象得到的TCubeTiling结构体。
+
+TCubeTiling为Kernel侧定义的Matmul TilingData，与入参为带AscendC::tiling命名空间的TCubeTiling结构体的GetTiling接口配合使用。
+
+bufSize输出根据TCubeTiling结构体信息获取L1 Buffer/Unified Buffer/L0C Buffer的使用大小。SysTilingTempBufSize结构定义如下方代码所示。
+
+struct SysTilingTempBufSize {    int32_t ubSize = 0;  // Unified Buffer大小    int32_t l1Size = 0;  // L1 Buffer大小    int32_t l0cSize = 0; // L0C Buffer大小};
+
+返回值说明
+
+-1表示获取失败； 0表示获取成功。
+
+约束说明
+
+无
+
+调用示例
+
+auto ascendcPlatform = platform_ascendc::PlatformAscendC(context->GetPlatformInfo());matmul_tiling::MultiCoreMatmulTiling tiling(ascendcPlatform); AscendC::tiling::TCubeTiling tilingData;...  // 初始化tilingData，详见MatmulTiling类使用说明int ret = tiling.GetTiling(tilingData);    // 获取Tiling参数

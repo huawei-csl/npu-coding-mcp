@@ -1,0 +1,88 @@
+# TILING_KEY_IS
+
+> **Section**: 6.2.3.14.7  
+> **PDF Pages**: 1985–1986  
+
+---
+
+<!-- page 1985 -->
+
+参数输入/输出说明
+
+src_ptr输入指向tiling_struct结构体的指针。
+
+dst_ptr输出返回拷贝后的指向类型为arr_type、大小为arr_count的数组指针。
+
+约束说明
+
+●该宏需在算子Kernel代码处使用，并且传入的dst_ptr参数无需声明类型。
+
+●该宏需要和6.2.3.14.4 GET_TILING_DATA_PTR_WITH_STRUCT配合使用，输入参数src_ptr为GET_TILING_DATA_PTR_WITH_STRUCT获取到的指针。
+
+●该宏获取到的dst_ptr指针指向的数组是局部变量，请确保在合理作用域范围内使用。
+
+●暂不支持Kernel直调工程。
+
+调用示例
+
+```cpp
+extern "C" __global__ __aicore__ void add_custom(__gm__ uint8_t *x, __gm__ uint8_t *y, __gm__ uint8_t *z, __gm__ uint8_t *tiling){    KernelAdd op;
+GET_TILING_DATA_PTR_WITH_STRUCT(AddCustomTilingData, tilingDataPtr, tiling);
+    if ASCEND_IS_AIV {        COPY_TILING_WITH_ARRAY(uint64_t, 2, tilingDataPtr->vectorTilingArray, vTilingArrayPtr);
+                op.Init(x, y, z, (*vTilingArrayPtr)[0], (*vTilingArrayPtr)[1]);
+        op.Process();    } else {        COPY_TILING_WITH_ARRAY(uint64_t, 2, tilingDataPtr->cubeTilingArray, cTilingArrayPtr);
+    op.Init(x, y, z, (*cTilingArrayPtr)[0], (*cTilingArrayPtr)[1]);
+    op.Process();    }}
+```
+
+## 6.2.3.14.7 TILING_KEY_IS
+
+产品支持情况
+
+产品是否支持
+
+Atlas 350 加速卡√
+
+Atlas A3 训练系列产品/Atlas A3 推理系列产品√
+
+Atlas A2 训练系列产品/Atlas A2 推理系列产品√
+
+Atlas 200I/500 A2 推理产品√
+
+Atlas 推理系列产品AI Core√
+
+Atlas 推理系列产品Vector Core√
+
+Atlas 训练系列产品√
+
+<!-- page 1986 -->
+
+功能说明
+
+在核函数中判断本次执行时的tiling_key是否等于host侧运行时设置的某个key，从而标识tiling_key==key的一条kernel分支。
+
+函数原型
+
+```cpp
+TILING_KEY_IS(key)
+```
+
+参数说明
+
+参数输入/输出说明
+
+key输入key表示某个核函数的分支，必须是非负整数。
+
+约束说明
+
+●TILING_KEY_IS运用于if和else if分支，不支持else分支，即用TILING_KEY_IS函数来表征N个分支，必须用N个TILING_KEY_IS(key)来分别表示。
+
+●暂不支持Kernel直调工程。
+
+调用示例
+
+extern "C" __global__ __aicore__ void add_custom(__gm__ uint8_t *x, __gm__ uint8_t *y, __gm__ uint8_t *z, __gm__ uint8_t *workspace, __gm__ uint8_t *tiling){    GET_TILING_DATA(tilingData, tiling);    if (workspace == nullptr) {        return;    }    KernelAdd op;    op.Init(x, y, z, tilingData.numBlocks, tilingData.totalLength, tilingData.tileNum);    // 当TilingKey为1时，执行Process1；为2时，执行Process2；为3时，执行Process3    if (TILING_KEY_IS(1)) {        op.Process1();    } else if (TILING_KEY_IS(2)) {        op.Process2();    } else if (TILING_KEY_IS(3)) {        op.Process3();    }    // 其他代码逻辑    ...    // 此处示例当TilingKey为3时，会执行ProcessOther    if (TILING_KEY_IS(3)) {        op.ProcessOther();    }}
+
+配套的host侧tiling函数示例（伪代码）：
+
+ge::graphStatus TilingFunc(gert::TilingContext* context){    // 其他代码逻辑    ...    if (context->GetInputShape(0) > 10) {        context->SetTilingKey(1);    } else if (some condition) {        context->SetTilingKey(2);    } else if (some condition) {        context->SetTilingKey(3);    }}

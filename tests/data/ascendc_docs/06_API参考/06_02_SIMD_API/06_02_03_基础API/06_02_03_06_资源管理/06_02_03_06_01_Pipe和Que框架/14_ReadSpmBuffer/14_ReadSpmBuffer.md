@@ -1,0 +1,108 @@
+# ReadSpmBuffer
+
+> **Section**: 14  
+> **PDF Pages**: 1751–1752  
+
+---
+
+<!-- page 1751 -->
+
+...// 当ub内存足够时，将暂存在SPM Buffer的数据块搬运回GM上，dstGlobal为half类型的GlobalTensorAscendC::DataCopy(dstGlobal, writeLocal, dataSize);
+
+## ?.14. ReadSpmBuffer
+
+产品支持情况
+
+产品是否支持
+
+Atlas 350 加速卡√
+
+Atlas A3 训练系列产品/Atlas A3 推理系列产品√
+
+Atlas A2 训练系列产品/Atlas A2 推理系列产品√
+
+Atlas 200I/500 A2 推理产品x
+
+Atlas 推理系列产品AI Core√
+
+Atlas 推理系列产品Vector Corex
+
+Atlas 训练系列产品√
+
+功能说明
+
+从SPM Buffer读回到local数据中。
+
+函数原型
+
+●适用于连续和不连续的数据回读：template <typename T>__aicore__ inline void ReadSpmBuffer(const LocalTensor<T>& readBuffer, const DataCopyParams& copyParams, int32_t readOffset = 0)
+
+●适用于连续的数据回读：template <typename T>__aicore__ inline void ReadSpmBuffer(const LocalTensor<T>& readBuffer, const int32_t readSize, int32_t readOffset = 0)
+
+参数说明
+
+表6-673接口参数说明
+
+输入/输出
+
+参数名称
+
+含义
+
+readBuffer
+
+输入读回的目标local内存。
+
+copyParams
+
+输入搬运参数，DataCopyParams类型，DataCopyParams结构定义请参考表6-674。
+
+readSize
+
+输入读回的元素个数。
+
+<!-- page 1752 -->
+
+输入/输出
+
+参数名称
+
+含义
+
+readOffset
+
+输入SPM Buffer的偏移，单位为字节。
+
+表6-674 DataCopyParams 结构体参数定义
+
+参数名称含义
+
+blockCount
+
+待搬运的连续传输数据块个数。uint16_t类型，取值范围：blockCount∈[1, 4095]。
+
+blockLen待搬运的每个连续传输数据块长度，单位为DataBlock（32字节）。uint16_t类型，取值范围：blockLen∈[1, 65535]。
+
+特殊情况：
+
+●当dst位于C2PIPE2GM时，单位为128B。
+
+●一般情况：当dst位于C2时，表示源操作数的连续传输数据块长度，单位为64B。针对Atlas 350 加速卡，当dst位于C2时，表示源操作数的连续传输数据长度，单位为32B。
+
+srcGap源操作数相邻连续数据块的间隔（前面一个数据块的尾与后面数据块的头的间隔），单位为DataBlock（32字节）。uint16_t类型，srcGap不要超出该数据类型的取值范围。
+
+在L1 Buffer -> Fixpipe Buffer场景中，srcGap特指源操作数相邻连续数据块的间隔（前面一个数据块的头与后面数据块的头的间隔），单位为DataBlock（32字节）。uint16_t类型，srcGap不要超出该数据类型的取值范围。
+
+dstGap目的操作数相邻连续数据块间的间隔（前面一个数据块的尾与后面数据块的头的间隔），单位为DataBlock（32字节）。uint16_t类型，dstGap不要超出该数据类型的取值范围。
+
+特殊情况：
+
+●当dst位于C2PIPE2GM时，单位为128B。
+
+●一般情况：当dst位于C2时，表示源操作数的连续传输数据块长度，单位为64B。针对Atlas 350 加速卡，当dst位于C2时，表示源操作数的连续传输数据长度，单位为32B。
+
+在L1 Buffer -> Fixpipe Buffer场景中，dstGap特指源操作数相邻连续数据块的间隔（前面一个数据块的头与后面数据块的头的间隔），单位为DataBlock（32字节）。uint16_t类型，dstGap不要超出该数据类型的取值范围。
+
+约束说明
+
+无

@@ -1,0 +1,66 @@
+# make_ushort2
+
+> **Section**: 6.3.10.17  
+> **PDF Pages**: 3687–3687  
+
+---
+
+<!-- page 3687 -->
+
+## 6.3.10.17 make_ushort2
+
+产品支持情况
+
+产品是否支持
+
+Atlas 350 加速卡√
+
+Atlas A3 训练系列产品/Atlas A3 推理系列产品x
+
+Atlas A2 训练系列产品/Atlas A2 推理系列产品x
+
+Atlas 200I/500 A2 推理产品x
+
+Atlas 推理系列产品AI Corex
+
+Atlas 推理系列产品Vector Corex
+
+Atlas 训练系列产品x
+
+功能说明
+
+使用给定的两个unsigned short类型的数据创建一个ushort2类型的向量。
+
+函数原型
+
+```cpp
+inline ushort2 make_ushort2(unsigned short x, unsigned short y)
+```
+
+参数说明
+
+表6-1903参数说明
+
+参数名输入/输出
+
+描述
+
+x输入源操作数。
+
+y输入源操作数。
+
+返回值说明
+
+由两个unsigned short类型数字构成的新ushort2向量。
+
+约束说明
+
+SIMT编程场景当前不支持使用该接口。
+
+需要包含的头文件
+
+使用该接口需要包含"simt_api/vector_functions.h"头文件。
+
+```cpp
+#include "simt_api/vector_functions.h"
+```

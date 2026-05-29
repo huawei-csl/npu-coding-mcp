@@ -1,0 +1,60 @@
+# SetGradOutputType
+
+> **Section**: 10  
+> **PDF Pages**: 3049–3049  
+
+---
+
+<!-- page 3049 -->
+
+## ?.10. SetGradOutputType
+
+功能说明
+
+设置GradOutput的位置、数据格式、数据类型信息，这些信息必须与Kernel侧的设置保持一致。
+
+函数原型
+
+```cpp
+void SetGradOutputType(ConvCommonApi::TPosition pos, ConvCommonApi::ConvFormat format, ConvCommonApi::ConvDtype dtype)
+```
+
+参数说明
+
+表6-1414参数说明
+
+参数名输入/输出
+
+描述
+
+pos输入GradOutput在内存上的位置。当前仅支持TPosition::GM。
+
+format输入GradOutput的数据格式。当前仅支持ConvFormat::NDC1HWC0。
+
+dtype输入GradOutput的数据类型。当前仅支持ConvDtype::FLOAT16、ConvDtype::BF16。
+
+返回值说明
+
+无
+
+约束说明
+
+无
+
+调用示例
+
+```cpp
+auto ascendcPlatform = platform_ascendc::PlatformAscendCManager::GetInstance();ConvBackpropApi::Conv3DBpInputTiling conv3DBpDxTiling(*ascendcPlatform);conv3DBpDxTiling.SetGradOutputType(ConvCommonApi::TPosition::GM,                                   ConvCommonApi::ConvFormat::NDC1HWC0,                                   ConvCommonApi::ConvDtype::FLOAT16);
+```
+
+## ?.11. SetPadding
+
+功能说明
+
+设置Pad信息。
+
+函数原型
+
+```cpp
+void SetPadding(int64_t padFront, int64_t padBack, int64_t padUp, int64_t padDown, int64_t padLeft, int64_t padRight)
+```
