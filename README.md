@@ -1,17 +1,18 @@
 # npu-coding-mcp
 
-MCP server exposing **PTO-ISA tile instruction documentation** and the complete **CANN 9.0.0 AscendC operator development guide** for code-generation and optimization agents.
+MCP server exposing **PTO-ISA tile instruction documentation**, the complete **CANN 9.0.0 AscendC operator development guide**, and the **CCE Intrinsic development guide** for code-generation and optimization agents.
 
 ## Overview
 
-This server provides two documentation domains through a single FastMCP server:
+This server provides three documentation domains through a single FastMCP server:
 
 | Domain | Content | Tools |
 |--------|---------|-------|
 | **PTO-ISA** | ~143 tile instructions (assembly, C++ intrinsics, constraints, examples) | 14 tools |
 | **AscendC** | CANN 9.0.0 operator development guide — 1,771 sections across 7 chapters (Chinese) | 6 tools |
+| **CCE** | CANN 9.0.0 CCE Intrinsic development guide — 154 sections across 6 chapters (Chinese) | 6 tools |
 
-**Zero-setup for PTO-ISA**: When no `docs_path` is provided, the server auto-clones [pto-isa](https://gitcode.com/cann/pto-isa) into `~/.cache/pto-isa-mcp/`. AscendC docs are pre-extracted and committed to `data/ascendc_docs/`.
+**Zero-setup for PTO-ISA**: When no `docs_path` is provided, the server auto-clones [pto-isa](https://gitcode.com/cann/pto-isa) into `~/.cache/pto-isa-mcp/`.
 
 ## Requirements
 
@@ -28,14 +29,16 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev]"
 
-# Build the AscendC search index (one-time)
+# Build the AscendC and CCE search indexes (one-time)
 python -m npu_coding_mcp build-ascendc-index
+python -m npu_coding_mcp build-cce-index
 
 # Or from outside the venv:
 PYTHONPATH="src:$PYTHONPATH" python3 -m npu_coding_mcp.__main__ build-ascendc-index
+PYTHONPATH="src:$PYTHONPATH" python3 -m npu_coding_mcp.__main__ build-cce-index
 ```
 
-The AscendC FTS5 index is ~11 MB and lives at `data/ascendc_index.db`. If the index is missing when the server starts, it's auto-built from `data/ascendc_docs/`.
+The AscendC FTS5 index is ~11 MB and lives at `data/ascendc_index.db`. The CCE index is ~0.5 MB at `data/cce_index.db`. If either index is missing when the server starts, it's auto-built from the corresponding `data/*_docs/` directory.
 
 ## Usage
 
@@ -53,12 +56,16 @@ python -m npu_coding_mcp serve --host 0.0.0.0 --port 8080
 
 # Explicit AscendC paths
 python -m npu_coding_mcp serve --ascendc-docs data/ascendc_docs --ascendc-index data/ascendc_index.db --stdio
+
+# With CCE docs enabled
+python -m npu_coding_mcp serve --cce-docs data/cce_docs --cce-index data/cce_index.db --stdio
 ```
 
-### Rebuild the AscendC index
+### Rebuild the indexes
 
 ```bash
 python -m npu_coding_mcp build-ascendc-index
+python -m npu_coding_mcp build-cce-index
 ```
 
 ### CLI options
@@ -69,12 +76,14 @@ python -m npu_coding_mcp build-ascendc-index
 | `--cache-dir` | `~/.cache/pto-isa-mcp/` | Cache directory for auto-cloned pto-isa |
 | `--ascendc-docs` | `data/ascendc_docs/` | Path to AscendC docs |
 | `--ascendc-index` | `data/ascendc_index.db` | Path to AscendC FTS5 index |
+| `--cce-docs` | `data/cce_docs/` | Path to CCE docs |
+| `--cce-index` | `data/cce_index.db` | Path to CCE FTS5 index |
 | `--host` | `0.0.0.0` | HTTP bind address |
 | `--port` | `8080` | HTTP port |
 | `--stdio` | off | Run in stdio transport mode |
 | `--log-level` | `INFO` | Logging level |
 
-## MCP Tools (20 total)
+## MCP Tools (26 total)
 
 ### PTO-ISA — Discovery & search
 
@@ -109,23 +118,35 @@ python -m npu_coding_mcp build-ascendc-index
 
 | Tool | Description |
 |------|-------------|
-| `search_docs(query, max_results, language)` | Full-text FTS5 search across 1,771 sections. `language="en"` (default) for translation instruction, `"zh"` for raw Chinese |
-| `get_section(path, language)` | Read a section by file path |
-| `list_chapters()` | List 7 chapters with descriptions and section counts |
-| `get_chapter_tree(chapter_path)` | Section hierarchy for a chapter, with page ranges |
-| `search_api(api_name)` | Fast API lookup in `06_API参考/` only (1,561 API sections) |
-| `get_toc()` | Complete document table of contents |
+| `ascendc_search_docs(query, max_results, language)` | Full-text FTS5 search across 1,771 sections. `language="en"` (default) for translation instruction, `"zh"` for raw Chinese |
+| `ascendc_get_section(path, language)` | Read a section by file path |
+| `ascendc_list_chapters()` | List 7 chapters with descriptions and section counts |
+| `ascendc_get_chapter_tree(chapter_path)` | Section hierarchy for a chapter, with page ranges |
+| `ascendc_search_api(api_name)` | Fast API lookup in `06_API参考/` only (1,561 API sections) |
+| `ascendc_get_toc()` | Complete document table of contents |
+
+### CCE — Documentation
+
+| Tool | Description |
+|------|-------------|
+| `cce_search_docs(query, max_results, language)` | Full-text FTS5 search across 154 sections. `language="en"` (default) for translation instruction, `"zh"` for raw Chinese |
+| `cce_get_section(path, language)` | Read a section by file path |
+| `cce_list_chapters()` | List 6 chapters with descriptions and section counts |
+| `cce_get_chapter_tree(chapter_path)` | Section hierarchy for a chapter |
+| `cce_search_api(api_name)` | Fast API lookup in `06_API参考/` only |
+| `cce_get_toc()` | Complete document table of contents |
 
 All tools are read-only and idempotent.
 
 ## Agent Orientation Resources
 
-The server exposes two MCP resources that agents load automatically:
+The server exposes three MCP resources that agents load automatically:
 
 | Resource | Content |
 |----------|---------|
-| `npu-coding://guide` | PTO-ISA + AscendC orientation: all 20 tools, recommended workflow, key concepts |
+| `npu-coding://guide` | PTO-ISA + AscendC + CCE orientation: all 26 tools, recommended workflow, key concepts |
 | `ascendc://guide` | AscendC-specific guide: chapter overview, language support, search patterns |
+| `cce://guide` | CCE-specific guide: chapter overview, language support, search patterns |
 
 ## OpenCode Integration
 
@@ -163,9 +184,9 @@ Add to your `opencode.json`:
 }
 ```
 
-## Language support (AscendC)
+## Language support (AscendC and CCE)
 
-All AscendC content is in Chinese. Every content-returning tool accepts a `language` parameter:
+All AscendC and CCE content is in Chinese. Every content-returning tool accepts a `language` parameter:
 
 | Value | Behavior |
 |-------|----------|
@@ -192,16 +213,14 @@ npu-coding-mcp/
 │   ├── cce_mapping.json         # Pre-built CCE intrinsic mapping
 │   ├── ptoisa_headers/          # Snapshot of pto-isa headers
 │   ├── ascendc_docs/            # AscendC markdown (1,771 sections)
-│   │   ├── 00-index.md
-│   │   ├── 01_入门教程/
-│   │   ├── 02_编程指南/
-│   │   └── ...
-│   └── ascendc_index.db         # FTS5 search index (~11 MB)
+│   ├── ascendc_index.db         # AscendC FTS5 search index (~11 MB)
+│   ├── cce_docs/                # CCE markdown (154 sections)
+│   └── cce_index.db             # CCE FTS5 search index (~0.5 MB)
 ├── src/
 │   └── npu_coding_mcp/
 │       ├── __init__.py
-│       ├── __main__.py           # CLI: serve | build-ascendc-index
-│       ├── server.py              # FastMCP server + both stores
+│       ├── __main__.py           # CLI: serve | build-ascendc-index | build-cce-index
+│       │   ├── server.py              # FastMCP server + all three stores
 │       ├── loader.py              # PTO-ISA doc parser (ISAStore)
 │       ├── models.py              # PTO-ISA Pydantic models
 │       ├── tools.py               # 14 PTO-ISA tool definitions
@@ -212,7 +231,12 @@ npu-coding-mcp/
 │       │   ├── loader.py          # AscendCStore + FTS5 access
 │       │   ├── tools.py           # 6 AscendC tool definitions
 │       │   └── index_builder.py   # Build FTS5 index
-│       └── cce_extractor/         # CCE intrinsic extraction (g++ preprocessor)
+│       └── cce/                    # CCE documentation submodule
+│           ├── __init__.py
+│           ├── models.py          # SearchResult, SectionContent, ChapterInfo
+│           ├── loader.py          # CCEStore + FTS5 access
+│           ├── tools.py           # 6 CCE tool definitions
+│           └── index_builder.py   # Build FTS5 index
 ├── scripts/
 │   └── build_cce_mapping.py       # CCE mapping build script
 ├── tests/

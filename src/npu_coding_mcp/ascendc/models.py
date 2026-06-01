@@ -1,8 +1,5 @@
 """Pydantic data models for AscendC MCP server."""
 
-from pathlib import Path
-from typing import Optional
-
 from pydantic import BaseModel
 
 

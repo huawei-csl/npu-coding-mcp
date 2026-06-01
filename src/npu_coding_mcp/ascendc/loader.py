@@ -5,7 +5,7 @@ import sqlite3
 from pathlib import Path
 from typing import Optional
 
-from npu_coding_mcp.ascendc.models import ChapterInfo, SearchResult, SectionContent, SectionInfo, TocNode
+from npu_coding_mcp.ascendc.models import ChapterInfo, SearchResult, SectionContent, SectionInfo
 
 
 class AscendCStore:
@@ -233,7 +233,6 @@ class AscendCStore:
 
         results = []
         for row in rows:
-            depth = len(Path(self._s(row, "file_path")).parts)
             results.append(
                 SectionInfo(
                     title=self._s(row, "section_title"),

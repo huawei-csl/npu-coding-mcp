@@ -1,0 +1,158 @@
+# CCE Intrinsic 开发指南 — 目录
+
+> **Source**: CCE-9.0.0.pdf (140 pages)
+
+- 1 简介
+- 2 异构编程环境配置与编译器使用
+  - 3.1 异构编程
+- 3 CCE Intrinsic 介绍
+  - 3.2 Kernel 函数
+  - 3.3 并行模型
+    - 3.3.1 Host 和 Device 异构并行
+    - 3.3.2 Kernel 函数 SPMD 并行
+    - 3.3.3 Kernel 内多流水异步并行
+  - 4.1 函数执行空间限定符
+- 4 CCE Intrinsic 特性
+  - 4.2 地址空间限定符
+  - 4.3 预定义宏
+  - 4.4 全局变量
+  - 4.5 标量
+  - 5.1 Vector 算子示例
+    - 5.1.1 Host 侧代码与说明
+- 5 CCE Intrinsic 样例
+    - 5.1.2 Device 侧代码与说明
+  - 5.2 Cube 算子示例
+    - 5.1.3 运行样例
+    - 5.2.1 示例 1
+      - 5.2.1.1 Host 侧代码与说明
+      - 5.2.1.2 Device 侧代码与说明
+      - 5.2.1.3 运行样例
+    - 5.2.2 示例 2
+      - 5.2.2.1 Host 侧代码与说明
+      - 5.2.2.2 Device 侧代码与说明
+      - 5.2.2.3 运行样例
+  - 5.3 Mix 算子示例
+    - 5.3.1 Host 侧代码与说明
+    - 5.3.2 Device 侧代码与说明
+    - 5.3.3 运行样例
+  - 6.1 简介
+  - 6.2 典型语义
+    - 6.2.1 向量计算典型语义
+    - 6.2.2 数据搬运典型语义
+  - 6.3 向量计算接口
+    - 6.3.1 通用参数说明
+      - 6.3.1.1 单目与双目模板参数说明
+    - 6.3.2 Mask
+      - 6.3.1.2 Mask 规则说明
+      - 6.3.2.1 Mask 模式设置
+      - 6.3.2.2 set\_vector\_mask
+    - 6.3.3 CMPMASK
+      - 6.3.3.1 set\_cmpmask
+      - 6.3.3.2 get\_cmpmask
+    - 6.3.4 双目运算
+      - 6.3.4.1 vadd/vsub/vmul/vdiv
+      - 6.3.4.2 vaddrelu/vsubrelu
+      - 6.3.4.3 vmla
+      - 6.3.4.4 vmadd
+      - 6.3.4.5 vmaddrelu
+      - 6.3.4.6 vadds/vmuls
+      - 6.3.4.7 vshl
+      - 6.3.4.8 vshr
+      - 6.3.4.9 vaxpy
+      - 6.3.4.10 vlrelu
+      - 6.3.4.11 vmulconv
+      - 6.3.4.12 vaddreluconv
+      - 6.3.4.13 vsubreluconv
+    - 6.3.5 单目运算
+      - 6.3.5.1 vexp
+      - 6.3.5.2 vsqrt
+      - 6.3.5.3 vrsqrt
+      - 6.3.5.4 vrelu
+      - 6.3.5.5 vrec
+      - 6.3.5.6 vabs
+      - 6.3.5.7 vln
+      - 6.3.5.8 vbrcb
+    - 6.3.6 规约运算
+      - 6.3.6.1 vcmax/vcmin
+      - 6.3.6.2 vcadd
+      - 6.3.6.3 vcgadd/vcgmax/vcgmin
+      - 6.3.6.4 vcpadd
+      - 6.3.6.5 vreducev2
+    - 6.3.7 选择运算
+      - 6.3.7.1 vsel
+    - 6.3.8 比较运算
+      - 6.3.8.1 vmax/vmin
+      - 6.3.8.2 vmaxs/vmins
+      - 6.3.8.3 vcmp
+      - 6.3.8.4 vcmpv
+      - 6.3.8.5 vcmpvs
+    - 6.3.9 逻辑运算
+      - 6.3.9.1 vand
+      - 6.3.9.2 vor
+      - 6.3.9.3 vnot
+    - 6.3.10 数据类型转换
+      - 6.3.10.1 vconv
+    - 6.3.11 UB 内搬移
+      - 6.3.11.1 vector\_dup
+      - 6.3.11.2 vgather
+      - 6.3.11.3 vgatherb
+      - 6.3.11.4 scatter\_vnchwconv
+      - 6.3.11.5 vtranspose
+      - 6.3.11.6 vcopy
+  - 6.4 矩阵计算接口
+    - 6.4.1 mad
+  - 6.5 数据搬运接口
+    - 6.5.1 通用说明
+    - 6.5.2 Atomic 原子操作
+    - 6.5.3 通用搬运
+      - 6.5.3.1 接口基本信息
+      - 6.5.3.2 copy\_gm\_to\_ubuf
+      - 6.5.3.3 copy\_ubuf\_to\_gm
+      - 6.5.3.4 copy\_ubuf\_to\_ubuf
+      - 6.5.3.5 copy\_gm\_to\_cbuf
+      - 6.5.3.6 copy\_cbuf\_to\_gm
+    - 6.5.4 矩阵输入搬运
+      - 6.5.4.1 接口基本信息
+      - 6.5.4.2 load\_cbuf\_to\_ca
+      - 6.5.4.3 load\_cbuf\_to\_cb
+      - 6.5.4.4 load\_gm\_to\_ca
+      - 6.5.4.5 load\_gm\_to\_cb
+    - 6.5.5 具备转置的矩阵输入搬运
+      - 6.5.5.1 接口基本信息
+      - 6.5.5.2 load\_cbuf\_to\_ca\_transpose
+      - 6.5.5.3 load\_cbuf\_to\_cb\_transpose
+    - 6.5.6 矩阵广播搬入
+      - 6.5.6.1 接口基本信息
+      - 6.5.6.2 set\_l1\_2d
+      - 6.5.6.3 set\_l0a\_2d
+      - 6.5.6.4 set\_l0b\_2d
+    - 6.5.7 卷积输入搬运
+      - 6.5.7.1 接口基本信息
+      - 6.5.7.2 img2colv2\_cbuf\_to\_ca
+      - 6.5.7.3 img2colv2\_cbuf\_to\_cb
+    - 6.5.8 图像输入预处理搬入
+      - 6.5.8.1 load\_image\_to\_cbuf (AIPP)
+    - 6.5.9 搬运并补 padding
+      - 6.5.9.1 接口基本信息
+      - 6.5.9.2 copy\_gm\_to\_ubuf\_align
+      - 6.5.9.3 copy\_ubuf\_to\_gm\_align
+      - 6.5.9.4 set\_mov\_pad\_val
+    - 6.5.10 矩阵搬运格式转换
+      - 6.5.10.1 copy\_gm\_to\_cbuf\_multi\_nd2nz
+    - 6.5.11 矩阵计算偏置表搬运
+      - 6.5.11.1 copy\_cbuf\_to\_bt
+    - 6.5.12 矩阵输出搬运（ Fixpipe ）
+      - 6.5.12.1 接口基本信息
+      - 6.5.12.2 copy\_matrix\_cc\_to\_cbuf/copy\_matrix\_cc\_to\_gm
+  - 6.6 同步接口
+    - 6.6.1 流水类型介绍
+    - 6.6.2 pipe\_barrier
+    - 6.6.3 set\_flag &amp; wait\_flag
+    - 6.6.4 hset\_flag &amp; hwait\_flag
+    - 6.6.5 DCCI
+    - 6.6.6 Vec 与 Cube 核间同步
+      - 6.6.6.1 核间同步介绍
+      - 6.6.6.2 set\_ffts\_base\_addr
+      - 6.6.6.3 ffts\_cross\_core\_sync
+      - 6.6.6.4 wait\_flag\_dev
+      - 6.6.6.5 st\_dev

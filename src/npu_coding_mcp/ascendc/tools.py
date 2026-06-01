@@ -1,8 +1,5 @@
 """MCP tool definitions for AscendC documentation server."""
 
-import re
-from pathlib import Path
-
 from fastmcp import FastMCP
 
 from npu_coding_mcp.ascendc.loader import AscendCStore
@@ -36,7 +33,7 @@ def register_tools(mcp: FastMCP, store: AscendCStore) -> None:
     """Register all MCP tools on the FastMCP server."""
 
     @mcp.tool(annotations=TOOL_ANNOTATIONS)
-    def search_docs(
+    def ascendc_search_docs(
         query: str,
         max_results: int = 10,
         language: str = "en",
@@ -72,7 +69,7 @@ def register_tools(mcp: FastMCP, store: AscendCStore) -> None:
         }
 
     @mcp.tool(annotations=TOOL_ANNOTATIONS)
-    def get_section(
+    def ascendc_get_section(
         path: str,
         language: str = "en",
     ) -> dict:
@@ -89,7 +86,7 @@ def register_tools(mcp: FastMCP, store: AscendCStore) -> None:
         if section is None:
             return {
                 "error": f"Section not found: {path}",
-                "hint": "Use search_docs() or get_chapter_tree() to find valid paths.",
+                "hint": "Use ascendc_search_docs() or ascendc_get_chapter_tree() to find valid paths.",
             }
 
         content = section.content
@@ -104,7 +101,7 @@ def register_tools(mcp: FastMCP, store: AscendCStore) -> None:
         }
 
     @mcp.tool(annotations=TOOL_ANNOTATIONS)
-    def list_chapters() -> dict:
+    def ascendc_list_chapters() -> dict:
         """List all top-level chapters in the AscendC documentation.
 
         Returns chapter titles, paths, section counts, and descriptions.
@@ -125,7 +122,7 @@ def register_tools(mcp: FastMCP, store: AscendCStore) -> None:
         }
 
     @mcp.tool(annotations=TOOL_ANNOTATIONS)
-    def get_chapter_tree(chapter_path: str) -> dict:
+    def ascendc_get_chapter_tree(chapter_path: str) -> dict:
         """Get the full section hierarchy for a specific chapter.
 
         Returns all sections and subsections under the given chapter path, with
@@ -156,7 +153,7 @@ def register_tools(mcp: FastMCP, store: AscendCStore) -> None:
         }
 
     @mcp.tool(annotations=TOOL_ANNOTATIONS)
-    def search_api(api_name: str) -> dict:
+    def ascendc_search_api(api_name: str) -> dict:
         """Search for an API function in the API Reference chapter.
 
         Fast targeted lookup — searches only 06_API参考/ for function/type/macro names.
@@ -182,7 +179,7 @@ def register_tools(mcp: FastMCP, store: AscendCStore) -> None:
         }
 
     @mcp.tool(annotations=TOOL_ANNOTATIONS)
-    def get_toc() -> dict:
+    def ascendc_get_toc() -> dict:
         """Get the complete document table of contents.
 
         Returns the full TOC from the index file (00-index.md), including links to all sections.

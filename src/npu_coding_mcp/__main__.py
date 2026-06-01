@@ -1,11 +1,13 @@
-"""CLI entry point for the PTO-ISA + AscendC MCP server.
+"""CLI entry point for the PTO-ISA + AscendC + CCE MCP server.
 
 Usage:
     python -m npu_coding_mcp                                        # auto-clone from gitcode
     python -m npu_coding_mcp /path/to/pto-isa/docs                  # explicit docs path
     python -m npu_coding_mcp --ascendc-docs data/ascendc_docs       # with AscendC docs
+    python -m npu_coding_mcp --cce-docs data/cce_docs               # with CCE docs
     python -m npu_coding_mcp --stdio                                 # stdio mode
-    python -m npu_coding_mcp build-ascendc-index                     # rebuild AscendC search index
+    python -m npu_coding_mcp build-ascendc-index                     # rebuild AscendC index
+    python -m npu_coding_mcp build-cce-index                          # rebuild CCE index
 """
 
 from __future__ import annotations
@@ -45,6 +47,30 @@ def _default_ascendc_index() -> Path:
     return candidates[0]
 
 
+def _default_cce_docs() -> Path:
+    """Auto-detect CCE docs directory."""
+    candidates = [
+        _default_package_dir() / "data" / "cce_docs",
+        Path.cwd() / "data" / "cce_docs",
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0]
+
+
+def _default_cce_index() -> Path:
+    """Auto-detect CCE index path."""
+    candidates = [
+        _default_package_dir() / "data" / "cce_index.db",
+        Path.cwd() / "data" / "cce_index.db",
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0]
+
+
 def _cmd_build_index(args: argparse.Namespace) -> None:
     from .ascendc.index_builder import build_index
 
@@ -60,12 +86,27 @@ def _cmd_build_index(args: argparse.Namespace) -> None:
     print(f"Index built: {count} documents -> {index} ({size_mb:.1f} MB)")
 
 
+def _cmd_build_cce_index(args: argparse.Namespace) -> None:
+    from .cce.index_builder import build_index
+
+    docs = Path(args.cce_docs or _default_cce_docs())
+    index = Path(args.cce_index or _default_cce_index())
+
+    if not docs.exists():
+        print(f"Error: CCE docs directory not found: {docs}")
+        sys.exit(1)
+
+    count = build_index(docs, index)
+    size_mb = index.stat().st_size / (1024 * 1024)
+    print(f"Index built: {count} documents -> {index} ({size_mb:.1f} MB)")
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="npu-coding-mcp",
         description=(
-            "MCP server exposing PTO-ISA instruction documentation and "
-            "CANN 9.0.0 AscendC operator development guide."
+            "MCP server exposing PTO-ISA instruction documentation, "
+            "CANN 9.0.0 AscendC operator development guide, and CCE Intrinsic development guide."
         ),
     )
     sub = parser.add_subparsers(dest="command")
@@ -74,6 +115,11 @@ def main(argv: list[str] | None = None) -> None:
     build_p = sub.add_parser("build-ascendc-index", help="Rebuild the AscendC FTS5 search index")
     build_p.add_argument("--ascendc-docs", help="Path to ascendc_docs/ directory")
     build_p.add_argument("--ascendc-index", help="Output path for index.db")
+
+    # build-cce-index subcommand
+    build_cce_p = sub.add_parser("build-cce-index", help="Rebuild the CCE FTS5 search index")
+    build_cce_p.add_argument("--cce-docs", help="Path to cce_docs/ directory")
+    build_cce_p.add_argument("--cce-index", help="Output path for index.db")
 
     # serve (default)
     serve_p = sub.add_parser("serve", help="Start the MCP server")
@@ -90,6 +136,8 @@ def main(argv: list[str] | None = None) -> None:
     serve_p.add_argument("--log-level", default="INFO", choices=["DEBUG", "INFO", "WARNING", "ERROR"])
     serve_p.add_argument("--ascendc-docs", help="Path to AscendC docs directory")
     serve_p.add_argument("--ascendc-index", help="Path to AscendC index.db")
+    serve_p.add_argument("--cce-docs", help="Path to CCE docs directory")
+    serve_p.add_argument("--cce-index", help="Path to CCE index.db")
 
     # Backward compat: accept positional args without subcommand
     args, unknown = parser.parse_known_args(argv)
@@ -104,6 +152,10 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.command == "build-ascendc-index":
         _cmd_build_index(args)
+        return
+
+    if args.command == "build-cce-index":
+        _cmd_build_cce_index(args)
         return
 
     # --- serve ---
@@ -139,9 +191,24 @@ def main(argv: list[str] | None = None) -> None:
         log.info("AscendC docs: %s", ascendc_docs)
         log.info("AscendC index: %s", ascendc_index)
 
+    # Resolve CCE paths
+    cce_docs = Path(args.cce_docs) if args.cce_docs else None
+    if cce_docs is None:
+        cce_docs = _default_cce_docs()
+        if not cce_docs.exists():
+            cce_docs = None
+
+    cce_index = Path(args.cce_index) if args.cce_index else None
+    if cce_index is None:
+        cce_index = _default_cce_index()
+
+    if cce_docs:
+        log.info("CCE docs: %s", cce_docs)
+        log.info("CCE index: %s", cce_index)
+
     from .server import create_server
 
-    mcp = create_server(docs_path, ascendc_docs, ascendc_index)
+    mcp = create_server(docs_path, ascendc_docs, ascendc_index, cce_docs, cce_index)
 
     if args.stdio:
         mcp.run(transport="stdio")

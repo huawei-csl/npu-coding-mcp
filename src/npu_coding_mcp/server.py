@@ -31,7 +31,7 @@ Programs are written in C++ using PTO intrinsics (e.g. `TADD(dst, src0, src1)`)
 or in PTO-AS assembly (an MLIR-inspired text format with SSA values and typed
 tile operands).
 
-## Available Tools (20)
+## Available Tools (26)
 
 ### PTO-ISA — Discovery & search
 | Tool | When to use |
@@ -62,20 +62,30 @@ tile operands).
 ### AscendC Documentation
 | Tool | When to use |
 |------|-------------|
-| `search_docs(query, max_results, language)` | Full-text search across 1,771 CANN AscendC docs sections |
-| `get_section(path, language)` | Read a specific section by file path |
-| `list_chapters()` | List all 7 AscendC chapters with descriptions |
-| `get_chapter_tree(chapter_path)` | Hierarchy of sections within a chapter |
-| `search_api(api_name)` | Fast API lookup in the API Reference chapter |
-| `get_toc()` | Complete AscendC document table of contents |
+| `ascendc_search_docs(query, max_results, language)` | Full-text search across 1,771 CANN AscendC docs sections |
+| `ascendc_get_section(path, language)` | Read a specific section by file path |
+| `ascendc_list_chapters()` | List all 7 AscendC chapters with descriptions |
+| `ascendc_get_chapter_tree(chapter_path)` | Hierarchy of sections within a chapter |
+| `ascendc_search_api(api_name)` | Fast API lookup in the API Reference chapter |
+| `ascendc_get_toc()` | Complete AscendC document table of contents |
+
+### CCE Documentation
+| Tool | When to use |
+|------|-------------|
+| `cce_search_docs(query, max_results, language)` | Full-text search across 154 CCE Intrinsic docs sections |
+| `cce_get_section(path, language)` | Read a specific section by file path |
+| `cce_list_chapters()` | List all 6 CCE chapters with descriptions |
+| `cce_get_chapter_tree(chapter_path)` | Hierarchy of sections within a chapter |
+| `cce_search_api(api_name)` | Fast API lookup in the API Reference chapter |
+| `cce_get_toc()` | Complete CCE document table of contents |
 
 ## Recommended Workflow
 
-1. **Orient**: Call `list_categories()` to see PTO-ISA instruction families, or `list_chapters()` to browse AscendC documentation.
-2. **Find**: Use `search_instructions("multiply")` for PTO-ISA, or `search_docs("SIMT model")` for AscendC docs.
-3. **Inspect**: Call `get_instruction("TMATMUL")` for PTO-ISA detail, or `get_section(path)` for AscendC content.
-4. **Drill down**: Use `get_constraints("TMATMUL", backend="a5")` or `get_assembly_format("TMATMUL")` for PTO-ISA.
-5. **Context**: Call `get_grammar()` for PTO-AS syntax, or `get_chapter_tree()` to navigate AscendC chapters.
+1. **Orient**: Call `list_categories()` for PTO-ISA, `ascendc_list_chapters()` for AscendC, or `cce_list_chapters()` for CCE.
+2. **Find**: Use `search_instructions("multiply")` for PTO-ISA, `ascendc_search_docs("SIMT model")` for AscendC, or `cce_search_docs("vadd")` for CCE.
+3. **Inspect**: Call `get_instruction("TMATMUL")` for PTO-ISA, `ascendc_get_section(path)` for AscendC, or `cce_get_section(path)` for CCE.
+4. **Drill down**: Use `get_constraints("TMATMUL", backend="a5")` or `get_assembly_format("TMATMUL")` for PTO-ISA. Use `ascendc_get_chapter_tree()` or `cce_get_chapter_tree()` for docs.
+5. **APIs**: Use `ascendc_search_api("Matmul")` or `cce_search_api("copy_gm_to_ubuf")` for fast API reference lookups.
 
 ## Key Concepts
 
@@ -113,31 +123,80 @@ instruction. Use `language="zh"` to receive raw Chinese text.
 
 ## Workflow
 
-1. `list_chapters()` — see what's available
-2. `search_docs("SIMT model")` — find relevant sections
-3. `get_chapter_tree("02_编程指南/02_02_编程模型/")` — see section hierarchy
-4. `get_section(path)` — read full content
-5. `search_api("Matmul")` — quick API lookups only in the API Reference
+1. `ascendc_list_chapters()` — see what's available
+2. `ascendc_search_docs("SIMT model")` — find relevant sections
+3. `ascendc_get_chapter_tree("02_编程指南/02_02_编程模型/")` — see section hierarchy
+4. `ascendc_get_section(path)` — read full content
+5. `ascendc_search_api("Matmul")` — quick API lookups only in the API Reference
+"""
+
+_CCE_GUIDE = """\
+# CCE Intrinsic Documentation — Agent Guide
+
+CANN 9.0.0 CCE Intrinsic Development Guide — 154 sections across 6 chapters.
+
+## Chapters
+
+| Chapter | Sections | Topic |
+|---------|----------|-------|
+| 简介 | 1 | Introduction — overview of CCE Intrinsic and supported hardware |
+| 异构编程环境配置与编译器使用 | 1 | Environment setup — BiSheng compiler and configuration |
+| CCE Intrinsic介绍 | 6 | Programming model — heterogeneous, kernel functions, SPMD, async pipelines |
+| CCE Intrinsic特性 | 5 | Language features — execution space qualifiers, address spaces, macros, scalars |
+| CCE Intrinsic样例 | 13 | Examples — Vector, Cube, and Mix operator with host/device code |
+| API参考 | 128 | API Reference — vector compute, matrix compute, data movement, synchronization |
+
+## Language Support
+
+All content is in Chinese. By default, tools return content with a translation
+instruction. Use `language="zh"` to receive raw Chinese text.
+
+## Tools (6)
+
+| Tool | When to use |
+|------|-------------|
+| `cce_search_docs(query, max_results, language)` | Full-text search across all CCE docs sections |
+| `cce_get_section(path, language)` | Read a specific section by file path |
+| `cce_list_chapters()` | List all 6 CCE chapters with descriptions |
+| `cce_get_chapter_tree(chapter_path)` | Hierarchy of sections within a chapter |
+| `cce_search_api(api_name)` | Fast API lookup in the API Reference chapter |
+| `cce_get_toc()` | Complete CCE document table of contents |
+
+## Workflow
+
+1. `cce_list_chapters()` — see what's available
+2. `cce_search_docs("vadd")` — find relevant sections
+3. `cce_get_chapter_tree("06_API参考/06_03_向量计算接口/")` — see section hierarchy
+4. `cce_get_section(path)` — read full content
+5. `cce_search_api("copy_gm_to_ubuf")` — quick API lookups only in the API Reference
 """
 
 
-def create_server(docs_path: str | Path, ascendc_docs_path: str | Path | None = None,
-                  ascendc_index_path: str | Path | None = None) -> FastMCP:
-    """Create and configure the PTO-ISA + AscendC MCP server.
+def create_server(
+    docs_path: str | Path,
+    ascendc_docs_path: str | Path | None = None,
+    ascendc_index_path: str | Path | None = None,
+    cce_docs_path: str | Path | None = None,
+    cce_index_path: str | Path | None = None,
+) -> FastMCP:
+    """Create and configure the PTO-ISA + AscendC + CCE MCP server.
 
     Args:
         docs_path: Path to the ``docs/`` directory of the pto-isa repo.
         ascendc_docs_path: Path to ``data/ascendc_docs/`` (optional).
         ascendc_index_path: Path to ``data/ascendc_index.db`` (optional).
+        cce_docs_path: Path to ``data/cce_docs/`` (optional).
+        cce_index_path: Path to ``data/cce_index.db`` (optional).
 
     Returns:
         A fully configured FastMCP server with all tools registered.
     """
     instructions = (
-        "PTO-ISA and AscendC documentation server. Provides access to PTO Tile Library "
-        "instruction documentation and the complete CANN 9.0.0 AscendC operator development guide. "
+        "PTO-ISA, AscendC, and CCE documentation server. Provides access to PTO Tile Library "
+        "instruction documentation, the CANN 9.0.0 AscendC operator development guide, "
+        "and the CCE Intrinsic development guide. "
         "Read the resource at npu-coding://guide for a full orientation, or start with "
-        "list_categories(), list_chapters(), or search_instructions() to explore."
+        "list_categories(), ascendc_list_chapters(), cce_list_chapters(), or search_instructions() to explore."
     )
 
     mcp = FastMCP(name="npu-coding-mcp", instructions=instructions)
@@ -148,8 +207,7 @@ def create_server(docs_path: str | Path, ascendc_docs_path: str | Path | None = 
         name="agent-guide",
         title="PTO-ISA + AscendC Agent Guide",
         description=(
-            "Read-this-first orientation for agents: all tools available, "
-            "recommended workflow, and key concepts."
+            "Read-this-first orientation for agents: all tools available, recommended workflow, and key concepts."
         ),
         mime_type="text/markdown",
     )
@@ -199,5 +257,41 @@ def create_server(docs_path: str | Path, ascendc_docs_path: str | Path | None = 
             logger.warning("AscendC index not found and could not be built.")
     else:
         logger.info("AscendC documentation not configured — skipping.")
+
+    # --- Load CCE store (if available) ---
+    cce_store = None
+    if cce_docs_path and cce_index_path:
+        cce_docs = Path(cce_docs_path)
+        cce_index = Path(cce_index_path)
+
+        if cce_docs.exists() and not cce_index.exists():
+            logger.info("CCE index not found — building ...")
+            from .cce.index_builder import build_index
+
+            build_index(cce_docs, cce_index)
+            logger.info("CCE index built successfully.")
+
+        if cce_index.exists():
+            from .cce.loader import load_store as load_cce_store
+
+            cce_store = load_cce_store(cce_docs, cce_index)
+            from .cce.tools import register_tools as register_cce_tools
+
+            register_cce_tools(mcp, cce_store)
+            logger.info("CCE tools registered (6).")
+
+            @mcp.resource(
+                "cce://guide",
+                name="cce-guide",
+                title="CCE Intrinsic Documentation Guide",
+                description="Orientation guide for the CCE Intrinsic CANN 9.0.0 documentation.",
+                mime_type="text/markdown",
+            )
+            def cce_guide() -> str:
+                return _CCE_GUIDE
+        else:
+            logger.warning("CCE index not found and could not be built.")
+    else:
+        logger.info("CCE documentation not configured — skipping.")
 
     return mcp
