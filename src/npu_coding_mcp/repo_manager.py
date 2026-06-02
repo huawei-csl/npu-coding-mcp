@@ -39,8 +39,11 @@ def ensure_docs(cache_dir: Path | None = None) -> Path:
         logger.info("Clone complete.")
     else:
         logger.info("Pulling latest changes in %s ...", repo_dir)
-        _run_git(["git", "pull", "--ff-only"], cwd=repo_dir)
-        logger.info("Pull complete.")
+        try:
+            _run_git(["git", "pull", "--ff-only"], cwd=repo_dir)
+            logger.info("Pull complete.")
+        except RuntimeError as e:
+            logger.warning("Pull failed, using existing clone: %s", e)
 
     docs_dir = repo_dir / "docs"
     if not docs_dir.is_dir():
