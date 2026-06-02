@@ -14,7 +14,7 @@ class AscendCStore:
     def __init__(self, docs_path: Path, index_path: Path):
         self.docs_path = docs_path.resolve()
         self.index_path = index_path.resolve()
-        self.conn = sqlite3.connect(str(self.index_path))
+        self.conn = sqlite3.connect(str(self.index_path), check_same_thread=False)
         self.conn.row_factory = sqlite3.Row
 
     def close(self):
