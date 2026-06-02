@@ -19,8 +19,8 @@ from pathlib import Path
 
 
 def _default_package_dir() -> Path:
-    """Return the package root directory (parent of the npu_coding_mcp module)."""
-    return Path(__file__).resolve().parent.parent
+    """Return the project root directory."""
+    return Path(__file__).resolve().parent.parent.parent
 
 
 def _default_ascendc_docs() -> Path:

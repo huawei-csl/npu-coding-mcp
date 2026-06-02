@@ -150,35 +150,21 @@ The server exposes three MCP resources that agents load automatically:
 
 ## OpenCode Integration
 
-After creating the venv (`python -m venv .venv && pip install -e ".[dev]"`), add to your `opencode.json`:
+After `uv sync --all-groups`, add to `opencode.json`:
 
 ```json
 {
-  "$schema": "https://opencode.ai/config.json",
   "mcp": {
     "npu-coding": {
       "type": "local",
-      "command": [".venv/bin/python", "-m", "npu_coding_mcp.__main__", "serve", "--stdio"],
+      "command": ["/home/ebezati/git/workflow/npu-coding-mcp/.venv/bin/python", "-m", "npu_coding_mcp.__main__", "serve", "--stdio"],
       "enabled": true
     }
   }
 }
 ```
 
-Docs paths auto-detect from `data/` and PTO-ISA auto-clones on first start.
-
-### Other MCP clients (Claude, Cursor, etc.)
-
-```json
-{
-  "mcpServers": {
-    "npu-coding": {
-      "command": ".venv/bin/python",
-      "args": ["-m", "npu_coding_mcp.__main__", "serve", "--stdio"]
-    }
-  }
-}
-```
+Works globally — data dirs auto-detect from the package location, independent of cwd.
 
 ## Language support (AscendC and CCE)
 
