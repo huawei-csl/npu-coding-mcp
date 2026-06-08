@@ -161,18 +161,33 @@ def split_docs(input_path: Path, output_dir: Path) -> int:
     # Fix Docling merging bug
     section_entries = _fix_merged_content(section_entries)
 
-    # Build TOC
+    sec_title_lookup: dict[str, str] = {e["section_number"]: e["title"] for e in section_entries}
+
+    # Build TOC with links
     toc_content = "# CCE Intrinsic 开发指南 — 目录\n\n"
     toc_content += "> **Source**: CCE-9.0.0.pdf (140 pages)\n\n"
     for e in section_entries:
-        indent = "  " * (e["section_number"].count("."))
-        toc_content += f"{indent}- {e['section_number']} {e['title']}\n"
+        sec_num = e["section_number"]
+        title = e["title"]
+        indent = "  " * (sec_num.count("."))
+        chapter_num = sec_num.split(".")[0]
+        chapter_dir = _section_to_dirname(chapter_num, CHAPTER_TITLES.get(chapter_num, f"Chapter{chapter_num}"))
+        if "." not in sec_num:
+            link = f"{chapter_dir}/{_section_to_filename(sec_num, title)}"
+        else:
+            parent_num = sec_num.rsplit(".", 1)[0]
+            parent_title = sec_title_lookup.get(parent_num, "")
+            filename = _section_to_filename(sec_num, title)
+            if parent_title:
+                parent_dir = _section_to_dirname(parent_num, parent_title)
+                link = f"{chapter_dir}/{parent_dir}/{filename}"
+            else:
+                link = f"{chapter_dir}/{filename}"
+        toc_content += f"{indent}- [{sec_num} {title}]({link})\n"
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
     (output_dir / "00-index.md").write_text(toc_content, encoding="utf-8")
-
-    sec_title_lookup: dict[str, str] = {e["section_number"]: e["title"] for e in section_entries}
 
     # Copy images into output dir if source images exist
     _copy_images(input_path, output_dir)

@@ -2,943 +2,943 @@
 
 > **Source**: CANN-9.0.0-Runtime-zh.pdf (950 pages)
 
-  - 1.1 废弃接口 &amp; 返回码列表
-  - 1.2 同步 &amp; 异步 API 说明
-  - 1.3 头文件和库文件说明
-  - 1.4 初始化和去初始化
-    - 1.4.1 aclInit
-    - 1.4.2 aclFinalize
-    - 1.4.3 aclFinalizeReference
-    - 1.4.4 aclInitCallbackRegister
-    - 1.4.5 aclInitCallbackUnRegister
-    - 1.4.6 aclFinalizeCallbackRegister
-    - 1.4.7 aclFinalizeCallbackUnRegister
-  - 1.5 运行时配置
-    - 1.5.1 aclrtSetSysParamOpt
-    - 1.5.2 aclrtGetSysParamOpt
-    - 1.5.3 aclrtGetDeviceResLimit
-    - 1.5.4 aclrtSetDeviceResLimit
-    - 1.5.5 aclrtResetDeviceResLimit
-    - 1.5.6 aclrtGetStreamResLimit
-    - 1.5.7 aclrtSetStreamResLimit
-    - 1.5.8 aclrtResetStreamResLimit
-    - 1.5.9 aclrtUseStreamResInCurrentThread
-    - 1.5.10 aclrtUnuseStreamResInCurrentThread
-    - 1.5.11 aclrtGetResInCurrentThread
-  - 1.6 Device 管理
-    - 1.6.1 aclrtSetDevice
-    - 1.6.2 aclrtResetDevice
-    - 1.6.3 aclrtResetDeviceForce
-    - 1.6.4 aclrtGetDevice
-    - 1.6.5 aclrtGetRunMode
-    - 1.6.6 aclrtSetTsDevice
-    - 1.6.7 aclrtGetDeviceCount
-    - 1.6.8 aclrtGetDeviceUtilizationRate
-    - 1.6.9 aclrtQueryDeviceStatus
-    - 1.6.10 aclrtGetSocName
-    - 1.6.11 aclrtSetDeviceSatMode
-    - 1.6.12 aclrtGetDeviceSatMode
-    - 1.6.13 aclrtDeviceCanAccessPeer
-    - 1.6.14 aclrtDeviceEnablePeerAccess
-    - 1.6.15 aclrtDeviceDisablePeerAccess
-    - 1.6.16 aclrtDevicePeerAccessStatus
-    - 1.6.17 aclrtGetOverflowStatus
-    - 1.6.18 aclrtResetOverflowStatus
-    - 1.6.19 aclrtSynchronizeDevice
-    - 1.6.20 aclrtSynchronizeDeviceWithTimeout
-    - 1.6.21 aclrtGetDeviceInfo
-    - 1.6.22 aclrtDeviceGetStreamPriorityRange
-    - 1.6.23 aclrtGetDeviceCapability
-    - 1.6.24 aclrtGetDevicesTopo
-    - 1.6.25 aclrtRegDeviceStateCallback
-    - 1.6.26 aclrtGetLogicDevIdByUserDevId
-    - 1.6.27 aclrtGetUserDevIdByLogicDevId
-    - 1.6.28 aclrtGetLogicDevIdByPhyDevId
-    - 1.6.29 aclrtGetPhyDevIdByLogicDevId
-    - 1.6.30 aclrtDeviceGetUuid
-  - 1.7 Context 管理
-    - 1.7.1 aclrtCreateContext
-    - 1.7.2 aclrtDestroyContext
-    - 1.7.3 aclrtSetCurrentContext
-    - 1.7.4 aclrtGetCurrentContext
-    - 1.7.5 aclrtCtxSetSysParamOpt
-    - 1.7.6 aclrtCtxGetSysParamOpt
-    - 1.7.7 aclrtCtxGetCurrentDefaultStream
-    - 1.7.8 aclrtGetPrimaryCtxState
-    - 1.7.9 aclrtCtxGetFloatOverflowAddr
-  - 1.8 Stream 管理
-    - 1.8.1 aclrtCreateStream
-    - 1.8.2 aclrtCreateStreamWithConfig
-    - 1.8.3 aclrtDestroyStream
-    - 1.8.4 aclrtDestroyStreamForce
-    - 1.8.5 aclrtSetStreamOverflowSwitch
-    - 1.8.6 aclrtGetStreamOverflowSwitch
-    - 1.8.7 aclrtSetStreamFailureMode
-    - 1.8.8 aclrtStreamQuery
-    - 1.8.9 aclrtSynchronizeStream
-    - 1.8.10 aclrtSynchronizeStreamWithTimeout
-    - 1.8.11 aclrtStreamAbort
-    - 1.8.12 aclrtStreamGetId
-    - 1.8.13 aclrtGetStreamAvailableNum
-    - 1.8.14 aclrtSetStreamAttribute
-    - 1.8.15 aclrtGetStreamAttribute
-    - 1.8.16 aclrtActiveStream
-    - 1.8.17 aclrtSwitchStream
-    - 1.8.18 aclrtRegStreamStateCallback
-    - 1.8.19 aclrtStreamStop
-    - 1.8.20 aclrtPersistentTaskClean
-    - 1.8.21 aclrtStreamGetPriority
-    - 1.8.22 aclrtStreamGetFlags
-  - 1.9 Event 管理
-    - 1.9.1 aclrtCreateEvent
-    - 1.9.2 aclrtCreateEventWithFlag
-    - 1.9.3 aclrtCreateEventExWithFlag
-    - 1.9.4 aclrtDestroyEvent
-    - 1.9.5 aclrtRecordEvent
-    - 1.9.6 aclrtResetEvent
-    - 1.9.7 aclrtQueryEvent （废弃）
-    - 1.9.8 aclrtQueryEventStatus
-    - 1.9.9 aclrtQueryEventWaitStatus
-    - 1.9.10 aclrtSynchronizeEvent
-    - 1.9.11 aclrtSynchronizeEventWithTimeout
-    - 1.9.12 aclrtEventElapsedTime
-    - 1.9.13 aclrtStreamWaitEvent
-    - 1.9.14 aclrtStreamWaitEventWithTimeout
-    - 1.9.15 aclrtSetOpWaitTimeout
-    - 1.9.16 aclrtEventGetTimestamp
-    - 1.9.17 aclrtGetEventId
-    - 1.9.18 aclrtGetEventAvailNum
-    - 1.9.19 aclrtIpcGetEventHandle
-    - 1.9.20 aclrtIpcOpenEventHandle
-  - 1.10 Notify 管理
-    - 1.10.1 aclrtCreateNotify
-    - 1.10.2 aclrtDestroyNotify
-    - 1.10.3 aclrtRecordNotify
-    - 1.10.4 aclrtWaitAndResetNotify
-    - 1.10.5 aclrtGetNotifyId
-    - 1.10.6 aclrtNotifyBatchReset
-    - 1.10.7 aclrtNotifyGetExportKey
-    - 1.10.8 aclrtNotifySetImportPid
-    - 1.10.9 aclrtNotifySetImportPidInterServer
-    - 1.10.10 aclrtNotifyImportByKey
-  - 1.11 CntNotify 管理
-    - 1.11.1 aclrtCntNotifyCreate
-    - 1.11.2 aclrtCntNotifyRecord
-    - 1.11.3 aclrtCntNotifyWaitWithTimeout
-    - 1.11.4 aclrtCntNotifyReset
-    - 1.11.5 aclrtCntNotifyGetId
-    - 1.11.6 aclrtCntNotifyDestroy
-  - 1.12 Label 管理
-    - 1.12.1 aclrtCreateLabel
-    - 1.12.2 aclrtSetLabel
-    - 1.12.3 aclrtDestroyLabel
-    - 1.12.4 aclrtCreateLabelList
-    - 1.12.5 aclrtDestroyLabelList
-    - 1.12.6 aclrtSwitchLabelByIndex
-  - 1.13 内存管理
-    - 1.13.1 内存使用说明
-    - 1.13.2 aclrtMalloc
-    - 1.13.3 aclrtMallocAlign32
-    - 1.13.4 aclrtMallocCached
-    - 1.13.5 aclrtMemFlush
-    - 1.13.6 aclrtMemInvalidate
-    - 1.13.7 aclrtMallocWithCfg
-    - 1.13.8 aclrtMallocForTaskScheduler
-    - 1.13.9 aclrtFree
-    - 1.13.10 aclrtFreeWithDevSync
-    - 1.13.11 aclrtMallocHost
-    - 1.13.12 aclrtMallocHostWithCfg
-    - 1.13.13 aclrtFreeHost
-    - 1.13.14 aclrtFreeHostWithDevSync
-    - 1.13.15 aclrtMemset
-    - 1.13.16 aclrtMemsetAsync
-    - 1.13.17 aclrtMemcpy
-    - 1.13.18 aclrtMemcpyAsync
-    - 1.13.19 aclrtMemcpyAsyncWithCondition
-    - 1.13.20 aclrtMemcpyBatch
-    - 1.13.21 aclrtMemcpyBatchAsync
-    - 1.13.22 aclrtMemcpy2d
-    - 1.13.23 aclrtMemcpy2dAsync
-    - 1.13.24 aclrtGetMemcpyDescSize
-    - 1.13.25 aclrtSetMemcpyDesc
-    - 1.13.26 aclrtMemcpyAsyncWithDesc
-    - 1.13.27 aclrtMemcpyAsyncWithOffset
-    - 1.13.28 aclrtMallocPhysical
-    - 1.13.29 aclrtFreePhysical
-    - 1.13.30 aclrtReserveMemAddress
-    - 1.13.31 aclrtReserveMemAddressNoUCMemory
-    - 1.13.32 aclrtReleaseMemAddress
-    - 1.13.33 aclrtMapMem
-    - 1.13.34 aclrtUnmapMem
-    - 1.13.35 aclrtMemExportToShareableHandle
-    - 1.13.36 aclrtMemSetPidToShareableHandle
-    - 1.13.37 aclrtMemImportFromShareableHandle
-    - 1.13.38 aclrtMemExportToShareableHandleV2
-    - 1.13.39 aclrtMemSetPidToShareableHandleV2
-    - 1.13.40 aclrtMemImportFromShareableHandleV2
-    - 1.13.41 aclrtDeviceGetBareTgid
-    - 1.13.42 aclrtMemGetAllocationGranularity
-    - 1.13.43 aclrtMemSetAccess
-    - 1.13.44 aclrtMemGetAccess
-    - 1.13.45 aclrtMemRetainAllocationHandle
-    - 1.13.46 aclrtMemGetAllocationPropertiesFromHandle
-    - 1.13.47 aclrtMemGetAddressRange
-    - 1.13.48 aclrtMemAllocManaged
-    - 1.13.49 aclrtMemP2PMap
-    - 1.13.50 aclrtCmoAsync
-    - 1.13.51 aclrtCmoAsyncWithBarrier
-    - 1.13.52 aclrtCmoWaitBarrier
-    - 1.13.53 aclrtCmoGetDescSize
-    - 1.13.54 aclrtCmoSetDesc
-    - 1.13.55 aclrtCmoAsyncWithDesc
-    - 1.13.56 aclrtPointerGetAttributes
-    - 1.13.57 aclrtHostRegister
-    - 1.13.58 aclrtHostRegisterV2
-    - 1.13.59 aclrtHostGetDevicePointer
-    - 1.13.60 aclrtHostUnregister
-    - 1.13.61 aclrtHostMemMapCapabilities
-    - 1.13.62 aclrtValueWrite
-    - 1.13.63 aclrtValueWait
-    - 1.13.64 aclrtIpcMemGetExportKey
-    - 1.13.65 aclrtIpcMemSetImportPid
-    - 1.13.66 aclrtIpcMemImportPidInterServer
-    - 1.13.67 aclrtIpcMemImportByKey
-    - 1.13.68 aclrtIpcMemSetAttr
-    - 1.13.69 aclrtIpcMemClose
-    - 1.13.70 aclrtGetMemInfo
-    - 1.13.71 aclrtCheckMemType
-    - 1.13.72 aclrtGetMemUsageInfo
-    - 1.13.73 aclrtAllocatorRegister
-    - 1.13.74 aclrtAllocatorGetByStream
-    - 1.13.75 aclrtAllocatorUnregister
-  - 1.14 执行控制
-    - 1.14.1 aclrtLaunchCallback
-    - 1.14.2 aclrtSubscribeReport
-    - 1.14.3 aclrtProcessReport
-    - 1.14.4 aclrtUnSubscribeReport
-    - 1.14.5 aclrtGetOpTimeoutInterval
-    - 1.14.6 aclrtSetOpExecuteTimeOut
-    - 1.14.7 aclrtSetOpExecuteTimeOutV2
-    - 1.14.8 aclrtSetOpExecuteTimeOutWithMs
-    - 1.14.9 aclrtGetOpExecuteTimeOut
-    - 1.14.10 aclrtGetThreadLastTaskId
-    - 1.14.11 aclrtReduceAsync
-    - 1.14.12 aclrtLaunchHostFunc
-    - 1.14.13 aclrtRandomNumAsync
-    - 1.14.14 aclrtTaskUpdateAsync
-  - 1.15 异常处理
-    - 1.15.1 aclGetRecentErrMsg
-    - 1.15.2 aclrtSetExceptionInfoCallback
-    - 1.15.3 aclrtGetTaskIdFromExceptionInfo
-    - 1.15.4 aclrtGetStreamIdFromExceptionInfo
-    - 1.15.5 aclrtGetThreadIdFromExceptionInfo
-    - 1.15.6 aclrtGetDeviceIdFromExceptionInfo
-    - 1.15.7 aclrtGetErrorCodeFromExceptionInfo
-    - 1.15.8 aclrtPeekAtLastError
-    - 1.15.9 aclrtGetLastError
-    - 1.15.10 aclrtGetMemUceInfo
-    - 1.15.11 aclrtMemUceRepair
-    - 1.15.12 aclrtDeviceTaskAbort
-    - 1.15.13 aclRecoverAllHcclTasks
-    - 1.15.14 aclrtGetErrorVerbose
-    - 1.15.15 aclrtRepairError
-    - 1.15.16 aclrtSetDeviceTaskAbortCallback
-  - 1.16 Kernel 加载与执行
-    - 1.16.1 概念及使用说明
-    - 1.16.2 aclrtBinaryLoadFromFile
-    - 1.16.3 aclrtBinaryLoadFromData
-    - 1.16.4 aclrtBinaryGetFunction
-    - 1.16.5 aclrtBinaryGetFunctionByEntry
-    - 1.16.6 aclrtBinaryGetDevAddress
-    - 1.16.7 aclrtBinarySetExceptionCallback
-    - 1.16.8 aclrtGetArgsFromExceptionInfo
-    - 1.16.9 aclrtGetFuncHandleFromExceptionInfo
-    - 1.16.10 aclrtGetFunctionAddr
-    - 1.16.11 aclrtGetFunctionName
-    - 1.16.12 aclrtGetFunctionAttribute
-    - 1.16.13 aclrtGetHardwareSyncAddr
-    - 1.16.14 aclrtRegisterCpuFunc
-    - 1.16.15 aclrtKernelArgsInit
-    - 1.16.16 aclrtKernelArgsInitByUserMem
-    - 1.16.17 aclrtKernelArgsGetMemSize
-    - 1.16.18 aclrtKernelArgsGetHandleMemSize
-    - 1.16.19 aclrtKernelArgsAppend
-    - 1.16.20 aclrtKernelArgsAppendPlaceHolder
-    - 1.16.21 aclrtKernelArgsGetPlaceHolderBuffer
-    - 1.16.22 aclrtKernelArgsParaUpdate
-    - 1.16.23 aclrtKernelArgsFinalize
-    - 1.16.24 aclrtLaunchKernel
-    - 1.16.25 aclrtLaunchKernelV2
-    - 1.16.26 aclrtLaunchKernelWithConfig
-    - 1.16.27 aclrtLaunchKernelWithHostArgs
-    - 1.16.28 aclrtCreateBinary
-    - 1.16.29 aclrtDestroyBinary
-    - 1.16.30 aclrtBinaryLoad
-    - 1.16.31 aclrtBinaryUnLoad
-  - 1.17 模型运行实例管理
-    - 1.17.1 aclmdlRICaptureBegin
-    - 1.17.2 aclmdlRICaptureGetInfo
-    - 1.17.3 aclmdlRICaptureThreadExchangeMode
-    - 1.17.4 aclmdlRICaptureEnd
-    - 1.17.5 aclmdlRICaptureTaskGrpBegin
-    - 1.17.6 aclmdlRICaptureTaskGrpEnd
-    - 1.17.7 aclmdlRICaptureTaskUpdateBegin
-    - 1.17.8 aclmdlRICaptureTaskUpdateEnd
-    - 1.17.9 aclmdlRIDebugJsonPrint
-    - 1.17.10 aclmdlRIDebugPrint
-    - 1.17.11 aclmdlRIBuildBegin
-    - 1.17.12 aclmdlRIBindStream
-    - 1.17.13 aclmdlRIEndTask
-    - 1.17.14 aclmdlRIBuildEnd
-    - 1.17.15 aclmdlRIUnbindStream
-    - 1.17.16 aclmdlRIExecute
-    - 1.17.17 aclmdlRIExecuteAsync
-    - 1.17.18 aclmdlRIDestroy
-    - 1.17.19 aclmdlRISetName
-    - 1.17.20 aclmdlRIGetName
-    - 1.17.21 aclrtCheckArchCompatibility
-    - 1.17.22 aclmdlRIAbort
-  - 1.18 算力 Group 查询与设置
-    - 1.18.1 aclrtSetGroup
-    - 1.18.2 aclrtGetGroupCount
-    - 1.18.3 aclrtGetAllGroupInfo
-    - 1.18.4 aclrtGetGroupInfoDetail
-    - 1.18.5 aclrtCreateGroupInfo
-    - 1.18.6 aclrtDestroyGroupInfo
-  - 1.19 数据传输
-    - 1.19.1 Tensor 数据传输
-      - 1.19.1.1 acltdtCreateChannel
-      - 1.19.1.2 acltdtCreateChannelWithCapacity
-      - 1.19.1.3 acltdtSendTensor
-      - 1.19.1.4 acltdtReceiveTensor
-      - 1.19.1.5 acltdtStopChannel
-      - 1.19.1.6 acltdtDestroyChannel
-      - 1.19.1.7 acltdtQueryChannelSize
-      - 1.19.1.8 acltdtGetSliceInfoFromItem
-      - 1.19.1.9 acltdtCleanChannel
-    - 1.19.2 共享队列管理
-      - 1.19.2.1 共享队列管理使用说明
-      - 1.19.2.2 acltdtCreateQueue
-      - 1.19.2.3 acltdtDestroyQueue
-      - 1.19.2.4 acltdtEnqueueData
-      - 1.19.2.5 acltdtDequeueData
-      - 1.19.2.6 acltdtEnqueue
-      - 1.19.2.7 acltdtDequeue
-      - 1.19.2.8 acltdtBindQueueRoutes
-      - 1.19.2.9 acltdtUnbindQueueRoutes
-      - 1.19.2.10 acltdtQueryQueueRoutes
-      - 1.19.2.11 acltdtGrantQueue
-      - 1.19.2.12 acltdtAttachQueue
-    - 1.19.3 共享 Buffer 管理
-      - 1.19.3.1 共享 Buffer 管理使用说明
-      - 1.19.3.2 acltdtAllocBuf
-      - 1.19.3.3 acltdtFreeBuf
-      - 1.19.3.4 acltdtGetBufData
-      - 1.19.3.5 acltdtSetBufUserData
-      - 1.19.3.6 acltdtGetBufUserData
-      - 1.19.3.7 acltdtSetBufDataLen
-      - 1.19.3.8 acltdtGetBufDataLen
-      - 1.19.3.9 acltdtCopyBufRef
-      - 1.19.3.10 acltdtAppendBufChain
-      - 1.19.3.11 acltdtGetBufChainNum
-      - 1.19.3.12 acltdtGetBufFromChain
-  - 1.20 Dump 配置
-    - 1.20.1 aclmdlInitDump
-    - 1.20.2 aclmdlSetDump
-    - 1.20.3 acldumpRegCallback
-    - 1.20.4 acldumpUnregCallback
-    - 1.20.5 acldumpGetPath
-    - 1.20.6 aclmdlFinalizeDump
-    - 1.20.7 aclopStartDumpArgs
-    - 1.20.8 aclopStopDumpArgs
-  - 1.21 Profiling 数据采集
-    - 1.21.1 Profiling 数据采集接口
-      - 1.21.1.1 数据采集说明
-      - 1.21.1.2 aclprofInit
-      - 1.21.1.3 aclprofSetConfig
-      - 1.21.1.4 aclprofStart
-      - 1.21.1.5 aclprofStop
-      - 1.21.1.6 aclprofFinalize
-    - 1.21.2 msproftx 扩展接口
-      - 1.21.2.1 扩展接口使用说明
-      - 1.21.2.2 aclprofCreateStamp
-      - 1.21.2.3 aclprofSetStampTraceMessage
-      - 1.21.2.4 aclprofMark
-      - 1.21.2.5 aclprofMarkEx
-      - 1.21.2.6 aclprofPush
-      - 1.21.2.7 aclprofPop
-      - 1.21.2.8 aclprofRangeStart
-      - 1.21.2.9 aclprofRangeStop
-      - 1.21.2.10 aclprofDestroyStamp
-      - 1.21.2.11 aclprofStr2Id
-      - 1.21.2.12 aclprofRangePushEx
-      - 1.21.2.13 aclprofRangePop
-    - 1.21.3 订阅算子信息
-      - 1.21.3.1 订阅接口使用说明
-      - 1.21.3.2 aclprofModelSubscribe
-      - 1.21.3.3 aclprofModelUnSubscribe
-      - 1.21.3.4 aclprofGetOpDescSize
-      - 1.21.3.5 aclprofGetOpNum
-      - 1.21.3.6 aclprofGetOpTypeLen
-      - 1.21.3.7 aclprofGetOpType
-      - 1.21.3.8 aclprofGetOpNameLen
-      - 1.21.3.9 aclprofGetOpName
-      - 1.21.3.10 aclprofGetOpStart
-      - 1.21.3.11 aclprofGetOpEnd
-      - 1.21.3.12 aclprofGetOpDuration
-      - 1.21.3.13 aclprofGetModelId
-    - 1.21.4 PyTorch 场景标记迭代时间
-      - 1.21.4.1 aclprofGetStepTimestamp
-  - 1.22 共享 Buffer 管理（预留，暂不支持）
-    - 1.22.1 aclrtAllocBuf
-    - 1.22.2 aclrtFreeBuf
-    - 1.22.3 aclrtGetBufData
-    - 1.22.4 aclrtSetBufUserData
-    - 1.22.5 aclrtGetBufUserData
-    - 1.22.6 aclrtGetBufDataLen
-    - 1.22.7 aclrtSetBufDataLen
-    - 1.22.8 aclrtCopyBufRef
-    - 1.22.9 aclrtAppendBufChain
-    - 1.22.10 aclrtGetBufFromChain
-    - 1.22.11 aclrtGetBufChainNum
-  - 1.23 快照管理
-    - 1.23.1 aclrtSnapShotProcessLock
-    - 1.23.2 aclrtSnapShotProcessBackup
-    - 1.23.3 aclrtSnapShotProcessRestore
-    - 1.23.4 aclrtSnapShotProcessUnlock
-    - 1.23.5 aclrtSnapShotCallbackRegister
-    - 1.23.6 aclrtSnapShotCallbackUnregister
-  - 1.24 Stream 有序内存分配
-    - 1.24.1 aclrtMemPoolCreate
-    - 1.24.2 aclrtMemPoolDestroy
-    - 1.24.3 aclrtMemPoolGetAttr
-    - 1.24.4 aclrtMemPoolSetAttr
-  - 1.25 错误上报接口
-    - 1.25.1 使用须知
-    - 1.25.2 ReportInnerErrMsg
-    - 1.25.3 ReportPredefinedErrMsg
-    - 1.25.4 ReportUserDefinedErrMsg
-    - 1.25.5 RegisterFormatErrorMessage
-  - 1.26 日志接口
-    - 1.26.1 使用须知
-    - 1.26.2 AlogRecord
-    - 1.26.3 AlogCheckDebugLevel
-    - 1.26.4 数据类型定义
-  - 1.27 其他接口
-    - 1.27.1 aclAppLog
-    - 1.27.2 aclDataTypeSize
-    - 1.27.3 aclFloat16ToFloat
-    - 1.27.4 aclFloatToFloat16
-    - 1.27.5 aclrtGetVersion
-    - 1.27.6 aclsysGetCANNVersion （废弃）
-    - 1.27.7 aclGetCannAttributeList
-    - 1.27.8 aclGetCannAttribute
-    - 1.27.9 aclGetDeviceCapability
-    - 1.27.10 aclrtCacheLastTaskOpInfo
-    - 1.27.11 aclrtProfTrace
-    - 1.27.12 aclsysGetVersionStr
-    - 1.27.13 aclsysGetVersionNum
-    - 1.27.14 aclrtCreateStreamV2
-    - 1.27.15 aclrtSetStreamConfigOpt
-    - 1.27.16 aclrtSubscribeHostFunc
-    - 1.27.17 aclrtProcessHostFunc
-    - 1.27.18 aclrtUnSubscribeHostFunc
-  - 1.28 数据类型及其操作接口
-    - 1.28.1 aclError
-    - 1.28.2 aclCannAttr
-    - 1.28.3 aclCANNPackageName
-    - 1.28.4 aclCANNPackageVersion
-    - 1.28.5 aclDataBuffer
-      - 1.28.5.1 aclCreateDataBuffer
-      - 1.28.5.2 aclDestroyDataBuffer
-      - 1.28.5.3 aclGetDataBufferAddr
-      - 1.28.5.4 aclGetDataBufferSize （废弃）
-      - 1.28.5.5 aclGetDataBufferSizeV2
-      - 1.28.5.6 aclUpdateDataBuffer
-    - 1.28.6 aclDataType
-    - 1.28.7 aclDeviceInfo
-    - 1.28.8 acldumpType
-    - 1.28.9 aclFloat16
-    - 1.28.10 aclFormat
-    - 1.28.11 aclmdlRI
-    - 1.28.12 aclmdlRICaptureMode
-    - 1.28.13 aclmdlRICaptureStatus
-    - 1.28.14 aclMemType
-    - 1.28.15 aclprofAicoreMetrics
-    - 1.28.16 aclprofConfig
-      - 1.28.16.1 aclprofCreateConfig
-      - 1.28.16.2 aclprofDestroyConfig
-    - 1.28.17 aclprofConfigType
-    - 1.28.18 aclprofEventAttributes
-    - 1.28.19 aclprofStepInfo
-      - 1.28.19.1 aclprofCreateStepInfo
-      - 1.28.19.2 aclprofDestroyStepInfo
-    - 1.28.20 aclprofStepTag
-    - 1.28.21 aclprofSubscribeConfig
-      - 1.28.21.1 aclprofCreateSubscribeConfig
-      - 1.28.21.2 aclprofDestroySubscribeConfig
-    - 1.28.22 aclRegisterCallbackType
-    - 1.28.23 aclrtAicAivTaskUpdateAttr
-    - 1.28.24 aclrtAllocator
-    - 1.28.25 aclrtAllocatorAddr
-    - 1.28.26 aclrtAllocatorBlock
-    - 1.28.27 aclrtAllocatorDesc
-      - 1.28.27.1 aclrtAllocatorCreateDesc
-      - 1.28.27.2 aclrtAllocatorDestroyDesc
-      - 1.28.27.3 aclrtAllocatorSetObjToDesc
-      - 1.28.27.4 aclrtAllocatorSetAllocFuncToDesc
-      - 1.28.27.5 aclrtAllocatorSetAllocAdviseFuncToDesc
-      - 1.28.27.6 aclrtAllocatorSetFreeFuncToDesc
-      - 1.28.27.7 aclrtAllocatorSetGetAddrFromBlockFuncToDesc
-    - 1.28.28 aclrtArgsHandle
-    - 1.28.29 aclrtBarrierCmoInfo
-    - 1.28.30 aclrtBarrierTaskInfo
-    - 1.28.31 aclrtBinaryLoadOption
-    - 1.28.32 aclrtBinaryLoadOptions
-    - 1.28.33 aclrtBinaryLoadOptionType
-    - 1.28.34 aclrtBinaryLoadOptionValue
-    - 1.28.35 aclrtBinHandle
-    - 1.28.36 aclrtCmoType
-    - 1.28.37 aclrtCntNotify
-    - 1.28.38 aclrtCntNotifyRecordInfo
-    - 1.28.39 aclrtCntNotifyRecordMode
-    - 1.28.40 aclrtCntNotifyWaitInfo
-    - 1.28.41 aclrtCntNotifyWaitMode
-    - 1.28.42 aclrtCompareDataType
-    - 1.28.43 aclrtCondition
-    - 1.28.44 aclrtContext
-    - 1.28.45 aclrtDevAttr
-    - 1.28.46 aclrtDevFeatureType
-    - 1.28.47 aclrtDeviceStatus
-    - 1.28.48 aclrtDevResLimitType
-    - 1.28.49 aclrtDropoutBitmaskInfo
-    - 1.28.50 aclrtDrvMemHandle
-    - 1.28.51 aclrtEngineType
-    - 1.28.52 aclrtEvent
-    - 1.28.53 aclrtEventRecordedStatus
-    - 1.28.54 aclrtEventStatus
-    - 1.28.55 aclrtEventWaitStatus
-    - 1.28.56 aclrtFloatOverflowMode
-    - 1.28.57 aclrtFuncAttribute
-    - 1.28.58 aclrtFuncHandle
-    - 1.28.59 aclrtGroupAttr
-    - 1.28.60 aclrtHacType
-    - 1.28.61 aclrtHostMemMapCapability
-    - 1.28.62 aclrtHostRegisterType
-    - 1.28.63 aclrtIpcEventHandle
-    - 1.28.64 aclrtIpcMemAttrType
-    - 1.28.65 aclrtKernelType
-    - 1.28.66 aclrtLabel
-    - 1.28.67 aclrtLabelList
-    - 1.28.68 aclrtLastErrLevel
-    - 1.28.69 aclrtLaunchKernelAttr
-    - 1.28.70 aclrtLaunchKernelAttrId
-    - 1.28.71 aclrtLaunchKernelAttrValue
-    - 1.28.72 aclrtLaunchKernelCfg
-    - 1.28.73 aclrtMallocAttribute
-    - 1.28.74 aclrtMallocAttrType
-    - 1.28.75 aclrtMallocAttrValue
-    - 1.28.76 aclrtMallocConfig
-    - 1.28.77 aclrtMbuf
-    - 1.28.78 aclrtMemAccessDesc
-    - 1.28.79 aclrtMemAccessFlags
-    - 1.28.80 aclrtMemAllocationType
-    - 1.28.81 aclrtMemAttr
-    - 1.28.82 aclrtMemcpyBatchAttr
-    - 1.28.83 aclrtMemcpyKind
-    - 1.28.84 aclrtMemGranularityOptions
-    - 1.28.85 aclrtMemHandleType
-    - 1.28.86 aclrtMemLocation
-    - 1.28.87 aclrtMemLocationType
-    - 1.28.88 aclrtMemMallocPolicy
-    - 1.28.89 aclrtMemPool
-    - 1.28.90 aclrtMemPoolAttr
-    - 1.28.91 aclrtMemPoolProps
-    - 1.28.92 aclrtMemSharedHandleType
-    - 1.28.93 aclrtMemUceInfo
-    - 1.28.94 aclrtMemUsageInfo
-    - 1.28.95 aclrtNormalDisInfo
-    - 1.28.96 aclrtNotify
-    - 1.28.97 aclrtParamHandle
-    - 1.28.98 aclrtPhysicalMemProp
-    - 1.28.99 aclrtPtrAttributes
-    - 1.28.100 aclrtRandomNumFuncParaInfo
-    - 1.28.101 aclrtRandomNumFuncType
-    - 1.28.102 aclrtRandomNumTaskInfo
-    - 1.28.103 aclrtRandomParaInfo
-    - 1.28.104 aclrtRandomTaskUpdateAttr
-    - 1.28.105 aclrtReduceKind
-    - 1.28.106 aclrtRunMode
-    - 1.28.107 aclrtServerPid
-    - 1.28.108 aclrtSnapShotStage
-    - 1.28.109 aclrtStream
-    - 1.28.110 aclrtStreamAttr
-    - 1.28.111 aclrtStreamAttrValue
-    - 1.28.112 aclrtStreamConfigAttr
-    - 1.28.113 aclrtStreamConfigHandle
-      - 1.28.113.1 aclrtCreateStreamConfigHandle
-      - 1.28.113.2 aclrtDestroyStreamConfigHandle
-    - 1.28.114 aclrtStreamStatus
-    - 1.28.115 aclrtTaskGrp
-    - 1.28.116 aclrtTaskUpdateInfo
-    - 1.28.117 aclrtTimeoutUs
-    - 1.28.118 aclrtUniformDisInfo
-    - 1.28.119 aclrtUpdateTaskAttrId
-    - 1.28.120 aclrtUpdateTaskAttrVal
-    - 1.28.121 aclrtUtilizationInfo
-    - 1.28.122 aclrtUuid
-    - 1.28.123 aclSysParamOpt
-    - 1.28.124 acltdtBuf
-    - 1.28.125 acltdtDataItem
-      - 1.28.125.1 acltdtCreateDataItem
-      - 1.28.125.2 acltdtDestroyDataItem
-      - 1.28.125.3 acltdtGetTensorTypeFromItem
-      - 1.28.125.4 acltdtGetDataTypeFromItem
-      - 1.28.125.5 acltdtGetDataAddrFromItem
-      - 1.28.125.6 acltdtGetDataSizeFromItem
-      - 1.28.125.7 acltdtGetDimNumFromItem
-      - 1.28.125.8 acltdtGetDimsFromItem
-    - 1.28.126 acltdtDataset
-      - 1.28.126.1 acltdtCreateDataset
-      - 1.28.126.2 acltdtDestroyDataset
-      - 1.28.126.3 acltdtGetDataItem
-      - 1.28.126.4 acltdtAddDataItem
-      - 1.28.126.5 acltdtGetDatasetSize
-      - 1.28.126.6 acltdtGetDatasetName
-    - 1.28.127 acltdtQueueAttr
-      - 1.28.127.1 acltdtCreateQueueAttr
-      - 1.28.127.2 acltdtDestroyQueueAttr
-      - 1.28.127.3 acltdtSetQueueAttr
-      - 1.28.127.4 acltdtGetQueueAttr
-    - 1.28.128 acltdtQueueAttrType
-    - 1.28.129 acltdtQueueRoute
-      - 1.28.129.1 acltdtCreateQueueRoute
-      - 1.28.129.2 acltdtDestroyQueueRoute
-      - 1.28.129.3 acltdtGetQueueRouteParam
-    - 1.28.130 acltdtQueueRouteList
-      - 1.28.130.1 acltdtCreateQueueRouteList
-      - 1.28.130.2 acltdtDestroyQueueRouteList
-      - 1.28.130.3 acltdtAddQueueRoute
-      - 1.28.130.4 acltdtGetQueueRoute
-      - 1.28.130.5 acltdtGetQueueRouteNum
-    - 1.28.131 acltdtQueueRouteParamType
-    - 1.28.132 acltdtQueueRouteQueryInfo
-      - 1.28.132.1 acltdtCreateQueueRouteQueryInfo
-      - 1.28.132.2 acltdtDestroyQueueRouteQueryInfo
-      - 1.28.132.3 acltdtSetQueueRouteQueryInfo
-    - 1.28.133 acltdtQueueRouteQueryInfoParamType
-    - 1.28.134 acltdtQueueRouteQueryMode
-    - 1.28.135 acltdtTensorType
-- 2 Runtime API(Python)
-  - 2.1 废弃接口 / 返回码列表
-  - 2.2 同步 &amp; 异步 API 说明
-  - 2.3 pyACL 表达约定
-  - 2.4 util 模块
-    - 2.4.1 函数： numpy\_to\_ptr
-    - 2.4.2 函数： numpy\_contiguous\_to\_ptr
-    - 2.4.3 函数： ptr\_to\_numpy
-    - 2.4.4 函数： bytes\_to\_ptr
-    - 2.4.5 函数： ptr\_to\_bytes
-    - 2.4.6 thread
-      - 2.4.6.1 函数： start\_thread
-      - 2.4.6.2 函数： stop\_thread
-  - 2.5 初始化 &amp; 去初始化
-    - 2.5.2 函数：fi nalize
-    - 2.5.3 函数：fi nalize\_reference
-  - 2.6 运行时配置
-    - 2.6.1 函数： set\_sys\_param\_opt
-    - 2.6.2 函数： get\_sys\_param\_opt
-    - 2.6.3 函数： get\_device\_res\_limit
-    - 2.6.4 函数： set\_device\_res\_limit
-    - 2.6.5 函数： reset\_device\_res\_limit
-    - 2.6.6 函数： get\_stream\_res\_limit
-    - 2.6.7 函数： set\_stream\_res\_limit
-    - 2.6.8 函数： reset\_stream\_res\_limit
-    - 2.6.9 函数： use\_stream\_res\_in\_current\_thread
-    - 2.6.10 函数： unuse\_stream\_res\_in\_current\_thread
-    - 2.6.11 函数： get\_res\_in\_current\_thread
-  - 2.7 Device 管理
-    - 2.7.1 函数： set\_device
-    - 2.7.2 函数： reset\_device
-    - 2.7.3 函数： get\_device
-    - 2.7.4 函数： reset\_device\_force
-    - 2.7.5 函数： get\_run\_mode
-    - 2.7.6 函数： set\_ts\_device
-    - 2.7.7 函数： get\_device\_count
-    - 2.7.8 函数： get\_device\_utilization\_rate
-    - 2.7.9 函数： query\_device\_status
-    - 2.7.10 函数： get\_soc\_name
-    - 2.7.11 函数： set\_device\_sat\_mode
-    - 2.7.12 函数： get\_device\_sat\_mode
-    - 2.7.13 函数： device\_can\_access\_peer
-    - 2.7.14 函数： device\_enable\_peer\_access
-    - 2.7.15 函数： device\_disable\_peer\_access
-    - 2.7.16 函数： get\_overflow\_status
-    - 2.7.17 函数： reset\_overflow\_status
-    - 2.7.18 函数： synchronize\_device
-    - 2.7.19 函数： synchronize\_device\_with\_timeout
-    - 2.7.20 函数： get\_device\_info
-    - 2.7.21 函数： device\_get\_stream\_priority\_range
-    - 2.7.22 函数： get\_device\_capability
-    - 2.7.23 函数： get\_devices\_topo
-  - 2.8 Context 管理
-    - 2.8.1 函数： create\_context
-    - 2.8.2 函数： destroy\_context
-    - 2.8.3 函数： set\_context
-    - 2.8.4 函数： get\_context
-    - 2.8.5 函数： ctx\_get\_sys\_param\_opt
-    - 2.8.6 函数： ctx\_set\_sys\_param\_opt
-    - 2.8.7 函数： ctx\_get\_current\_default\_stream
-    - 2.8.8 函数： get\_primary\_ctx\_state
-  - 2.9 Stream 管理
-    - 2.9.1 函数： create\_stream
-    - 2.9.2 函数： create\_stream\_with\_config
-    - 2.9.3 函数： destroy\_stream
-    - 2.9.4 函数： destroy\_stream\_force
-    - 2.9.5 函数： set\_stream\_overflow\_switch
-    - 2.9.6 函数： get\_stream\_overflow\_switch
-    - 2.9.7 函数： set\_stream\_failure\_mode
-    - 2.9.8 函数： stream\_query
-    - 2.9.9 函数： synchronize\_stream
-    - 2.9.10 函数： synchronize\_stream\_with\_timeout
-    - 2.9.11 函数： stream\_abort
-    - 2.9.12 函数： stream\_get\_id
-    - 2.9.13 函数： get\_stream\_available\_num
-    - 2.9.14 函数： set\_stream\_attribute
-    - 2.9.15 函数： get\_stream\_attribute
-  - 2.10 Event 管理
-    - 2.10.1 函数： create\_event
-    - 2.10.2 函数： create\_event\_with\_flag
-    - 2.10.3 函数： create\_event\_ex\_with\_flag
-    - 2.10.4 函数： destroy\_event
-    - 2.10.5 函数： record\_event
-    - 2.10.6 函数： reset\_event
-    - 2.10.7 函数： query\_event
-    - 2.10.8 函数： query\_event\_status
-    - 2.10.9 函数： query\_event\_wait\_status
-    - 2.10.10 函数： synchronize\_event
-    - 2.10.11 函数： synchronize\_event\_with\_timeout
-    - 2.10.12 函数： event\_elapsed\_time
-    - 2.10.13 函数： stream\_wait\_event
-    - 2.10.14 函数： set\_op\_wait\_timeout
-    - 2.10.15 函数： event\_get\_timestamp
-    - 2.10.16 函数： get\_event\_id
-    - 2.10.17 函数： get\_event\_avail\_num
-  - 2.11 Notify 管理
-    - 2.11.1 函数： create\_notify
-    - 2.11.2 函数： destroy\_notify
-    - 2.11.3 函数： record\_notify
-    - 2.11.4 函数： wait\_and\_reset\_notify
-    - 2.11.5 函数： get\_notify\_id
-    - 2.11.6 函数： notify\_batch\_reset
-    - 2.11.7 函数： notify\_get\_export\_key
-    - 2.11.8 函数： notify\_set\_import\_pid
-    - 2.11.9 函数： notify\_import\_by\_key
-  - 2.12 内存管理
-    - 2.12.1 总体说明
-    - 2.12.3 函数： malloc\_align32
-    - 2.12.4 函数： malloc\_cached
-    - 2.12.6 函数： mem\_invalidate
-    - 2.12.7 函数： get\_mem\_info
-    - 2.12.8 函数： free
-    - 2.12.9 函数： malloc\_host
-    - 2.12.10 函数： free\_host
-    - 2.12.11 函数： memset
-    - 2.12.12 函数： memset\_async
-    - 2.12.13 函数： memcpy
-    - 2.12.14 函数： memcpy\_async
-    - 2.12.15 函数： memcpy\_async\_with\_condition
-    - 2.12.16 函数： memcpy2d
-    - 2.12.17 函数： memcpy2d\_async
-    - 2.12.18 函数： allocator\_register
-    - 2.12.19 函数： allocator\_unregister
-    - 2.12.20 函数： malloc\_physical
-    - 2.12.21 函数： free\_physical
-    - 2.12.22 函数： reserve\_mem\_address
-    - 2.12.23 函数： release\_mem\_address
-    - 2.12.24 函数： map\_mem
-    - 2.12.25 函数： unmap\_mem
-    - 2.12.26 函数： mem\_export\_to\_shareable\_handle
-    - 2.12.27 函数： device\_get\_bare\_tgid
-    - 2.12.28 函数： mem\_set\_pid\_to\_shareable\_handle
-    - 2.12.29 函数： mem\_import\_from\_shareable\_handle
-    - 2.12.30 函数： mem\_get\_allocation\_granularity
-    - 2.12.31 函数： cmo\_async
-    - 2.12.32 函数： malloc\_with\_cfg
-    - 2.12.33 函数： malloc\_for\_task\_scheduler
-    - 2.12.34 函数： malloc\_host\_with\_cfg
-    - 2.12.35 函数： memcpy\_async\_with\_desc
-    - 2.12.36 函数： get\_memcpy\_desc\_size
-    - 2.12.37 函数： set\_memcpy\_desc
-    - 2.12.38 函数： pointer\_get\_attributes
-    - 2.12.39 函数： host\_register
-    - 2.12.40 函数： host\_unregister
-    - 2.12.41 函数： value\_write
-    - 2.12.42 函数： value\_wait
-    - 2.12.43 函数： ipc\_mem\_get\_export\_key
-    - 2.12.44 函数： ipc\_mem\_set\_import\_pid
-    - 2.12.45 函数： ipc\_mem\_import\_by\_key
-    - 2.12.46 函数： ipc\_mem\_close
-  - 2.13 执行控制
-    - 2.13.1 函数： subscribe\_report
-    - 2.13.2 函数： launch\_callback
-    - 2.13.3 函数： process\_report
-    - 2.13.4 函数： unsubscribe\_report
-    - 2.13.5 函数： set\_op\_execute\_time\_out
-    - 2.13.6 函数： get\_thread\_last\_task\_id
-    - 2.13.7 函数： reduce\_async
-  - 2.14 异常处理
-    - 2.14.1 函数： get\_recent\_err\_msg
-    - 2.14.2 函数： set\_exception\_info\_callback
-    - 2.14.3 函数： get\_task\_id\_from\_exception\_info
-    - 2.14.4 函数： get\_stream\_id\_from\_exception\_info
-    - 2.14.5 函数： get\_thread\_id\_from\_exception\_info
-    - 2.14.6 函数： get\_device\_id\_from\_exception\_info
-    - 2.14.7 函数： get\_error\_code\_from\_exception\_info
-    - 2.14.8 函数： device\_task\_abort
-    - 2.14.9 函数： peek\_at\_last\_error
-    - 2.14.10 函数： get\_last\_error
-  - 2.15 Kernel 加载与执行
-    - 2.15.1 概念及使用说明
-    - 2.15.2 函数： binary\_load\_from\_file
-    - 2.15.3 函数： binary\_load\_from\_data
-    - 2.15.4 函数： get\_function\_addr
-    - 2.15.5 函数： get\_function\_name
-    - 2.15.6 函数： register\_cpu\_func
-    - 2.15.7 函数： kernel\_args\_init
-    - 2.15.8 函数： kernel\_args\_init\_by\_user\_mem
-    - 2.15.9 函数： kernel\_args\_get\_mem\_size
-    - 2.15.10 函数： kernel\_args\_get\_handle\_mem\_size
-    - 2.15.11 函数： kernel\_args\_append
-    - 2.15.12 函数： kernel\_args\_append\_place\_holder
-    - 2.15.13 函数： kernel\_args\_get\_place\_holder\_buffer
-    - 2.15.14 函数： kernel\_args\_para\_update
-    - 2.15.15 函数： kernel\_args\_finalize
-    - 2.15.16 函数： launch\_kernel\_with\_config
-    - 2.15.17 函数： create\_binary
-    - 2.15.18 函数： destroy\_binary
-    - 2.15.19 函数： binary\_load
-    - 2.15.20 函数： binary\_unload
-    - 2.15.21 函数： binary\_get\_function
-    - 2.15.22 函数： launch\_kernel
-  - 2.16 Profiling 数据采集
-    - 2.16.1 Profiling 数据采集接口
-      - 2.16.1.1 总体说明
-      - 2.16.1.2 函数： create\_config
-      - 2.16.1.3 函数： set\_config
-      - 2.16.1.4 函数： destroy\_config
-      - 2.16.1.5 函数： init
-      - 2.16.1.7 函数： stop
-    - 2.16.2 msproftx 扩展接口
-      - 2.16.2.1 总体说明
-      - 2.16.2.2 函数： create\_stamp
-      - 2.16.2.3 函数： set\_stamp\_trace\_message
-      - 2.16.2.5 函数： mark\_ex
-      - 2.16.2.6 函数： push
-      - 2.16.2.7 函数： pop
-      - 2.16.2.8 函数： range\_start
-      - 2.16.2.9 函数： range\_stop
-      - 2.16.2.10 函数： destroy\_stamp
-    - 2.16.3 订阅算子信息
-      - 2.16.3.1 总体说明
-      - 2.16.3.2 函数： create\_subscribe\_config
-      - 2.16.3.3 函数： destroy\_subscribe\_config
-      - 2.16.3.4 函数： model\_subscribe
-      - 2.16.3.5 函数： model\_un\_subscribe
-      - 2.16.3.6 函数： model\_unsubscribe
-      - 2.16.3.7 函数： get\_op\_desc\_size
-      - 2.16.3.8 函数： get\_op\_num
-      - 2.16.3.9 函数： get\_op\_type\_len
-      - 2.16.3.10 函数： get\_op\_name\_len
-      - 2.16.3.11 函数： get\_op\_type
-      - 2.16.3.12 函数： get\_op\_type\_v2
-      - 2.16.3.13 函数： get\_op\_name
-      - 2.16.3.14 函数： get\_op\_name\_v2
-      - 2.16.3.15 函数： get\_op\_start
-      - 2.16.3.16 函数： get\_op\_end
-      - 2.16.3.17 函数： get\_op\_duration
-      - 2.16.3.18 函数： get\_model\_id
-    - 2.16.4 PyTorch 场景标记迭代时间
-      - 2.16.4.1 函数： get\_step\_timestamp
-      - 2.16.4.2 函数： create\_step\_info
-      - 2.16.4.3 函数： destroy\_step\_info
-  - 2.17 Dump 配置
-    - 2.17.1 函数： init\_dump
-    - 2.17.2 函数： set\_dump
-    - 2.17.3 函数： dump\_reg\_callback
-    - 2.17.4 函数： dump\_unreg\_callback
-    - 2.17.5 函数：fi nalize\_dump
-  - 2.18 其他接口
-    - 2.18.1 函数： app\_log
-    - 2.18.2 函数： data\_type\_size
-    - 2.18.3 函数：fl oat16\_to\_float
-    - 2.18.4 函数：fl oat\_to\_float16
-    - 2.18.5 函数： get\_version
-    - 2.18.6 函数： get\_cann\_version
-    - 2.18.7 函数： get\_cann\_attribute
-    - 2.18.8 函数： get\_cann\_attribute\_list
-    - 2.18.9 函数： get\_device\_capability
-  - 2.19 数据类型及其操作接口
-    - 2.19.1 aclError
-    - 2.19.2 aclCannAttr
-    - 2.19.3 aclCANNPackageName
-    - 2.19.4 aclCANNPackageVersion
-    - 2.19.5 aclDataType
-    - 2.19.6 aclDeviceInfo
-    - 2.19.7 aclFloat16
-    - 2.19.8 aclFormat
-    - 2.19.9 aclrtAllocatorDesc
-      - 2.19.9.1 函数： allocator\_create\_desc
-      - 2.19.9.2 函数： allocator\_destroy\_desc
-      - 2.19.9.3 函数： allocator\_set\_obj\_to\_desc
-      - 2.19.9.4 函数： allocator\_set\_alloc\_func\_to\_desc
-      - 2.19.9.5 函数： allocator\_set\_alloc\_advise\_func\_to\_desc
-      - 2.19.9.6 函数： allocator\_set\_free\_func\_to\_desc
-      - 2.19.9.7 函数： allocator\_set\_get\_addr\_from\_block\_func\_to\_desc
-    - 2.19.10 aclDataBuffer
-      - 2.19.10.1 函数： create\_data\_buffer
-      - 2.19.10.2 函数： destroy\_data\_buffer
-      - 2.19.10.3 函数： get\_data\_buffer\_addr
-      - 2.19.10.4 函数： get\_data\_buffer\_size
-      - 2.19.10.5 函数： get\_data\_buffer\_size\_v2
-      - 2.19.10.6 函数： update\_data\_buffer
-    - 2.19.11 aclMemType
-    - 2.19.12 aclprofAicoreMetrics
-    - 2.19.13 aclprofStepTag
-    - 2.19.14 aclproftype
-    - 2.19.15 aclrtBinaryLoadOptions
-    - 2.19.16 aclrtBinaryLoadOptionType/ aclrtBinaryLoadOptionValue
-    - 2.19.17 aclrtCmoType
-    - 2.19.18 aclrtDevAttr
-    - 2.19.19 aclrtDevFeatureType
-    - 2.19.20 aclrtDeviceStatus
-    - 2.19.21 aclrtDevResLimitType
-    - 2.19.22 aclrtEngineType
-    - 2.19.23 aclrtEventRecordedStatus
-    - 2.19.24 aclrtEventStatus
-    - 2.19.25 aclrtEventWaitStatus
-    - 2.19.26 aclrtFloatOverflowMode
-    - 2.19.27 aclrtGroupAttr
-    - 2.19.28 aclrtHostRegisterType
-    - 2.19.29 aclrtLastErrLevel
-    - 2.19.30 aclrtLaunchKernelAttrId/aclrtLaunchKernelAttrValue
-    - 2.19.31 aclrtLaunchKernelCfg
-    - 2.19.32 aclrtMallocAttribute
-    - 2.19.33 aclrtMallocAttrType
-    - 2.19.34 aclrtMallocAttrValue
-    - 2.19.35 aclrtMallocConfig
-    - 2.19.36 aclrtMemAttr
-    - 2.19.37 aclrtMemGranularityOptions
-    - 2.19.38 aclrtMemHandleType
-    - 2.19.39 aclrtMemLocation
-    - 2.19.40 aclrtMemLocationType
-    - 2.19.41 aclrtMemMallocPolicy
-    - 2.19.42 aclrtPhysicalMemProp
-    - 2.19.43 aclrtPtrAttributes
-    - 2.19.44 aclrtReduceKind
-    - 2.19.45 aclrtRunMode
-    - 2.19.46 aclrtStreamAttr
-    - 2.19.47 aclrtStreamAttrValue
-    - 2.19.48 aclrtStreamStatus
-    - 2.19.49 aclrtUtilizationInfo
-    - 2.19.50 aclSysParamOpt
+  - [1.1 废弃接口 &amp; 返回码列表](01_Runtime_API_C/01_01_废弃接口_&_返回码列表.md)
+  - [1.2 同步 &amp; 异步 API 说明](01_Runtime_API_C/01_02_同步_&_异步_API_说明.md)
+  - [1.3 头文件和库文件说明](01_Runtime_API_C/01_03_头文件和库文件说明.md)
+  - [1.4 初始化和去初始化](01_Runtime_API_C/01_04_初始化和去初始化.md)
+    - [1.4.1 aclInit](01_Runtime_API_C/01_04_初始化和去初始化/01_04_01_aclInit.md)
+    - [1.4.2 aclFinalize](01_Runtime_API_C/01_04_初始化和去初始化/01_04_02_aclFinalize.md)
+    - [1.4.3 aclFinalizeReference](01_Runtime_API_C/01_04_初始化和去初始化/01_04_03_aclFinalizeReference.md)
+    - [1.4.4 aclInitCallbackRegister](01_Runtime_API_C/01_04_初始化和去初始化/01_04_04_aclInitCallbackRegister.md)
+    - [1.4.5 aclInitCallbackUnRegister](01_Runtime_API_C/01_04_初始化和去初始化/01_04_05_aclInitCallbackUnRegister.md)
+    - [1.4.6 aclFinalizeCallbackRegister](01_Runtime_API_C/01_04_初始化和去初始化/01_04_06_aclFinalizeCallbackRegister.md)
+    - [1.4.7 aclFinalizeCallbackUnRegister](01_Runtime_API_C/01_04_初始化和去初始化/01_04_07_aclFinalizeCallbackUnRegister.md)
+  - [1.5 运行时配置](01_Runtime_API_C/01_05_运行时配置.md)
+    - [1.5.1 aclrtSetSysParamOpt](01_Runtime_API_C/01_05_运行时配置/01_05_01_aclrtSetSysParamOpt.md)
+    - [1.5.2 aclrtGetSysParamOpt](01_Runtime_API_C/01_05_运行时配置/01_05_02_aclrtGetSysParamOpt.md)
+    - [1.5.3 aclrtGetDeviceResLimit](01_Runtime_API_C/01_05_运行时配置/01_05_03_aclrtGetDeviceResLimit.md)
+    - [1.5.4 aclrtSetDeviceResLimit](01_Runtime_API_C/01_05_运行时配置/01_05_04_aclrtSetDeviceResLimit.md)
+    - [1.5.5 aclrtResetDeviceResLimit](01_Runtime_API_C/01_05_运行时配置/01_05_05_aclrtResetDeviceResLimit.md)
+    - [1.5.6 aclrtGetStreamResLimit](01_Runtime_API_C/01_05_运行时配置/01_05_06_aclrtGetStreamResLimit.md)
+    - [1.5.7 aclrtSetStreamResLimit](01_Runtime_API_C/01_05_运行时配置/01_05_07_aclrtSetStreamResLimit.md)
+    - [1.5.8 aclrtResetStreamResLimit](01_Runtime_API_C/01_05_运行时配置/01_05_08_aclrtResetStreamResLimit.md)
+    - [1.5.9 aclrtUseStreamResInCurrentThread](01_Runtime_API_C/01_05_运行时配置/01_05_09_aclrtUseStreamResInCurrentThread.md)
+    - [1.5.10 aclrtUnuseStreamResInCurrentThread](01_Runtime_API_C/01_05_运行时配置/01_05_10_aclrtUnuseStreamResInCurrentThread.md)
+    - [1.5.11 aclrtGetResInCurrentThread](01_Runtime_API_C/01_05_运行时配置/01_05_11_aclrtGetResInCurrentThread.md)
+  - [1.6 Device 管理](01_Runtime_API_C/01_06_Device_管理.md)
+    - [1.6.1 aclrtSetDevice](01_Runtime_API_C/01_06_Device_管理/01_06_01_aclrtSetDevice.md)
+    - [1.6.2 aclrtResetDevice](01_Runtime_API_C/01_06_Device_管理/01_06_02_aclrtResetDevice.md)
+    - [1.6.3 aclrtResetDeviceForce](01_Runtime_API_C/01_06_Device_管理/01_06_03_aclrtResetDeviceForce.md)
+    - [1.6.4 aclrtGetDevice](01_Runtime_API_C/01_06_Device_管理/01_06_04_aclrtGetDevice.md)
+    - [1.6.5 aclrtGetRunMode](01_Runtime_API_C/01_06_Device_管理/01_06_05_aclrtGetRunMode.md)
+    - [1.6.6 aclrtSetTsDevice](01_Runtime_API_C/01_06_Device_管理/01_06_06_aclrtSetTsDevice.md)
+    - [1.6.7 aclrtGetDeviceCount](01_Runtime_API_C/01_06_Device_管理/01_06_07_aclrtGetDeviceCount.md)
+    - [1.6.8 aclrtGetDeviceUtilizationRate](01_Runtime_API_C/01_06_Device_管理/01_06_08_aclrtGetDeviceUtilizationRate.md)
+    - [1.6.9 aclrtQueryDeviceStatus](01_Runtime_API_C/01_06_Device_管理/01_06_09_aclrtQueryDeviceStatus.md)
+    - [1.6.10 aclrtGetSocName](01_Runtime_API_C/01_06_Device_管理/01_06_10_aclrtGetSocName.md)
+    - [1.6.11 aclrtSetDeviceSatMode](01_Runtime_API_C/01_06_Device_管理/01_06_11_aclrtSetDeviceSatMode.md)
+    - [1.6.12 aclrtGetDeviceSatMode](01_Runtime_API_C/01_06_Device_管理/01_06_12_aclrtGetDeviceSatMode.md)
+    - [1.6.13 aclrtDeviceCanAccessPeer](01_Runtime_API_C/01_06_Device_管理/01_06_13_aclrtDeviceCanAccessPeer.md)
+    - [1.6.14 aclrtDeviceEnablePeerAccess](01_Runtime_API_C/01_06_Device_管理/01_06_14_aclrtDeviceEnablePeerAccess.md)
+    - [1.6.15 aclrtDeviceDisablePeerAccess](01_Runtime_API_C/01_06_Device_管理/01_06_15_aclrtDeviceDisablePeerAccess.md)
+    - [1.6.16 aclrtDevicePeerAccessStatus](01_Runtime_API_C/01_06_Device_管理/01_06_16_aclrtDevicePeerAccessStatus.md)
+    - [1.6.17 aclrtGetOverflowStatus](01_Runtime_API_C/01_06_Device_管理/01_06_17_aclrtGetOverflowStatus.md)
+    - [1.6.18 aclrtResetOverflowStatus](01_Runtime_API_C/01_06_Device_管理/01_06_18_aclrtResetOverflowStatus.md)
+    - [1.6.19 aclrtSynchronizeDevice](01_Runtime_API_C/01_06_Device_管理/01_06_19_aclrtSynchronizeDevice.md)
+    - [1.6.20 aclrtSynchronizeDeviceWithTimeout](01_Runtime_API_C/01_06_Device_管理/01_06_20_aclrtSynchronizeDeviceWithTimeout.md)
+    - [1.6.21 aclrtGetDeviceInfo](01_Runtime_API_C/01_06_Device_管理/01_06_21_aclrtGetDeviceInfo.md)
+    - [1.6.22 aclrtDeviceGetStreamPriorityRange](01_Runtime_API_C/01_06_Device_管理/01_06_22_aclrtDeviceGetStreamPriorityRange.md)
+    - [1.6.23 aclrtGetDeviceCapability](01_Runtime_API_C/01_06_Device_管理/01_06_23_aclrtGetDeviceCapability.md)
+    - [1.6.24 aclrtGetDevicesTopo](01_Runtime_API_C/01_06_Device_管理/01_06_24_aclrtGetDevicesTopo.md)
+    - [1.6.25 aclrtRegDeviceStateCallback](01_Runtime_API_C/01_06_Device_管理/01_06_25_aclrtRegDeviceStateCallback.md)
+    - [1.6.26 aclrtGetLogicDevIdByUserDevId](01_Runtime_API_C/01_06_Device_管理/01_06_26_aclrtGetLogicDevIdByUserDevId.md)
+    - [1.6.27 aclrtGetUserDevIdByLogicDevId](01_Runtime_API_C/01_06_Device_管理/01_06_27_aclrtGetUserDevIdByLogicDevId.md)
+    - [1.6.28 aclrtGetLogicDevIdByPhyDevId](01_Runtime_API_C/01_06_Device_管理/01_06_28_aclrtGetLogicDevIdByPhyDevId.md)
+    - [1.6.29 aclrtGetPhyDevIdByLogicDevId](01_Runtime_API_C/01_06_Device_管理/01_06_29_aclrtGetPhyDevIdByLogicDevId.md)
+    - [1.6.30 aclrtDeviceGetUuid](01_Runtime_API_C/01_06_Device_管理/01_06_30_aclrtDeviceGetUuid.md)
+  - [1.7 Context 管理](01_Runtime_API_C/01_07_Context_管理.md)
+    - [1.7.1 aclrtCreateContext](01_Runtime_API_C/01_07_Context_管理/01_07_01_aclrtCreateContext.md)
+    - [1.7.2 aclrtDestroyContext](01_Runtime_API_C/01_07_Context_管理/01_07_02_aclrtDestroyContext.md)
+    - [1.7.3 aclrtSetCurrentContext](01_Runtime_API_C/01_07_Context_管理/01_07_03_aclrtSetCurrentContext.md)
+    - [1.7.4 aclrtGetCurrentContext](01_Runtime_API_C/01_07_Context_管理/01_07_04_aclrtGetCurrentContext.md)
+    - [1.7.5 aclrtCtxSetSysParamOpt](01_Runtime_API_C/01_07_Context_管理/01_07_05_aclrtCtxSetSysParamOpt.md)
+    - [1.7.6 aclrtCtxGetSysParamOpt](01_Runtime_API_C/01_07_Context_管理/01_07_06_aclrtCtxGetSysParamOpt.md)
+    - [1.7.7 aclrtCtxGetCurrentDefaultStream](01_Runtime_API_C/01_07_Context_管理/01_07_07_aclrtCtxGetCurrentDefaultStream.md)
+    - [1.7.8 aclrtGetPrimaryCtxState](01_Runtime_API_C/01_07_Context_管理/01_07_08_aclrtGetPrimaryCtxState.md)
+    - [1.7.9 aclrtCtxGetFloatOverflowAddr](01_Runtime_API_C/01_07_Context_管理/01_07_09_aclrtCtxGetFloatOverflowAddr.md)
+  - [1.8 Stream 管理](01_Runtime_API_C/01_08_Stream_管理.md)
+    - [1.8.1 aclrtCreateStream](01_Runtime_API_C/01_08_Stream_管理/01_08_01_aclrtCreateStream.md)
+    - [1.8.2 aclrtCreateStreamWithConfig](01_Runtime_API_C/01_08_Stream_管理/01_08_02_aclrtCreateStreamWithConfig.md)
+    - [1.8.3 aclrtDestroyStream](01_Runtime_API_C/01_08_Stream_管理/01_08_03_aclrtDestroyStream.md)
+    - [1.8.4 aclrtDestroyStreamForce](01_Runtime_API_C/01_08_Stream_管理/01_08_04_aclrtDestroyStreamForce.md)
+    - [1.8.5 aclrtSetStreamOverflowSwitch](01_Runtime_API_C/01_08_Stream_管理/01_08_05_aclrtSetStreamOverflowSwitch.md)
+    - [1.8.6 aclrtGetStreamOverflowSwitch](01_Runtime_API_C/01_08_Stream_管理/01_08_06_aclrtGetStreamOverflowSwitch.md)
+    - [1.8.7 aclrtSetStreamFailureMode](01_Runtime_API_C/01_08_Stream_管理/01_08_07_aclrtSetStreamFailureMode.md)
+    - [1.8.8 aclrtStreamQuery](01_Runtime_API_C/01_08_Stream_管理/01_08_08_aclrtStreamQuery.md)
+    - [1.8.9 aclrtSynchronizeStream](01_Runtime_API_C/01_08_Stream_管理/01_08_09_aclrtSynchronizeStream.md)
+    - [1.8.10 aclrtSynchronizeStreamWithTimeout](01_Runtime_API_C/01_08_Stream_管理/01_08_10_aclrtSynchronizeStreamWithTimeout.md)
+    - [1.8.11 aclrtStreamAbort](01_Runtime_API_C/01_08_Stream_管理/01_08_11_aclrtStreamAbort.md)
+    - [1.8.12 aclrtStreamGetId](01_Runtime_API_C/01_08_Stream_管理/01_08_12_aclrtStreamGetId.md)
+    - [1.8.13 aclrtGetStreamAvailableNum](01_Runtime_API_C/01_08_Stream_管理/01_08_13_aclrtGetStreamAvailableNum.md)
+    - [1.8.14 aclrtSetStreamAttribute](01_Runtime_API_C/01_08_Stream_管理/01_08_14_aclrtSetStreamAttribute.md)
+    - [1.8.15 aclrtGetStreamAttribute](01_Runtime_API_C/01_08_Stream_管理/01_08_15_aclrtGetStreamAttribute.md)
+    - [1.8.16 aclrtActiveStream](01_Runtime_API_C/01_08_Stream_管理/01_08_16_aclrtActiveStream.md)
+    - [1.8.17 aclrtSwitchStream](01_Runtime_API_C/01_08_Stream_管理/01_08_17_aclrtSwitchStream.md)
+    - [1.8.18 aclrtRegStreamStateCallback](01_Runtime_API_C/01_08_Stream_管理/01_08_18_aclrtRegStreamStateCallback.md)
+    - [1.8.19 aclrtStreamStop](01_Runtime_API_C/01_08_Stream_管理/01_08_19_aclrtStreamStop.md)
+    - [1.8.20 aclrtPersistentTaskClean](01_Runtime_API_C/01_08_Stream_管理/01_08_20_aclrtPersistentTaskClean.md)
+    - [1.8.21 aclrtStreamGetPriority](01_Runtime_API_C/01_08_Stream_管理/01_08_21_aclrtStreamGetPriority.md)
+    - [1.8.22 aclrtStreamGetFlags](01_Runtime_API_C/01_08_Stream_管理/01_08_22_aclrtStreamGetFlags.md)
+  - [1.9 Event 管理](01_Runtime_API_C/01_09_Event_管理.md)
+    - [1.9.1 aclrtCreateEvent](01_Runtime_API_C/01_09_Event_管理/01_09_01_aclrtCreateEvent.md)
+    - [1.9.2 aclrtCreateEventWithFlag](01_Runtime_API_C/01_09_Event_管理/01_09_02_aclrtCreateEventWithFlag.md)
+    - [1.9.3 aclrtCreateEventExWithFlag](01_Runtime_API_C/01_09_Event_管理/01_09_03_aclrtCreateEventExWithFlag.md)
+    - [1.9.4 aclrtDestroyEvent](01_Runtime_API_C/01_09_Event_管理/01_09_04_aclrtDestroyEvent.md)
+    - [1.9.5 aclrtRecordEvent](01_Runtime_API_C/01_09_Event_管理/01_09_05_aclrtRecordEvent.md)
+    - [1.9.6 aclrtResetEvent](01_Runtime_API_C/01_09_Event_管理/01_09_06_aclrtResetEvent.md)
+    - [1.9.7 aclrtQueryEvent （废弃）](01_Runtime_API_C/01_09_Event_管理/01_09_07_aclrtQueryEvent_（废弃）.md)
+    - [1.9.8 aclrtQueryEventStatus](01_Runtime_API_C/01_09_Event_管理/01_09_08_aclrtQueryEventStatus.md)
+    - [1.9.9 aclrtQueryEventWaitStatus](01_Runtime_API_C/01_09_Event_管理/01_09_09_aclrtQueryEventWaitStatus.md)
+    - [1.9.10 aclrtSynchronizeEvent](01_Runtime_API_C/01_09_Event_管理/01_09_10_aclrtSynchronizeEvent.md)
+    - [1.9.11 aclrtSynchronizeEventWithTimeout](01_Runtime_API_C/01_09_Event_管理/01_09_11_aclrtSynchronizeEventWithTimeout.md)
+    - [1.9.12 aclrtEventElapsedTime](01_Runtime_API_C/01_09_Event_管理/01_09_12_aclrtEventElapsedTime.md)
+    - [1.9.13 aclrtStreamWaitEvent](01_Runtime_API_C/01_09_Event_管理/01_09_13_aclrtStreamWaitEvent.md)
+    - [1.9.14 aclrtStreamWaitEventWithTimeout](01_Runtime_API_C/01_09_Event_管理/01_09_14_aclrtStreamWaitEventWithTimeout.md)
+    - [1.9.15 aclrtSetOpWaitTimeout](01_Runtime_API_C/01_09_Event_管理/01_09_15_aclrtSetOpWaitTimeout.md)
+    - [1.9.16 aclrtEventGetTimestamp](01_Runtime_API_C/01_09_Event_管理/01_09_16_aclrtEventGetTimestamp.md)
+    - [1.9.17 aclrtGetEventId](01_Runtime_API_C/01_09_Event_管理/01_09_17_aclrtGetEventId.md)
+    - [1.9.18 aclrtGetEventAvailNum](01_Runtime_API_C/01_09_Event_管理/01_09_18_aclrtGetEventAvailNum.md)
+    - [1.9.19 aclrtIpcGetEventHandle](01_Runtime_API_C/01_09_Event_管理/01_09_19_aclrtIpcGetEventHandle.md)
+    - [1.9.20 aclrtIpcOpenEventHandle](01_Runtime_API_C/01_09_Event_管理/01_09_20_aclrtIpcOpenEventHandle.md)
+  - [1.10 Notify 管理](01_Runtime_API_C/01_10_Notify_管理.md)
+    - [1.10.1 aclrtCreateNotify](01_Runtime_API_C/01_10_Notify_管理/01_10_01_aclrtCreateNotify.md)
+    - [1.10.2 aclrtDestroyNotify](01_Runtime_API_C/01_10_Notify_管理/01_10_02_aclrtDestroyNotify.md)
+    - [1.10.3 aclrtRecordNotify](01_Runtime_API_C/01_10_Notify_管理/01_10_03_aclrtRecordNotify.md)
+    - [1.10.4 aclrtWaitAndResetNotify](01_Runtime_API_C/01_10_Notify_管理/01_10_04_aclrtWaitAndResetNotify.md)
+    - [1.10.5 aclrtGetNotifyId](01_Runtime_API_C/01_10_Notify_管理/01_10_05_aclrtGetNotifyId.md)
+    - [1.10.6 aclrtNotifyBatchReset](01_Runtime_API_C/01_10_Notify_管理/01_10_06_aclrtNotifyBatchReset.md)
+    - [1.10.7 aclrtNotifyGetExportKey](01_Runtime_API_C/01_10_Notify_管理/01_10_07_aclrtNotifyGetExportKey.md)
+    - [1.10.8 aclrtNotifySetImportPid](01_Runtime_API_C/01_10_Notify_管理/01_10_08_aclrtNotifySetImportPid.md)
+    - [1.10.9 aclrtNotifySetImportPidInterServer](01_Runtime_API_C/01_10_Notify_管理/01_10_09_aclrtNotifySetImportPidInterServer.md)
+    - [1.10.10 aclrtNotifyImportByKey](01_Runtime_API_C/01_10_Notify_管理/01_10_10_aclrtNotifyImportByKey.md)
+  - [1.11 CntNotify 管理](01_Runtime_API_C/01_11_CntNotify_管理.md)
+    - [1.11.1 aclrtCntNotifyCreate](01_Runtime_API_C/01_11_CntNotify_管理/01_11_01_aclrtCntNotifyCreate.md)
+    - [1.11.2 aclrtCntNotifyRecord](01_Runtime_API_C/01_11_CntNotify_管理/01_11_02_aclrtCntNotifyRecord.md)
+    - [1.11.3 aclrtCntNotifyWaitWithTimeout](01_Runtime_API_C/01_11_CntNotify_管理/01_11_03_aclrtCntNotifyWaitWithTimeout.md)
+    - [1.11.4 aclrtCntNotifyReset](01_Runtime_API_C/01_11_CntNotify_管理/01_11_04_aclrtCntNotifyReset.md)
+    - [1.11.5 aclrtCntNotifyGetId](01_Runtime_API_C/01_11_CntNotify_管理/01_11_05_aclrtCntNotifyGetId.md)
+    - [1.11.6 aclrtCntNotifyDestroy](01_Runtime_API_C/01_11_CntNotify_管理/01_11_06_aclrtCntNotifyDestroy.md)
+  - [1.12 Label 管理](01_Runtime_API_C/01_12_Label_管理.md)
+    - [1.12.1 aclrtCreateLabel](01_Runtime_API_C/01_12_Label_管理/01_12_01_aclrtCreateLabel.md)
+    - [1.12.2 aclrtSetLabel](01_Runtime_API_C/01_12_Label_管理/01_12_02_aclrtSetLabel.md)
+    - [1.12.3 aclrtDestroyLabel](01_Runtime_API_C/01_12_Label_管理/01_12_03_aclrtDestroyLabel.md)
+    - [1.12.4 aclrtCreateLabelList](01_Runtime_API_C/01_12_Label_管理/01_12_04_aclrtCreateLabelList.md)
+    - [1.12.5 aclrtDestroyLabelList](01_Runtime_API_C/01_12_Label_管理/01_12_05_aclrtDestroyLabelList.md)
+    - [1.12.6 aclrtSwitchLabelByIndex](01_Runtime_API_C/01_12_Label_管理/01_12_06_aclrtSwitchLabelByIndex.md)
+  - [1.13 内存管理](01_Runtime_API_C/01_13_内存管理.md)
+    - [1.13.1 内存使用说明](01_Runtime_API_C/01_13_内存管理/01_13_01_内存使用说明.md)
+    - [1.13.2 aclrtMalloc](01_Runtime_API_C/01_13_内存管理/01_13_02_aclrtMalloc.md)
+    - [1.13.3 aclrtMallocAlign32](01_Runtime_API_C/01_13_内存管理/01_13_03_aclrtMallocAlign32.md)
+    - [1.13.4 aclrtMallocCached](01_Runtime_API_C/01_13_内存管理/01_13_04_aclrtMallocCached.md)
+    - [1.13.5 aclrtMemFlush](01_Runtime_API_C/01_13_内存管理/01_13_05_aclrtMemFlush.md)
+    - [1.13.6 aclrtMemInvalidate](01_Runtime_API_C/01_13_内存管理/01_13_06_aclrtMemInvalidate.md)
+    - [1.13.7 aclrtMallocWithCfg](01_Runtime_API_C/01_13_内存管理/01_13_07_aclrtMallocWithCfg.md)
+    - [1.13.8 aclrtMallocForTaskScheduler](01_Runtime_API_C/01_13_内存管理/01_13_08_aclrtMallocForTaskScheduler.md)
+    - [1.13.9 aclrtFree](01_Runtime_API_C/01_13_内存管理/01_13_09_aclrtFree.md)
+    - [1.13.10 aclrtFreeWithDevSync](01_Runtime_API_C/01_13_内存管理/01_13_10_aclrtFreeWithDevSync.md)
+    - [1.13.11 aclrtMallocHost](01_Runtime_API_C/01_13_内存管理/01_13_11_aclrtMallocHost.md)
+    - [1.13.12 aclrtMallocHostWithCfg](01_Runtime_API_C/01_13_内存管理/01_13_12_aclrtMallocHostWithCfg.md)
+    - [1.13.13 aclrtFreeHost](01_Runtime_API_C/01_13_内存管理/01_13_13_aclrtFreeHost.md)
+    - [1.13.14 aclrtFreeHostWithDevSync](01_Runtime_API_C/01_13_内存管理/01_13_14_aclrtFreeHostWithDevSync.md)
+    - [1.13.15 aclrtMemset](01_Runtime_API_C/01_13_内存管理/01_13_15_aclrtMemset.md)
+    - [1.13.16 aclrtMemsetAsync](01_Runtime_API_C/01_13_内存管理/01_13_16_aclrtMemsetAsync.md)
+    - [1.13.17 aclrtMemcpy](01_Runtime_API_C/01_13_内存管理/01_13_17_aclrtMemcpy.md)
+    - [1.13.18 aclrtMemcpyAsync](01_Runtime_API_C/01_13_内存管理/01_13_18_aclrtMemcpyAsync.md)
+    - [1.13.19 aclrtMemcpyAsyncWithCondition](01_Runtime_API_C/01_13_内存管理/01_13_19_aclrtMemcpyAsyncWithCondition.md)
+    - [1.13.20 aclrtMemcpyBatch](01_Runtime_API_C/01_13_内存管理/01_13_20_aclrtMemcpyBatch.md)
+    - [1.13.21 aclrtMemcpyBatchAsync](01_Runtime_API_C/01_13_内存管理/01_13_21_aclrtMemcpyBatchAsync.md)
+    - [1.13.22 aclrtMemcpy2d](01_Runtime_API_C/01_13_内存管理/01_13_22_aclrtMemcpy2d.md)
+    - [1.13.23 aclrtMemcpy2dAsync](01_Runtime_API_C/01_13_内存管理/01_13_23_aclrtMemcpy2dAsync.md)
+    - [1.13.24 aclrtGetMemcpyDescSize](01_Runtime_API_C/01_13_内存管理/01_13_24_aclrtGetMemcpyDescSize.md)
+    - [1.13.25 aclrtSetMemcpyDesc](01_Runtime_API_C/01_13_内存管理/01_13_25_aclrtSetMemcpyDesc.md)
+    - [1.13.26 aclrtMemcpyAsyncWithDesc](01_Runtime_API_C/01_13_内存管理/01_13_26_aclrtMemcpyAsyncWithDesc.md)
+    - [1.13.27 aclrtMemcpyAsyncWithOffset](01_Runtime_API_C/01_13_内存管理/01_13_27_aclrtMemcpyAsyncWithOffset.md)
+    - [1.13.28 aclrtMallocPhysical](01_Runtime_API_C/01_13_内存管理/01_13_28_aclrtMallocPhysical.md)
+    - [1.13.29 aclrtFreePhysical](01_Runtime_API_C/01_13_内存管理/01_13_29_aclrtFreePhysical.md)
+    - [1.13.30 aclrtReserveMemAddress](01_Runtime_API_C/01_13_内存管理/01_13_30_aclrtReserveMemAddress.md)
+    - [1.13.31 aclrtReserveMemAddressNoUCMemory](01_Runtime_API_C/01_13_内存管理/01_13_31_aclrtReserveMemAddressNoUCMemory.md)
+    - [1.13.32 aclrtReleaseMemAddress](01_Runtime_API_C/01_13_内存管理/01_13_32_aclrtReleaseMemAddress.md)
+    - [1.13.33 aclrtMapMem](01_Runtime_API_C/01_13_内存管理/01_13_33_aclrtMapMem.md)
+    - [1.13.34 aclrtUnmapMem](01_Runtime_API_C/01_13_内存管理/01_13_34_aclrtUnmapMem.md)
+    - [1.13.35 aclrtMemExportToShareableHandle](01_Runtime_API_C/01_13_内存管理/01_13_35_aclrtMemExportToShareableHandle.md)
+    - [1.13.36 aclrtMemSetPidToShareableHandle](01_Runtime_API_C/01_13_内存管理/01_13_36_aclrtMemSetPidToShareableHandle.md)
+    - [1.13.37 aclrtMemImportFromShareableHandle](01_Runtime_API_C/01_13_内存管理/01_13_37_aclrtMemImportFromShareableHandle.md)
+    - [1.13.38 aclrtMemExportToShareableHandleV2](01_Runtime_API_C/01_13_内存管理/01_13_38_aclrtMemExportToShareableHandleV2.md)
+    - [1.13.39 aclrtMemSetPidToShareableHandleV2](01_Runtime_API_C/01_13_内存管理/01_13_39_aclrtMemSetPidToShareableHandleV2.md)
+    - [1.13.40 aclrtMemImportFromShareableHandleV2](01_Runtime_API_C/01_13_内存管理/01_13_40_aclrtMemImportFromShareableHandleV2.md)
+    - [1.13.41 aclrtDeviceGetBareTgid](01_Runtime_API_C/01_13_内存管理/01_13_41_aclrtDeviceGetBareTgid.md)
+    - [1.13.42 aclrtMemGetAllocationGranularity](01_Runtime_API_C/01_13_内存管理/01_13_42_aclrtMemGetAllocationGranularity.md)
+    - [1.13.43 aclrtMemSetAccess](01_Runtime_API_C/01_13_内存管理/01_13_43_aclrtMemSetAccess.md)
+    - [1.13.44 aclrtMemGetAccess](01_Runtime_API_C/01_13_内存管理/01_13_44_aclrtMemGetAccess.md)
+    - [1.13.45 aclrtMemRetainAllocationHandle](01_Runtime_API_C/01_13_内存管理/01_13_45_aclrtMemRetainAllocationHandle.md)
+    - [1.13.46 aclrtMemGetAllocationPropertiesFromHandle](01_Runtime_API_C/01_13_内存管理/01_13_46_aclrtMemGetAllocationPropertiesFromHandle.md)
+    - [1.13.47 aclrtMemGetAddressRange](01_Runtime_API_C/01_13_内存管理/01_13_47_aclrtMemGetAddressRange.md)
+    - [1.13.48 aclrtMemAllocManaged](01_Runtime_API_C/01_13_内存管理/01_13_48_aclrtMemAllocManaged.md)
+    - [1.13.49 aclrtMemP2PMap](01_Runtime_API_C/01_13_内存管理/01_13_49_aclrtMemP2PMap.md)
+    - [1.13.50 aclrtCmoAsync](01_Runtime_API_C/01_13_内存管理/01_13_50_aclrtCmoAsync.md)
+    - [1.13.51 aclrtCmoAsyncWithBarrier](01_Runtime_API_C/01_13_内存管理/01_13_51_aclrtCmoAsyncWithBarrier.md)
+    - [1.13.52 aclrtCmoWaitBarrier](01_Runtime_API_C/01_13_内存管理/01_13_52_aclrtCmoWaitBarrier.md)
+    - [1.13.53 aclrtCmoGetDescSize](01_Runtime_API_C/01_13_内存管理/01_13_53_aclrtCmoGetDescSize.md)
+    - [1.13.54 aclrtCmoSetDesc](01_Runtime_API_C/01_13_内存管理/01_13_54_aclrtCmoSetDesc.md)
+    - [1.13.55 aclrtCmoAsyncWithDesc](01_Runtime_API_C/01_13_内存管理/01_13_55_aclrtCmoAsyncWithDesc.md)
+    - [1.13.56 aclrtPointerGetAttributes](01_Runtime_API_C/01_13_内存管理/01_13_56_aclrtPointerGetAttributes.md)
+    - [1.13.57 aclrtHostRegister](01_Runtime_API_C/01_13_内存管理/01_13_57_aclrtHostRegister.md)
+    - [1.13.58 aclrtHostRegisterV2](01_Runtime_API_C/01_13_内存管理/01_13_58_aclrtHostRegisterV2.md)
+    - [1.13.59 aclrtHostGetDevicePointer](01_Runtime_API_C/01_13_内存管理/01_13_59_aclrtHostGetDevicePointer.md)
+    - [1.13.60 aclrtHostUnregister](01_Runtime_API_C/01_13_内存管理/01_13_60_aclrtHostUnregister.md)
+    - [1.13.61 aclrtHostMemMapCapabilities](01_Runtime_API_C/01_13_内存管理/01_13_61_aclrtHostMemMapCapabilities.md)
+    - [1.13.62 aclrtValueWrite](01_Runtime_API_C/01_13_内存管理/01_13_62_aclrtValueWrite.md)
+    - [1.13.63 aclrtValueWait](01_Runtime_API_C/01_13_内存管理/01_13_63_aclrtValueWait.md)
+    - [1.13.64 aclrtIpcMemGetExportKey](01_Runtime_API_C/01_13_内存管理/01_13_64_aclrtIpcMemGetExportKey.md)
+    - [1.13.65 aclrtIpcMemSetImportPid](01_Runtime_API_C/01_13_内存管理/01_13_65_aclrtIpcMemSetImportPid.md)
+    - [1.13.66 aclrtIpcMemImportPidInterServer](01_Runtime_API_C/01_13_内存管理/01_13_66_aclrtIpcMemImportPidInterServer.md)
+    - [1.13.67 aclrtIpcMemImportByKey](01_Runtime_API_C/01_13_内存管理/01_13_67_aclrtIpcMemImportByKey.md)
+    - [1.13.68 aclrtIpcMemSetAttr](01_Runtime_API_C/01_13_内存管理/01_13_68_aclrtIpcMemSetAttr.md)
+    - [1.13.69 aclrtIpcMemClose](01_Runtime_API_C/01_13_内存管理/01_13_69_aclrtIpcMemClose.md)
+    - [1.13.70 aclrtGetMemInfo](01_Runtime_API_C/01_13_内存管理/01_13_70_aclrtGetMemInfo.md)
+    - [1.13.71 aclrtCheckMemType](01_Runtime_API_C/01_13_内存管理/01_13_71_aclrtCheckMemType.md)
+    - [1.13.72 aclrtGetMemUsageInfo](01_Runtime_API_C/01_13_内存管理/01_13_72_aclrtGetMemUsageInfo.md)
+    - [1.13.73 aclrtAllocatorRegister](01_Runtime_API_C/01_13_内存管理/01_13_73_aclrtAllocatorRegister.md)
+    - [1.13.74 aclrtAllocatorGetByStream](01_Runtime_API_C/01_13_内存管理/01_13_74_aclrtAllocatorGetByStream.md)
+    - [1.13.75 aclrtAllocatorUnregister](01_Runtime_API_C/01_13_内存管理/01_13_75_aclrtAllocatorUnregister.md)
+  - [1.14 执行控制](01_Runtime_API_C/01_14_执行控制.md)
+    - [1.14.1 aclrtLaunchCallback](01_Runtime_API_C/01_14_执行控制/01_14_01_aclrtLaunchCallback.md)
+    - [1.14.2 aclrtSubscribeReport](01_Runtime_API_C/01_14_执行控制/01_14_02_aclrtSubscribeReport.md)
+    - [1.14.3 aclrtProcessReport](01_Runtime_API_C/01_14_执行控制/01_14_03_aclrtProcessReport.md)
+    - [1.14.4 aclrtUnSubscribeReport](01_Runtime_API_C/01_14_执行控制/01_14_04_aclrtUnSubscribeReport.md)
+    - [1.14.5 aclrtGetOpTimeoutInterval](01_Runtime_API_C/01_14_执行控制/01_14_05_aclrtGetOpTimeoutInterval.md)
+    - [1.14.6 aclrtSetOpExecuteTimeOut](01_Runtime_API_C/01_14_执行控制/01_14_06_aclrtSetOpExecuteTimeOut.md)
+    - [1.14.7 aclrtSetOpExecuteTimeOutV2](01_Runtime_API_C/01_14_执行控制/01_14_07_aclrtSetOpExecuteTimeOutV2.md)
+    - [1.14.8 aclrtSetOpExecuteTimeOutWithMs](01_Runtime_API_C/01_14_执行控制/01_14_08_aclrtSetOpExecuteTimeOutWithMs.md)
+    - [1.14.9 aclrtGetOpExecuteTimeOut](01_Runtime_API_C/01_14_执行控制/01_14_09_aclrtGetOpExecuteTimeOut.md)
+    - [1.14.10 aclrtGetThreadLastTaskId](01_Runtime_API_C/01_14_执行控制/01_14_10_aclrtGetThreadLastTaskId.md)
+    - [1.14.11 aclrtReduceAsync](01_Runtime_API_C/01_14_执行控制/01_14_11_aclrtReduceAsync.md)
+    - [1.14.12 aclrtLaunchHostFunc](01_Runtime_API_C/01_14_执行控制/01_14_12_aclrtLaunchHostFunc.md)
+    - [1.14.13 aclrtRandomNumAsync](01_Runtime_API_C/01_14_执行控制/01_14_13_aclrtRandomNumAsync.md)
+    - [1.14.14 aclrtTaskUpdateAsync](01_Runtime_API_C/01_14_执行控制/01_14_14_aclrtTaskUpdateAsync.md)
+  - [1.15 异常处理](01_Runtime_API_C/01_15_异常处理.md)
+    - [1.15.1 aclGetRecentErrMsg](01_Runtime_API_C/01_15_异常处理/01_15_01_aclGetRecentErrMsg.md)
+    - [1.15.2 aclrtSetExceptionInfoCallback](01_Runtime_API_C/01_15_异常处理/01_15_02_aclrtSetExceptionInfoCallback.md)
+    - [1.15.3 aclrtGetTaskIdFromExceptionInfo](01_Runtime_API_C/01_15_异常处理/01_15_03_aclrtGetTaskIdFromExceptionInfo.md)
+    - [1.15.4 aclrtGetStreamIdFromExceptionInfo](01_Runtime_API_C/01_15_异常处理/01_15_04_aclrtGetStreamIdFromExceptionInfo.md)
+    - [1.15.5 aclrtGetThreadIdFromExceptionInfo](01_Runtime_API_C/01_15_异常处理/01_15_05_aclrtGetThreadIdFromExceptionInfo.md)
+    - [1.15.6 aclrtGetDeviceIdFromExceptionInfo](01_Runtime_API_C/01_15_异常处理/01_15_06_aclrtGetDeviceIdFromExceptionInfo.md)
+    - [1.15.7 aclrtGetErrorCodeFromExceptionInfo](01_Runtime_API_C/01_15_异常处理/01_15_07_aclrtGetErrorCodeFromExceptionInfo.md)
+    - [1.15.8 aclrtPeekAtLastError](01_Runtime_API_C/01_15_异常处理/01_15_08_aclrtPeekAtLastError.md)
+    - [1.15.9 aclrtGetLastError](01_Runtime_API_C/01_15_异常处理/01_15_09_aclrtGetLastError.md)
+    - [1.15.10 aclrtGetMemUceInfo](01_Runtime_API_C/01_15_异常处理/01_15_10_aclrtGetMemUceInfo.md)
+    - [1.15.11 aclrtMemUceRepair](01_Runtime_API_C/01_15_异常处理/01_15_11_aclrtMemUceRepair.md)
+    - [1.15.12 aclrtDeviceTaskAbort](01_Runtime_API_C/01_15_异常处理/01_15_12_aclrtDeviceTaskAbort.md)
+    - [1.15.13 aclRecoverAllHcclTasks](01_Runtime_API_C/01_15_异常处理/01_15_13_aclRecoverAllHcclTasks.md)
+    - [1.15.14 aclrtGetErrorVerbose](01_Runtime_API_C/01_15_异常处理/01_15_14_aclrtGetErrorVerbose.md)
+    - [1.15.15 aclrtRepairError](01_Runtime_API_C/01_15_异常处理/01_15_15_aclrtRepairError.md)
+    - [1.15.16 aclrtSetDeviceTaskAbortCallback](01_Runtime_API_C/01_15_异常处理/01_15_16_aclrtSetDeviceTaskAbortCallback.md)
+  - [1.16 Kernel 加载与执行](01_Runtime_API_C/01_16_Kernel_加载与执行.md)
+    - [1.16.1 概念及使用说明](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_01_概念及使用说明.md)
+    - [1.16.2 aclrtBinaryLoadFromFile](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_02_aclrtBinaryLoadFromFile.md)
+    - [1.16.3 aclrtBinaryLoadFromData](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_03_aclrtBinaryLoadFromData.md)
+    - [1.16.4 aclrtBinaryGetFunction](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_04_aclrtBinaryGetFunction.md)
+    - [1.16.5 aclrtBinaryGetFunctionByEntry](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_05_aclrtBinaryGetFunctionByEntry.md)
+    - [1.16.6 aclrtBinaryGetDevAddress](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_06_aclrtBinaryGetDevAddress.md)
+    - [1.16.7 aclrtBinarySetExceptionCallback](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_07_aclrtBinarySetExceptionCallback.md)
+    - [1.16.8 aclrtGetArgsFromExceptionInfo](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_08_aclrtGetArgsFromExceptionInfo.md)
+    - [1.16.9 aclrtGetFuncHandleFromExceptionInfo](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_09_aclrtGetFuncHandleFromExceptionInfo.md)
+    - [1.16.10 aclrtGetFunctionAddr](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_10_aclrtGetFunctionAddr.md)
+    - [1.16.11 aclrtGetFunctionName](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_11_aclrtGetFunctionName.md)
+    - [1.16.12 aclrtGetFunctionAttribute](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_12_aclrtGetFunctionAttribute.md)
+    - [1.16.13 aclrtGetHardwareSyncAddr](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_13_aclrtGetHardwareSyncAddr.md)
+    - [1.16.14 aclrtRegisterCpuFunc](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_14_aclrtRegisterCpuFunc.md)
+    - [1.16.15 aclrtKernelArgsInit](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_15_aclrtKernelArgsInit.md)
+    - [1.16.16 aclrtKernelArgsInitByUserMem](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_16_aclrtKernelArgsInitByUserMem.md)
+    - [1.16.17 aclrtKernelArgsGetMemSize](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_17_aclrtKernelArgsGetMemSize.md)
+    - [1.16.18 aclrtKernelArgsGetHandleMemSize](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_18_aclrtKernelArgsGetHandleMemSize.md)
+    - [1.16.19 aclrtKernelArgsAppend](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_19_aclrtKernelArgsAppend.md)
+    - [1.16.20 aclrtKernelArgsAppendPlaceHolder](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_20_aclrtKernelArgsAppendPlaceHolder.md)
+    - [1.16.21 aclrtKernelArgsGetPlaceHolderBuffer](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_21_aclrtKernelArgsGetPlaceHolderBuffer.md)
+    - [1.16.22 aclrtKernelArgsParaUpdate](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_22_aclrtKernelArgsParaUpdate.md)
+    - [1.16.23 aclrtKernelArgsFinalize](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_23_aclrtKernelArgsFinalize.md)
+    - [1.16.24 aclrtLaunchKernel](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_24_aclrtLaunchKernel.md)
+    - [1.16.25 aclrtLaunchKernelV2](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_25_aclrtLaunchKernelV2.md)
+    - [1.16.26 aclrtLaunchKernelWithConfig](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_26_aclrtLaunchKernelWithConfig.md)
+    - [1.16.27 aclrtLaunchKernelWithHostArgs](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_27_aclrtLaunchKernelWithHostArgs.md)
+    - [1.16.28 aclrtCreateBinary](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_28_aclrtCreateBinary.md)
+    - [1.16.29 aclrtDestroyBinary](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_29_aclrtDestroyBinary.md)
+    - [1.16.30 aclrtBinaryLoad](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_30_aclrtBinaryLoad.md)
+    - [1.16.31 aclrtBinaryUnLoad](01_Runtime_API_C/01_16_Kernel_加载与执行/01_16_31_aclrtBinaryUnLoad.md)
+  - [1.17 模型运行实例管理](01_Runtime_API_C/01_17_模型运行实例管理.md)
+    - [1.17.1 aclmdlRICaptureBegin](01_Runtime_API_C/01_17_模型运行实例管理/01_17_01_aclmdlRICaptureBegin.md)
+    - [1.17.2 aclmdlRICaptureGetInfo](01_Runtime_API_C/01_17_模型运行实例管理/01_17_02_aclmdlRICaptureGetInfo.md)
+    - [1.17.3 aclmdlRICaptureThreadExchangeMode](01_Runtime_API_C/01_17_模型运行实例管理/01_17_03_aclmdlRICaptureThreadExchangeMode.md)
+    - [1.17.4 aclmdlRICaptureEnd](01_Runtime_API_C/01_17_模型运行实例管理/01_17_04_aclmdlRICaptureEnd.md)
+    - [1.17.5 aclmdlRICaptureTaskGrpBegin](01_Runtime_API_C/01_17_模型运行实例管理/01_17_05_aclmdlRICaptureTaskGrpBegin.md)
+    - [1.17.6 aclmdlRICaptureTaskGrpEnd](01_Runtime_API_C/01_17_模型运行实例管理/01_17_06_aclmdlRICaptureTaskGrpEnd.md)
+    - [1.17.7 aclmdlRICaptureTaskUpdateBegin](01_Runtime_API_C/01_17_模型运行实例管理/01_17_07_aclmdlRICaptureTaskUpdateBegin.md)
+    - [1.17.8 aclmdlRICaptureTaskUpdateEnd](01_Runtime_API_C/01_17_模型运行实例管理/01_17_08_aclmdlRICaptureTaskUpdateEnd.md)
+    - [1.17.9 aclmdlRIDebugJsonPrint](01_Runtime_API_C/01_17_模型运行实例管理/01_17_09_aclmdlRIDebugJsonPrint.md)
+    - [1.17.10 aclmdlRIDebugPrint](01_Runtime_API_C/01_17_模型运行实例管理/01_17_10_aclmdlRIDebugPrint.md)
+    - [1.17.11 aclmdlRIBuildBegin](01_Runtime_API_C/01_17_模型运行实例管理/01_17_11_aclmdlRIBuildBegin.md)
+    - [1.17.12 aclmdlRIBindStream](01_Runtime_API_C/01_17_模型运行实例管理/01_17_12_aclmdlRIBindStream.md)
+    - [1.17.13 aclmdlRIEndTask](01_Runtime_API_C/01_17_模型运行实例管理/01_17_13_aclmdlRIEndTask.md)
+    - [1.17.14 aclmdlRIBuildEnd](01_Runtime_API_C/01_17_模型运行实例管理/01_17_14_aclmdlRIBuildEnd.md)
+    - [1.17.15 aclmdlRIUnbindStream](01_Runtime_API_C/01_17_模型运行实例管理/01_17_15_aclmdlRIUnbindStream.md)
+    - [1.17.16 aclmdlRIExecute](01_Runtime_API_C/01_17_模型运行实例管理/01_17_16_aclmdlRIExecute.md)
+    - [1.17.17 aclmdlRIExecuteAsync](01_Runtime_API_C/01_17_模型运行实例管理/01_17_17_aclmdlRIExecuteAsync.md)
+    - [1.17.18 aclmdlRIDestroy](01_Runtime_API_C/01_17_模型运行实例管理/01_17_18_aclmdlRIDestroy.md)
+    - [1.17.19 aclmdlRISetName](01_Runtime_API_C/01_17_模型运行实例管理/01_17_19_aclmdlRISetName.md)
+    - [1.17.20 aclmdlRIGetName](01_Runtime_API_C/01_17_模型运行实例管理/01_17_20_aclmdlRIGetName.md)
+    - [1.17.21 aclrtCheckArchCompatibility](01_Runtime_API_C/01_17_模型运行实例管理/01_17_21_aclrtCheckArchCompatibility.md)
+    - [1.17.22 aclmdlRIAbort](01_Runtime_API_C/01_17_模型运行实例管理/01_17_22_aclmdlRIAbort.md)
+  - [1.18 算力 Group 查询与设置](01_Runtime_API_C/01_18_算力_Group_查询与设置.md)
+    - [1.18.1 aclrtSetGroup](01_Runtime_API_C/01_18_算力_Group_查询与设置/01_18_01_aclrtSetGroup.md)
+    - [1.18.2 aclrtGetGroupCount](01_Runtime_API_C/01_18_算力_Group_查询与设置/01_18_02_aclrtGetGroupCount.md)
+    - [1.18.3 aclrtGetAllGroupInfo](01_Runtime_API_C/01_18_算力_Group_查询与设置/01_18_03_aclrtGetAllGroupInfo.md)
+    - [1.18.4 aclrtGetGroupInfoDetail](01_Runtime_API_C/01_18_算力_Group_查询与设置/01_18_04_aclrtGetGroupInfoDetail.md)
+    - [1.18.5 aclrtCreateGroupInfo](01_Runtime_API_C/01_18_算力_Group_查询与设置/01_18_05_aclrtCreateGroupInfo.md)
+    - [1.18.6 aclrtDestroyGroupInfo](01_Runtime_API_C/01_18_算力_Group_查询与设置/01_18_06_aclrtDestroyGroupInfo.md)
+  - [1.19 数据传输](01_Runtime_API_C/01_19_数据传输.md)
+    - [1.19.1 Tensor 数据传输](01_Runtime_API_C/01_19_数据传输/01_19_01_Tensor_数据传输.md)
+      - [1.19.1.1 acltdtCreateChannel](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_01_acltdtCreateChannel.md)
+      - [1.19.1.2 acltdtCreateChannelWithCapacity](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_02_acltdtCreateChannelWithCapacity.md)
+      - [1.19.1.3 acltdtSendTensor](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_03_acltdtSendTensor.md)
+      - [1.19.1.4 acltdtReceiveTensor](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_04_acltdtReceiveTensor.md)
+      - [1.19.1.5 acltdtStopChannel](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_05_acltdtStopChannel.md)
+      - [1.19.1.6 acltdtDestroyChannel](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_06_acltdtDestroyChannel.md)
+      - [1.19.1.7 acltdtQueryChannelSize](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_07_acltdtQueryChannelSize.md)
+      - [1.19.1.8 acltdtGetSliceInfoFromItem](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_08_acltdtGetSliceInfoFromItem.md)
+      - [1.19.1.9 acltdtCleanChannel](01_Runtime_API_C/01_19_01_Tensor_数据传输/01_19_01_09_acltdtCleanChannel.md)
+    - [1.19.2 共享队列管理](01_Runtime_API_C/01_19_数据传输/01_19_02_共享队列管理.md)
+      - [1.19.2.1 共享队列管理使用说明](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_01_共享队列管理使用说明.md)
+      - [1.19.2.2 acltdtCreateQueue](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_02_acltdtCreateQueue.md)
+      - [1.19.2.3 acltdtDestroyQueue](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_03_acltdtDestroyQueue.md)
+      - [1.19.2.4 acltdtEnqueueData](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_04_acltdtEnqueueData.md)
+      - [1.19.2.5 acltdtDequeueData](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_05_acltdtDequeueData.md)
+      - [1.19.2.6 acltdtEnqueue](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_06_acltdtEnqueue.md)
+      - [1.19.2.7 acltdtDequeue](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_07_acltdtDequeue.md)
+      - [1.19.2.8 acltdtBindQueueRoutes](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_08_acltdtBindQueueRoutes.md)
+      - [1.19.2.9 acltdtUnbindQueueRoutes](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_09_acltdtUnbindQueueRoutes.md)
+      - [1.19.2.10 acltdtQueryQueueRoutes](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_10_acltdtQueryQueueRoutes.md)
+      - [1.19.2.11 acltdtGrantQueue](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_11_acltdtGrantQueue.md)
+      - [1.19.2.12 acltdtAttachQueue](01_Runtime_API_C/01_19_02_共享队列管理/01_19_02_12_acltdtAttachQueue.md)
+    - [1.19.3 共享 Buffer 管理](01_Runtime_API_C/01_19_数据传输/01_19_03_共享_Buffer_管理.md)
+      - [1.19.3.1 共享 Buffer 管理使用说明](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_01_共享_Buffer_管理使用说明.md)
+      - [1.19.3.2 acltdtAllocBuf](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_02_acltdtAllocBuf.md)
+      - [1.19.3.3 acltdtFreeBuf](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_03_acltdtFreeBuf.md)
+      - [1.19.3.4 acltdtGetBufData](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_04_acltdtGetBufData.md)
+      - [1.19.3.5 acltdtSetBufUserData](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_05_acltdtSetBufUserData.md)
+      - [1.19.3.6 acltdtGetBufUserData](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_06_acltdtGetBufUserData.md)
+      - [1.19.3.7 acltdtSetBufDataLen](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_07_acltdtSetBufDataLen.md)
+      - [1.19.3.8 acltdtGetBufDataLen](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_08_acltdtGetBufDataLen.md)
+      - [1.19.3.9 acltdtCopyBufRef](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_09_acltdtCopyBufRef.md)
+      - [1.19.3.10 acltdtAppendBufChain](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_10_acltdtAppendBufChain.md)
+      - [1.19.3.11 acltdtGetBufChainNum](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_11_acltdtGetBufChainNum.md)
+      - [1.19.3.12 acltdtGetBufFromChain](01_Runtime_API_C/01_19_03_共享_Buffer_管理/01_19_03_12_acltdtGetBufFromChain.md)
+  - [1.20 Dump 配置](01_Runtime_API_C/01_20_Dump_配置.md)
+    - [1.20.1 aclmdlInitDump](01_Runtime_API_C/01_20_Dump_配置/01_20_01_aclmdlInitDump.md)
+    - [1.20.2 aclmdlSetDump](01_Runtime_API_C/01_20_Dump_配置/01_20_02_aclmdlSetDump.md)
+    - [1.20.3 acldumpRegCallback](01_Runtime_API_C/01_20_Dump_配置/01_20_03_acldumpRegCallback.md)
+    - [1.20.4 acldumpUnregCallback](01_Runtime_API_C/01_20_Dump_配置/01_20_04_acldumpUnregCallback.md)
+    - [1.20.5 acldumpGetPath](01_Runtime_API_C/01_20_Dump_配置/01_20_05_acldumpGetPath.md)
+    - [1.20.6 aclmdlFinalizeDump](01_Runtime_API_C/01_20_Dump_配置/01_20_06_aclmdlFinalizeDump.md)
+    - [1.20.7 aclopStartDumpArgs](01_Runtime_API_C/01_20_Dump_配置/01_20_07_aclopStartDumpArgs.md)
+    - [1.20.8 aclopStopDumpArgs](01_Runtime_API_C/01_20_Dump_配置/01_20_08_aclopStopDumpArgs.md)
+  - [1.21 Profiling 数据采集](01_Runtime_API_C/01_21_Profiling_数据采集.md)
+    - [1.21.1 Profiling 数据采集接口](01_Runtime_API_C/01_21_Profiling_数据采集/01_21_01_Profiling_数据采集接口.md)
+      - [1.21.1.1 数据采集说明](01_Runtime_API_C/01_21_01_Profiling_数据采集接口/01_21_01_01_数据采集说明.md)
+      - [1.21.1.2 aclprofInit](01_Runtime_API_C/01_21_01_Profiling_数据采集接口/01_21_01_02_aclprofInit.md)
+      - [1.21.1.3 aclprofSetConfig](01_Runtime_API_C/01_21_01_Profiling_数据采集接口/01_21_01_03_aclprofSetConfig.md)
+      - [1.21.1.4 aclprofStart](01_Runtime_API_C/01_21_01_Profiling_数据采集接口/01_21_01_04_aclprofStart.md)
+      - [1.21.1.5 aclprofStop](01_Runtime_API_C/01_21_01_Profiling_数据采集接口/01_21_01_05_aclprofStop.md)
+      - [1.21.1.6 aclprofFinalize](01_Runtime_API_C/01_21_01_Profiling_数据采集接口/01_21_01_06_aclprofFinalize.md)
+    - [1.21.2 msproftx 扩展接口](01_Runtime_API_C/01_21_Profiling_数据采集/01_21_02_msproftx_扩展接口.md)
+      - [1.21.2.1 扩展接口使用说明](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_01_扩展接口使用说明.md)
+      - [1.21.2.2 aclprofCreateStamp](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_02_aclprofCreateStamp.md)
+      - [1.21.2.3 aclprofSetStampTraceMessage](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_03_aclprofSetStampTraceMessage.md)
+      - [1.21.2.4 aclprofMark](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_04_aclprofMark.md)
+      - [1.21.2.5 aclprofMarkEx](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_05_aclprofMarkEx.md)
+      - [1.21.2.6 aclprofPush](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_06_aclprofPush.md)
+      - [1.21.2.7 aclprofPop](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_07_aclprofPop.md)
+      - [1.21.2.8 aclprofRangeStart](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_08_aclprofRangeStart.md)
+      - [1.21.2.9 aclprofRangeStop](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_09_aclprofRangeStop.md)
+      - [1.21.2.10 aclprofDestroyStamp](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_10_aclprofDestroyStamp.md)
+      - [1.21.2.11 aclprofStr2Id](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_11_aclprofStr2Id.md)
+      - [1.21.2.12 aclprofRangePushEx](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_12_aclprofRangePushEx.md)
+      - [1.21.2.13 aclprofRangePop](01_Runtime_API_C/01_21_02_msproftx_扩展接口/01_21_02_13_aclprofRangePop.md)
+    - [1.21.3 订阅算子信息](01_Runtime_API_C/01_21_Profiling_数据采集/01_21_03_订阅算子信息.md)
+      - [1.21.3.1 订阅接口使用说明](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_01_订阅接口使用说明.md)
+      - [1.21.3.2 aclprofModelSubscribe](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_02_aclprofModelSubscribe.md)
+      - [1.21.3.3 aclprofModelUnSubscribe](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_03_aclprofModelUnSubscribe.md)
+      - [1.21.3.4 aclprofGetOpDescSize](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_04_aclprofGetOpDescSize.md)
+      - [1.21.3.5 aclprofGetOpNum](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_05_aclprofGetOpNum.md)
+      - [1.21.3.6 aclprofGetOpTypeLen](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_06_aclprofGetOpTypeLen.md)
+      - [1.21.3.7 aclprofGetOpType](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_07_aclprofGetOpType.md)
+      - [1.21.3.8 aclprofGetOpNameLen](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_08_aclprofGetOpNameLen.md)
+      - [1.21.3.9 aclprofGetOpName](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_09_aclprofGetOpName.md)
+      - [1.21.3.10 aclprofGetOpStart](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_10_aclprofGetOpStart.md)
+      - [1.21.3.11 aclprofGetOpEnd](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_11_aclprofGetOpEnd.md)
+      - [1.21.3.12 aclprofGetOpDuration](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_12_aclprofGetOpDuration.md)
+      - [1.21.3.13 aclprofGetModelId](01_Runtime_API_C/01_21_03_订阅算子信息/01_21_03_13_aclprofGetModelId.md)
+    - [1.21.4 PyTorch 场景标记迭代时间](01_Runtime_API_C/01_21_Profiling_数据采集/01_21_04_PyTorch_场景标记迭代时间.md)
+      - [1.21.4.1 aclprofGetStepTimestamp](01_Runtime_API_C/01_21_04_PyTorch_场景标记迭代时间/01_21_04_01_aclprofGetStepTimestamp.md)
+  - [1.22 共享 Buffer 管理（预留，暂不支持）](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）.md)
+    - [1.22.1 aclrtAllocBuf](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_01_aclrtAllocBuf.md)
+    - [1.22.2 aclrtFreeBuf](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_02_aclrtFreeBuf.md)
+    - [1.22.3 aclrtGetBufData](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_03_aclrtGetBufData.md)
+    - [1.22.4 aclrtSetBufUserData](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_04_aclrtSetBufUserData.md)
+    - [1.22.5 aclrtGetBufUserData](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_05_aclrtGetBufUserData.md)
+    - [1.22.6 aclrtGetBufDataLen](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_06_aclrtGetBufDataLen.md)
+    - [1.22.7 aclrtSetBufDataLen](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_07_aclrtSetBufDataLen.md)
+    - [1.22.8 aclrtCopyBufRef](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_08_aclrtCopyBufRef.md)
+    - [1.22.9 aclrtAppendBufChain](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_09_aclrtAppendBufChain.md)
+    - [1.22.10 aclrtGetBufFromChain](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_10_aclrtGetBufFromChain.md)
+    - [1.22.11 aclrtGetBufChainNum](01_Runtime_API_C/01_22_共享_Buffer_管理（预留，暂不支持）/01_22_11_aclrtGetBufChainNum.md)
+  - [1.23 快照管理](01_Runtime_API_C/01_23_快照管理.md)
+    - [1.23.1 aclrtSnapShotProcessLock](01_Runtime_API_C/01_23_快照管理/01_23_01_aclrtSnapShotProcessLock.md)
+    - [1.23.2 aclrtSnapShotProcessBackup](01_Runtime_API_C/01_23_快照管理/01_23_02_aclrtSnapShotProcessBackup.md)
+    - [1.23.3 aclrtSnapShotProcessRestore](01_Runtime_API_C/01_23_快照管理/01_23_03_aclrtSnapShotProcessRestore.md)
+    - [1.23.4 aclrtSnapShotProcessUnlock](01_Runtime_API_C/01_23_快照管理/01_23_04_aclrtSnapShotProcessUnlock.md)
+    - [1.23.5 aclrtSnapShotCallbackRegister](01_Runtime_API_C/01_23_快照管理/01_23_05_aclrtSnapShotCallbackRegister.md)
+    - [1.23.6 aclrtSnapShotCallbackUnregister](01_Runtime_API_C/01_23_快照管理/01_23_06_aclrtSnapShotCallbackUnregister.md)
+  - [1.24 Stream 有序内存分配](01_Runtime_API_C/01_24_Stream_有序内存分配.md)
+    - [1.24.1 aclrtMemPoolCreate](01_Runtime_API_C/01_24_Stream_有序内存分配/01_24_01_aclrtMemPoolCreate.md)
+    - [1.24.2 aclrtMemPoolDestroy](01_Runtime_API_C/01_24_Stream_有序内存分配/01_24_02_aclrtMemPoolDestroy.md)
+    - [1.24.3 aclrtMemPoolGetAttr](01_Runtime_API_C/01_24_Stream_有序内存分配/01_24_03_aclrtMemPoolGetAttr.md)
+    - [1.24.4 aclrtMemPoolSetAttr](01_Runtime_API_C/01_24_Stream_有序内存分配/01_24_04_aclrtMemPoolSetAttr.md)
+  - [1.25 错误上报接口](01_Runtime_API_C/01_25_错误上报接口.md)
+    - [1.25.1 使用须知](01_Runtime_API_C/01_25_错误上报接口/01_25_01_使用须知.md)
+    - [1.25.2 ReportInnerErrMsg](01_Runtime_API_C/01_25_错误上报接口/01_25_02_ReportInnerErrMsg.md)
+    - [1.25.3 ReportPredefinedErrMsg](01_Runtime_API_C/01_25_错误上报接口/01_25_03_ReportPredefinedErrMsg.md)
+    - [1.25.4 ReportUserDefinedErrMsg](01_Runtime_API_C/01_25_错误上报接口/01_25_04_ReportUserDefinedErrMsg.md)
+    - [1.25.5 RegisterFormatErrorMessage](01_Runtime_API_C/01_25_错误上报接口/01_25_05_RegisterFormatErrorMessage.md)
+  - [1.26 日志接口](01_Runtime_API_C/01_26_日志接口.md)
+    - [1.26.1 使用须知](01_Runtime_API_C/01_26_日志接口/01_26_01_使用须知.md)
+    - [1.26.2 AlogRecord](01_Runtime_API_C/01_26_日志接口/01_26_02_AlogRecord.md)
+    - [1.26.3 AlogCheckDebugLevel](01_Runtime_API_C/01_26_日志接口/01_26_03_AlogCheckDebugLevel.md)
+    - [1.26.4 数据类型定义](01_Runtime_API_C/01_26_日志接口/01_26_04_数据类型定义.md)
+  - [1.27 其他接口](01_Runtime_API_C/01_27_其他接口.md)
+    - [1.27.1 aclAppLog](01_Runtime_API_C/01_27_其他接口/01_27_01_aclAppLog.md)
+    - [1.27.2 aclDataTypeSize](01_Runtime_API_C/01_27_其他接口/01_27_02_aclDataTypeSize.md)
+    - [1.27.3 aclFloat16ToFloat](01_Runtime_API_C/01_27_其他接口/01_27_03_aclFloat16ToFloat.md)
+    - [1.27.4 aclFloatToFloat16](01_Runtime_API_C/01_27_其他接口/01_27_04_aclFloatToFloat16.md)
+    - [1.27.5 aclrtGetVersion](01_Runtime_API_C/01_27_其他接口/01_27_05_aclrtGetVersion.md)
+    - [1.27.6 aclsysGetCANNVersion （废弃）](01_Runtime_API_C/01_27_其他接口/01_27_06_aclsysGetCANNVersion_（废弃）.md)
+    - [1.27.7 aclGetCannAttributeList](01_Runtime_API_C/01_27_其他接口/01_27_07_aclGetCannAttributeList.md)
+    - [1.27.8 aclGetCannAttribute](01_Runtime_API_C/01_27_其他接口/01_27_08_aclGetCannAttribute.md)
+    - [1.27.9 aclGetDeviceCapability](01_Runtime_API_C/01_27_其他接口/01_27_09_aclGetDeviceCapability.md)
+    - [1.27.10 aclrtCacheLastTaskOpInfo](01_Runtime_API_C/01_27_其他接口/01_27_10_aclrtCacheLastTaskOpInfo.md)
+    - [1.27.11 aclrtProfTrace](01_Runtime_API_C/01_27_其他接口/01_27_11_aclrtProfTrace.md)
+    - [1.27.12 aclsysGetVersionStr](01_Runtime_API_C/01_27_其他接口/01_27_12_aclsysGetVersionStr.md)
+    - [1.27.13 aclsysGetVersionNum](01_Runtime_API_C/01_27_其他接口/01_27_13_aclsysGetVersionNum.md)
+    - [1.27.14 aclrtCreateStreamV2](01_Runtime_API_C/01_27_其他接口/01_27_14_aclrtCreateStreamV2.md)
+    - [1.27.15 aclrtSetStreamConfigOpt](01_Runtime_API_C/01_27_其他接口/01_27_15_aclrtSetStreamConfigOpt.md)
+    - [1.27.16 aclrtSubscribeHostFunc](01_Runtime_API_C/01_27_其他接口/01_27_16_aclrtSubscribeHostFunc.md)
+    - [1.27.17 aclrtProcessHostFunc](01_Runtime_API_C/01_27_其他接口/01_27_17_aclrtProcessHostFunc.md)
+    - [1.27.18 aclrtUnSubscribeHostFunc](01_Runtime_API_C/01_27_其他接口/01_27_18_aclrtUnSubscribeHostFunc.md)
+  - [1.28 数据类型及其操作接口](01_Runtime_API_C/01_28_数据类型及其操作接口.md)
+    - [1.28.1 aclError](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_01_aclError.md)
+    - [1.28.2 aclCannAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_02_aclCannAttr.md)
+    - [1.28.3 aclCANNPackageName](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_03_aclCANNPackageName.md)
+    - [1.28.4 aclCANNPackageVersion](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_04_aclCANNPackageVersion.md)
+    - [1.28.5 aclDataBuffer](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_05_aclDataBuffer.md)
+      - [1.28.5.1 aclCreateDataBuffer](01_Runtime_API_C/01_28_05_aclDataBuffer/01_28_05_01_aclCreateDataBuffer.md)
+      - [1.28.5.2 aclDestroyDataBuffer](01_Runtime_API_C/01_28_05_aclDataBuffer/01_28_05_02_aclDestroyDataBuffer.md)
+      - [1.28.5.3 aclGetDataBufferAddr](01_Runtime_API_C/01_28_05_aclDataBuffer/01_28_05_03_aclGetDataBufferAddr.md)
+      - [1.28.5.4 aclGetDataBufferSize （废弃）](01_Runtime_API_C/01_28_05_aclDataBuffer/01_28_05_04_aclGetDataBufferSize_（废弃）.md)
+      - [1.28.5.5 aclGetDataBufferSizeV2](01_Runtime_API_C/01_28_05_aclDataBuffer/01_28_05_05_aclGetDataBufferSizeV2.md)
+      - [1.28.5.6 aclUpdateDataBuffer](01_Runtime_API_C/01_28_05_aclDataBuffer/01_28_05_06_aclUpdateDataBuffer.md)
+    - [1.28.6 aclDataType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_06_aclDataType.md)
+    - [1.28.7 aclDeviceInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_07_aclDeviceInfo.md)
+    - [1.28.8 acldumpType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_08_acldumpType.md)
+    - [1.28.9 aclFloat16](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_09_aclFloat16.md)
+    - [1.28.10 aclFormat](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_10_aclFormat.md)
+    - [1.28.11 aclmdlRI](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_11_aclmdlRI.md)
+    - [1.28.12 aclmdlRICaptureMode](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_12_aclmdlRICaptureMode.md)
+    - [1.28.13 aclmdlRICaptureStatus](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_13_aclmdlRICaptureStatus.md)
+    - [1.28.14 aclMemType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_14_aclMemType.md)
+    - [1.28.15 aclprofAicoreMetrics](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_15_aclprofAicoreMetrics.md)
+    - [1.28.16 aclprofConfig](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_16_aclprofConfig.md)
+      - [1.28.16.1 aclprofCreateConfig](01_Runtime_API_C/01_28_16_aclprofConfig/01_28_16_01_aclprofCreateConfig.md)
+      - [1.28.16.2 aclprofDestroyConfig](01_Runtime_API_C/01_28_16_aclprofConfig/01_28_16_02_aclprofDestroyConfig.md)
+    - [1.28.17 aclprofConfigType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_17_aclprofConfigType.md)
+    - [1.28.18 aclprofEventAttributes](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_18_aclprofEventAttributes.md)
+    - [1.28.19 aclprofStepInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_19_aclprofStepInfo.md)
+      - [1.28.19.1 aclprofCreateStepInfo](01_Runtime_API_C/01_28_19_aclprofStepInfo/01_28_19_01_aclprofCreateStepInfo.md)
+      - [1.28.19.2 aclprofDestroyStepInfo](01_Runtime_API_C/01_28_19_aclprofStepInfo/01_28_19_02_aclprofDestroyStepInfo.md)
+    - [1.28.20 aclprofStepTag](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_20_aclprofStepTag.md)
+    - [1.28.21 aclprofSubscribeConfig](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_21_aclprofSubscribeConfig.md)
+      - [1.28.21.1 aclprofCreateSubscribeConfig](01_Runtime_API_C/01_28_21_aclprofSubscribeConfig/01_28_21_01_aclprofCreateSubscribeConfig.md)
+      - [1.28.21.2 aclprofDestroySubscribeConfig](01_Runtime_API_C/01_28_21_aclprofSubscribeConfig/01_28_21_02_aclprofDestroySubscribeConfig.md)
+    - [1.28.22 aclRegisterCallbackType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_22_aclRegisterCallbackType.md)
+    - [1.28.23 aclrtAicAivTaskUpdateAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_23_aclrtAicAivTaskUpdateAttr.md)
+    - [1.28.24 aclrtAllocator](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_24_aclrtAllocator.md)
+    - [1.28.25 aclrtAllocatorAddr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_25_aclrtAllocatorAddr.md)
+    - [1.28.26 aclrtAllocatorBlock](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_26_aclrtAllocatorBlock.md)
+    - [1.28.27 aclrtAllocatorDesc](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_27_aclrtAllocatorDesc.md)
+      - [1.28.27.1 aclrtAllocatorCreateDesc](01_Runtime_API_C/01_28_27_aclrtAllocatorDesc/01_28_27_01_aclrtAllocatorCreateDesc.md)
+      - [1.28.27.2 aclrtAllocatorDestroyDesc](01_Runtime_API_C/01_28_27_aclrtAllocatorDesc/01_28_27_02_aclrtAllocatorDestroyDesc.md)
+      - [1.28.27.3 aclrtAllocatorSetObjToDesc](01_Runtime_API_C/01_28_27_aclrtAllocatorDesc/01_28_27_03_aclrtAllocatorSetObjToDesc.md)
+      - [1.28.27.4 aclrtAllocatorSetAllocFuncToDesc](01_Runtime_API_C/01_28_27_aclrtAllocatorDesc/01_28_27_04_aclrtAllocatorSetAllocFuncToDesc.md)
+      - [1.28.27.5 aclrtAllocatorSetAllocAdviseFuncToDesc](01_Runtime_API_C/01_28_27_aclrtAllocatorDesc/01_28_27_05_aclrtAllocatorSetAllocAdviseFuncToDesc.md)
+      - [1.28.27.6 aclrtAllocatorSetFreeFuncToDesc](01_Runtime_API_C/01_28_27_aclrtAllocatorDesc/01_28_27_06_aclrtAllocatorSetFreeFuncToDesc.md)
+      - [1.28.27.7 aclrtAllocatorSetGetAddrFromBlockFuncToDesc](01_Runtime_API_C/01_28_27_aclrtAllocatorDesc/01_28_27_07_aclrtAllocatorSetGetAddrFromBlockFuncToDesc.md)
+    - [1.28.28 aclrtArgsHandle](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_28_aclrtArgsHandle.md)
+    - [1.28.29 aclrtBarrierCmoInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_29_aclrtBarrierCmoInfo.md)
+    - [1.28.30 aclrtBarrierTaskInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_30_aclrtBarrierTaskInfo.md)
+    - [1.28.31 aclrtBinaryLoadOption](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_31_aclrtBinaryLoadOption.md)
+    - [1.28.32 aclrtBinaryLoadOptions](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_32_aclrtBinaryLoadOptions.md)
+    - [1.28.33 aclrtBinaryLoadOptionType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_33_aclrtBinaryLoadOptionType.md)
+    - [1.28.34 aclrtBinaryLoadOptionValue](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_34_aclrtBinaryLoadOptionValue.md)
+    - [1.28.35 aclrtBinHandle](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_35_aclrtBinHandle.md)
+    - [1.28.36 aclrtCmoType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_36_aclrtCmoType.md)
+    - [1.28.37 aclrtCntNotify](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_37_aclrtCntNotify.md)
+    - [1.28.38 aclrtCntNotifyRecordInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_38_aclrtCntNotifyRecordInfo.md)
+    - [1.28.39 aclrtCntNotifyRecordMode](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_39_aclrtCntNotifyRecordMode.md)
+    - [1.28.40 aclrtCntNotifyWaitInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_40_aclrtCntNotifyWaitInfo.md)
+    - [1.28.41 aclrtCntNotifyWaitMode](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_41_aclrtCntNotifyWaitMode.md)
+    - [1.28.42 aclrtCompareDataType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_42_aclrtCompareDataType.md)
+    - [1.28.43 aclrtCondition](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_43_aclrtCondition.md)
+    - [1.28.44 aclrtContext](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_44_aclrtContext.md)
+    - [1.28.45 aclrtDevAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_45_aclrtDevAttr.md)
+    - [1.28.46 aclrtDevFeatureType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_46_aclrtDevFeatureType.md)
+    - [1.28.47 aclrtDeviceStatus](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_47_aclrtDeviceStatus.md)
+    - [1.28.48 aclrtDevResLimitType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_48_aclrtDevResLimitType.md)
+    - [1.28.49 aclrtDropoutBitmaskInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_49_aclrtDropoutBitmaskInfo.md)
+    - [1.28.50 aclrtDrvMemHandle](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_50_aclrtDrvMemHandle.md)
+    - [1.28.51 aclrtEngineType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_51_aclrtEngineType.md)
+    - [1.28.52 aclrtEvent](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_52_aclrtEvent.md)
+    - [1.28.53 aclrtEventRecordedStatus](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_53_aclrtEventRecordedStatus.md)
+    - [1.28.54 aclrtEventStatus](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_54_aclrtEventStatus.md)
+    - [1.28.55 aclrtEventWaitStatus](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_55_aclrtEventWaitStatus.md)
+    - [1.28.56 aclrtFloatOverflowMode](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_56_aclrtFloatOverflowMode.md)
+    - [1.28.57 aclrtFuncAttribute](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_57_aclrtFuncAttribute.md)
+    - [1.28.58 aclrtFuncHandle](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_58_aclrtFuncHandle.md)
+    - [1.28.59 aclrtGroupAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_59_aclrtGroupAttr.md)
+    - [1.28.60 aclrtHacType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_60_aclrtHacType.md)
+    - [1.28.61 aclrtHostMemMapCapability](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_61_aclrtHostMemMapCapability.md)
+    - [1.28.62 aclrtHostRegisterType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_62_aclrtHostRegisterType.md)
+    - [1.28.63 aclrtIpcEventHandle](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_63_aclrtIpcEventHandle.md)
+    - [1.28.64 aclrtIpcMemAttrType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_64_aclrtIpcMemAttrType.md)
+    - [1.28.65 aclrtKernelType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_65_aclrtKernelType.md)
+    - [1.28.66 aclrtLabel](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_66_aclrtLabel.md)
+    - [1.28.67 aclrtLabelList](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_67_aclrtLabelList.md)
+    - [1.28.68 aclrtLastErrLevel](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_68_aclrtLastErrLevel.md)
+    - [1.28.69 aclrtLaunchKernelAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_69_aclrtLaunchKernelAttr.md)
+    - [1.28.70 aclrtLaunchKernelAttrId](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_70_aclrtLaunchKernelAttrId.md)
+    - [1.28.71 aclrtLaunchKernelAttrValue](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_71_aclrtLaunchKernelAttrValue.md)
+    - [1.28.72 aclrtLaunchKernelCfg](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_72_aclrtLaunchKernelCfg.md)
+    - [1.28.73 aclrtMallocAttribute](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_73_aclrtMallocAttribute.md)
+    - [1.28.74 aclrtMallocAttrType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_74_aclrtMallocAttrType.md)
+    - [1.28.75 aclrtMallocAttrValue](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_75_aclrtMallocAttrValue.md)
+    - [1.28.76 aclrtMallocConfig](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_76_aclrtMallocConfig.md)
+    - [1.28.77 aclrtMbuf](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_77_aclrtMbuf.md)
+    - [1.28.78 aclrtMemAccessDesc](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_78_aclrtMemAccessDesc.md)
+    - [1.28.79 aclrtMemAccessFlags](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_79_aclrtMemAccessFlags.md)
+    - [1.28.80 aclrtMemAllocationType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_80_aclrtMemAllocationType.md)
+    - [1.28.81 aclrtMemAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_81_aclrtMemAttr.md)
+    - [1.28.82 aclrtMemcpyBatchAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_82_aclrtMemcpyBatchAttr.md)
+    - [1.28.83 aclrtMemcpyKind](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_83_aclrtMemcpyKind.md)
+    - [1.28.84 aclrtMemGranularityOptions](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_84_aclrtMemGranularityOptions.md)
+    - [1.28.85 aclrtMemHandleType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_85_aclrtMemHandleType.md)
+    - [1.28.86 aclrtMemLocation](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_86_aclrtMemLocation.md)
+    - [1.28.87 aclrtMemLocationType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_87_aclrtMemLocationType.md)
+    - [1.28.88 aclrtMemMallocPolicy](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_88_aclrtMemMallocPolicy.md)
+    - [1.28.89 aclrtMemPool](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_89_aclrtMemPool.md)
+    - [1.28.90 aclrtMemPoolAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_90_aclrtMemPoolAttr.md)
+    - [1.28.91 aclrtMemPoolProps](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_91_aclrtMemPoolProps.md)
+    - [1.28.92 aclrtMemSharedHandleType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_92_aclrtMemSharedHandleType.md)
+    - [1.28.93 aclrtMemUceInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_93_aclrtMemUceInfo.md)
+    - [1.28.94 aclrtMemUsageInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_94_aclrtMemUsageInfo.md)
+    - [1.28.95 aclrtNormalDisInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_95_aclrtNormalDisInfo.md)
+    - [1.28.96 aclrtNotify](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_96_aclrtNotify.md)
+    - [1.28.97 aclrtParamHandle](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_97_aclrtParamHandle.md)
+    - [1.28.98 aclrtPhysicalMemProp](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_98_aclrtPhysicalMemProp.md)
+    - [1.28.99 aclrtPtrAttributes](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_99_aclrtPtrAttributes.md)
+    - [1.28.100 aclrtRandomNumFuncParaInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_100_aclrtRandomNumFuncParaInfo.md)
+    - [1.28.101 aclrtRandomNumFuncType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_101_aclrtRandomNumFuncType.md)
+    - [1.28.102 aclrtRandomNumTaskInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_102_aclrtRandomNumTaskInfo.md)
+    - [1.28.103 aclrtRandomParaInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_103_aclrtRandomParaInfo.md)
+    - [1.28.104 aclrtRandomTaskUpdateAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_104_aclrtRandomTaskUpdateAttr.md)
+    - [1.28.105 aclrtReduceKind](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_105_aclrtReduceKind.md)
+    - [1.28.106 aclrtRunMode](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_106_aclrtRunMode.md)
+    - [1.28.107 aclrtServerPid](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_107_aclrtServerPid.md)
+    - [1.28.108 aclrtSnapShotStage](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_108_aclrtSnapShotStage.md)
+    - [1.28.109 aclrtStream](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_109_aclrtStream.md)
+    - [1.28.110 aclrtStreamAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_110_aclrtStreamAttr.md)
+    - [1.28.111 aclrtStreamAttrValue](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_111_aclrtStreamAttrValue.md)
+    - [1.28.112 aclrtStreamConfigAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_112_aclrtStreamConfigAttr.md)
+    - [1.28.113 aclrtStreamConfigHandle](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_113_aclrtStreamConfigHandle.md)
+      - [1.28.113.1 aclrtCreateStreamConfigHandle](01_Runtime_API_C/01_28_113_aclrtStreamConfigHandle/01_28_113_01_aclrtCreateStreamConfigHandle.md)
+      - [1.28.113.2 aclrtDestroyStreamConfigHandle](01_Runtime_API_C/01_28_113_aclrtStreamConfigHandle/01_28_113_02_aclrtDestroyStreamConfigHandle.md)
+    - [1.28.114 aclrtStreamStatus](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_114_aclrtStreamStatus.md)
+    - [1.28.115 aclrtTaskGrp](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_115_aclrtTaskGrp.md)
+    - [1.28.116 aclrtTaskUpdateInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_116_aclrtTaskUpdateInfo.md)
+    - [1.28.117 aclrtTimeoutUs](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_117_aclrtTimeoutUs.md)
+    - [1.28.118 aclrtUniformDisInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_118_aclrtUniformDisInfo.md)
+    - [1.28.119 aclrtUpdateTaskAttrId](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_119_aclrtUpdateTaskAttrId.md)
+    - [1.28.120 aclrtUpdateTaskAttrVal](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_120_aclrtUpdateTaskAttrVal.md)
+    - [1.28.121 aclrtUtilizationInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_121_aclrtUtilizationInfo.md)
+    - [1.28.122 aclrtUuid](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_122_aclrtUuid.md)
+    - [1.28.123 aclSysParamOpt](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_123_aclSysParamOpt.md)
+    - [1.28.124 acltdtBuf](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_124_acltdtBuf.md)
+    - [1.28.125 acltdtDataItem](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_125_acltdtDataItem.md)
+      - [1.28.125.1 acltdtCreateDataItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_01_acltdtCreateDataItem.md)
+      - [1.28.125.2 acltdtDestroyDataItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_02_acltdtDestroyDataItem.md)
+      - [1.28.125.3 acltdtGetTensorTypeFromItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_03_acltdtGetTensorTypeFromItem.md)
+      - [1.28.125.4 acltdtGetDataTypeFromItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_04_acltdtGetDataTypeFromItem.md)
+      - [1.28.125.5 acltdtGetDataAddrFromItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_05_acltdtGetDataAddrFromItem.md)
+      - [1.28.125.6 acltdtGetDataSizeFromItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_06_acltdtGetDataSizeFromItem.md)
+      - [1.28.125.7 acltdtGetDimNumFromItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_07_acltdtGetDimNumFromItem.md)
+      - [1.28.125.8 acltdtGetDimsFromItem](01_Runtime_API_C/01_28_125_acltdtDataItem/01_28_125_08_acltdtGetDimsFromItem.md)
+    - [1.28.126 acltdtDataset](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_126_acltdtDataset.md)
+      - [1.28.126.1 acltdtCreateDataset](01_Runtime_API_C/01_28_126_acltdtDataset/01_28_126_01_acltdtCreateDataset.md)
+      - [1.28.126.2 acltdtDestroyDataset](01_Runtime_API_C/01_28_126_acltdtDataset/01_28_126_02_acltdtDestroyDataset.md)
+      - [1.28.126.3 acltdtGetDataItem](01_Runtime_API_C/01_28_126_acltdtDataset/01_28_126_03_acltdtGetDataItem.md)
+      - [1.28.126.4 acltdtAddDataItem](01_Runtime_API_C/01_28_126_acltdtDataset/01_28_126_04_acltdtAddDataItem.md)
+      - [1.28.126.5 acltdtGetDatasetSize](01_Runtime_API_C/01_28_126_acltdtDataset/01_28_126_05_acltdtGetDatasetSize.md)
+      - [1.28.126.6 acltdtGetDatasetName](01_Runtime_API_C/01_28_126_acltdtDataset/01_28_126_06_acltdtGetDatasetName.md)
+    - [1.28.127 acltdtQueueAttr](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_127_acltdtQueueAttr.md)
+      - [1.28.127.1 acltdtCreateQueueAttr](01_Runtime_API_C/01_28_127_acltdtQueueAttr/01_28_127_01_acltdtCreateQueueAttr.md)
+      - [1.28.127.2 acltdtDestroyQueueAttr](01_Runtime_API_C/01_28_127_acltdtQueueAttr/01_28_127_02_acltdtDestroyQueueAttr.md)
+      - [1.28.127.3 acltdtSetQueueAttr](01_Runtime_API_C/01_28_127_acltdtQueueAttr/01_28_127_03_acltdtSetQueueAttr.md)
+      - [1.28.127.4 acltdtGetQueueAttr](01_Runtime_API_C/01_28_127_acltdtQueueAttr/01_28_127_04_acltdtGetQueueAttr.md)
+    - [1.28.128 acltdtQueueAttrType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_128_acltdtQueueAttrType.md)
+    - [1.28.129 acltdtQueueRoute](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_129_acltdtQueueRoute.md)
+      - [1.28.129.1 acltdtCreateQueueRoute](01_Runtime_API_C/01_28_129_acltdtQueueRoute/01_28_129_01_acltdtCreateQueueRoute.md)
+      - [1.28.129.2 acltdtDestroyQueueRoute](01_Runtime_API_C/01_28_129_acltdtQueueRoute/01_28_129_02_acltdtDestroyQueueRoute.md)
+      - [1.28.129.3 acltdtGetQueueRouteParam](01_Runtime_API_C/01_28_129_acltdtQueueRoute/01_28_129_03_acltdtGetQueueRouteParam.md)
+    - [1.28.130 acltdtQueueRouteList](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_130_acltdtQueueRouteList.md)
+      - [1.28.130.1 acltdtCreateQueueRouteList](01_Runtime_API_C/01_28_130_acltdtQueueRouteList/01_28_130_01_acltdtCreateQueueRouteList.md)
+      - [1.28.130.2 acltdtDestroyQueueRouteList](01_Runtime_API_C/01_28_130_acltdtQueueRouteList/01_28_130_02_acltdtDestroyQueueRouteList.md)
+      - [1.28.130.3 acltdtAddQueueRoute](01_Runtime_API_C/01_28_130_acltdtQueueRouteList/01_28_130_03_acltdtAddQueueRoute.md)
+      - [1.28.130.4 acltdtGetQueueRoute](01_Runtime_API_C/01_28_130_acltdtQueueRouteList/01_28_130_04_acltdtGetQueueRoute.md)
+      - [1.28.130.5 acltdtGetQueueRouteNum](01_Runtime_API_C/01_28_130_acltdtQueueRouteList/01_28_130_05_acltdtGetQueueRouteNum.md)
+    - [1.28.131 acltdtQueueRouteParamType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_131_acltdtQueueRouteParamType.md)
+    - [1.28.132 acltdtQueueRouteQueryInfo](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_132_acltdtQueueRouteQueryInfo.md)
+      - [1.28.132.1 acltdtCreateQueueRouteQueryInfo](01_Runtime_API_C/01_28_132_acltdtQueueRouteQueryInfo/01_28_132_01_acltdtCreateQueueRouteQueryInfo.md)
+      - [1.28.132.2 acltdtDestroyQueueRouteQueryInfo](01_Runtime_API_C/01_28_132_acltdtQueueRouteQueryInfo/01_28_132_02_acltdtDestroyQueueRouteQueryInfo.md)
+      - [1.28.132.3 acltdtSetQueueRouteQueryInfo](01_Runtime_API_C/01_28_132_acltdtQueueRouteQueryInfo/01_28_132_03_acltdtSetQueueRouteQueryInfo.md)
+    - [1.28.133 acltdtQueueRouteQueryInfoParamType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_133_acltdtQueueRouteQueryInfoParamType.md)
+    - [1.28.134 acltdtQueueRouteQueryMode](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_134_acltdtQueueRouteQueryMode.md)
+    - [1.28.135 acltdtTensorType](01_Runtime_API_C/01_28_数据类型及其操作接口/01_28_135_acltdtTensorType.md)
+- [2 Runtime API(Python)](02_Runtime_API_Python/02_Runtime_APIPython.md)
+  - [2.1 废弃接口 / 返回码列表](02_Runtime_API_Python/02_Runtime_APIPython/02_01_废弃接口___返回码列表.md)
+  - [2.2 同步 &amp; 异步 API 说明](02_Runtime_API_Python/02_Runtime_APIPython/02_02_同步_&_异步_API_说明.md)
+  - [2.3 pyACL 表达约定](02_Runtime_API_Python/02_Runtime_APIPython/02_03_pyACL_表达约定.md)
+  - [2.4 util 模块](02_Runtime_API_Python/02_Runtime_APIPython/02_04_util_模块.md)
+    - [2.4.1 函数： numpy\_to\_ptr](02_Runtime_API_Python/02_04_util_模块/02_04_01_函数：_numpy\_to\_ptr.md)
+    - [2.4.2 函数： numpy\_contiguous\_to\_ptr](02_Runtime_API_Python/02_04_util_模块/02_04_02_函数：_numpy\_contiguous\_to\_ptr.md)
+    - [2.4.3 函数： ptr\_to\_numpy](02_Runtime_API_Python/02_04_util_模块/02_04_03_函数：_ptr\_to\_numpy.md)
+    - [2.4.4 函数： bytes\_to\_ptr](02_Runtime_API_Python/02_04_util_模块/02_04_04_函数：_bytes\_to\_ptr.md)
+    - [2.4.5 函数： ptr\_to\_bytes](02_Runtime_API_Python/02_04_util_模块/02_04_05_函数：_ptr\_to\_bytes.md)
+    - [2.4.6 thread](02_Runtime_API_Python/02_04_util_模块/02_04_06_thread.md)
+      - [2.4.6.1 函数： start\_thread](02_Runtime_API_Python/02_04_06_thread/02_04_06_01_函数：_start\_thread.md)
+      - [2.4.6.2 函数： stop\_thread](02_Runtime_API_Python/02_04_06_thread/02_04_06_02_函数：_stop\_thread.md)
+  - [2.5 初始化 &amp; 去初始化](02_Runtime_API_Python/02_Runtime_APIPython/02_05_初始化_&_去初始化.md)
+    - [2.5.2 函数：fi nalize](02_Runtime_API_Python/02_05_初始化_&_去初始化/02_05_02_函数：fi_nalize.md)
+    - [2.5.3 函数：fi nalize\_reference](02_Runtime_API_Python/02_05_初始化_&_去初始化/02_05_03_函数：fi_nalize\_reference.md)
+  - [2.6 运行时配置](02_Runtime_API_Python/02_Runtime_APIPython/02_06_运行时配置.md)
+    - [2.6.1 函数： set\_sys\_param\_opt](02_Runtime_API_Python/02_06_运行时配置/02_06_01_函数：_set\_sys\_param\_opt.md)
+    - [2.6.2 函数： get\_sys\_param\_opt](02_Runtime_API_Python/02_06_运行时配置/02_06_02_函数：_get\_sys\_param\_opt.md)
+    - [2.6.3 函数： get\_device\_res\_limit](02_Runtime_API_Python/02_06_运行时配置/02_06_03_函数：_get\_device\_res\_limit.md)
+    - [2.6.4 函数： set\_device\_res\_limit](02_Runtime_API_Python/02_06_运行时配置/02_06_04_函数：_set\_device\_res\_limit.md)
+    - [2.6.5 函数： reset\_device\_res\_limit](02_Runtime_API_Python/02_06_运行时配置/02_06_05_函数：_reset\_device\_res\_limit.md)
+    - [2.6.6 函数： get\_stream\_res\_limit](02_Runtime_API_Python/02_06_运行时配置/02_06_06_函数：_get\_stream\_res\_limit.md)
+    - [2.6.7 函数： set\_stream\_res\_limit](02_Runtime_API_Python/02_06_运行时配置/02_06_07_函数：_set\_stream\_res\_limit.md)
+    - [2.6.8 函数： reset\_stream\_res\_limit](02_Runtime_API_Python/02_06_运行时配置/02_06_08_函数：_reset\_stream\_res\_limit.md)
+    - [2.6.9 函数： use\_stream\_res\_in\_current\_thread](02_Runtime_API_Python/02_06_运行时配置/02_06_09_函数：_use\_stream\_res\_in\_current\_thread.md)
+    - [2.6.10 函数： unuse\_stream\_res\_in\_current\_thread](02_Runtime_API_Python/02_06_运行时配置/02_06_10_函数：_unuse\_stream\_res\_in\_current\_thread.md)
+    - [2.6.11 函数： get\_res\_in\_current\_thread](02_Runtime_API_Python/02_06_运行时配置/02_06_11_函数：_get\_res\_in\_current\_thread.md)
+  - [2.7 Device 管理](02_Runtime_API_Python/02_Runtime_APIPython/02_07_Device_管理.md)
+    - [2.7.1 函数： set\_device](02_Runtime_API_Python/02_07_Device_管理/02_07_01_函数：_set\_device.md)
+    - [2.7.2 函数： reset\_device](02_Runtime_API_Python/02_07_Device_管理/02_07_02_函数：_reset\_device.md)
+    - [2.7.3 函数： get\_device](02_Runtime_API_Python/02_07_Device_管理/02_07_03_函数：_get\_device.md)
+    - [2.7.4 函数： reset\_device\_force](02_Runtime_API_Python/02_07_Device_管理/02_07_04_函数：_reset\_device\_force.md)
+    - [2.7.5 函数： get\_run\_mode](02_Runtime_API_Python/02_07_Device_管理/02_07_05_函数：_get\_run\_mode.md)
+    - [2.7.6 函数： set\_ts\_device](02_Runtime_API_Python/02_07_Device_管理/02_07_06_函数：_set\_ts\_device.md)
+    - [2.7.7 函数： get\_device\_count](02_Runtime_API_Python/02_07_Device_管理/02_07_07_函数：_get\_device\_count.md)
+    - [2.7.8 函数： get\_device\_utilization\_rate](02_Runtime_API_Python/02_07_Device_管理/02_07_08_函数：_get\_device\_utilization\_rate.md)
+    - [2.7.9 函数： query\_device\_status](02_Runtime_API_Python/02_07_Device_管理/02_07_09_函数：_query\_device\_status.md)
+    - [2.7.10 函数： get\_soc\_name](02_Runtime_API_Python/02_07_Device_管理/02_07_10_函数：_get\_soc\_name.md)
+    - [2.7.11 函数： set\_device\_sat\_mode](02_Runtime_API_Python/02_07_Device_管理/02_07_11_函数：_set\_device\_sat\_mode.md)
+    - [2.7.12 函数： get\_device\_sat\_mode](02_Runtime_API_Python/02_07_Device_管理/02_07_12_函数：_get\_device\_sat\_mode.md)
+    - [2.7.13 函数： device\_can\_access\_peer](02_Runtime_API_Python/02_07_Device_管理/02_07_13_函数：_device\_can\_access\_peer.md)
+    - [2.7.14 函数： device\_enable\_peer\_access](02_Runtime_API_Python/02_07_Device_管理/02_07_14_函数：_device\_enable\_peer\_access.md)
+    - [2.7.15 函数： device\_disable\_peer\_access](02_Runtime_API_Python/02_07_Device_管理/02_07_15_函数：_device\_disable\_peer\_access.md)
+    - [2.7.16 函数： get\_overflow\_status](02_Runtime_API_Python/02_07_Device_管理/02_07_16_函数：_get\_overflow\_status.md)
+    - [2.7.17 函数： reset\_overflow\_status](02_Runtime_API_Python/02_07_Device_管理/02_07_17_函数：_reset\_overflow\_status.md)
+    - [2.7.18 函数： synchronize\_device](02_Runtime_API_Python/02_07_Device_管理/02_07_18_函数：_synchronize\_device.md)
+    - [2.7.19 函数： synchronize\_device\_with\_timeout](02_Runtime_API_Python/02_07_Device_管理/02_07_19_函数：_synchronize\_device\_with\_timeout.md)
+    - [2.7.20 函数： get\_device\_info](02_Runtime_API_Python/02_07_Device_管理/02_07_20_函数：_get\_device\_info.md)
+    - [2.7.21 函数： device\_get\_stream\_priority\_range](02_Runtime_API_Python/02_07_Device_管理/02_07_21_函数：_device\_get\_stream\_priority\_range.md)
+    - [2.7.22 函数： get\_device\_capability](02_Runtime_API_Python/02_07_Device_管理/02_07_22_函数：_get\_device\_capability.md)
+    - [2.7.23 函数： get\_devices\_topo](02_Runtime_API_Python/02_07_Device_管理/02_07_23_函数：_get\_devices\_topo.md)
+  - [2.8 Context 管理](02_Runtime_API_Python/02_Runtime_APIPython/02_08_Context_管理.md)
+    - [2.8.1 函数： create\_context](02_Runtime_API_Python/02_08_Context_管理/02_08_01_函数：_create\_context.md)
+    - [2.8.2 函数： destroy\_context](02_Runtime_API_Python/02_08_Context_管理/02_08_02_函数：_destroy\_context.md)
+    - [2.8.3 函数： set\_context](02_Runtime_API_Python/02_08_Context_管理/02_08_03_函数：_set\_context.md)
+    - [2.8.4 函数： get\_context](02_Runtime_API_Python/02_08_Context_管理/02_08_04_函数：_get\_context.md)
+    - [2.8.5 函数： ctx\_get\_sys\_param\_opt](02_Runtime_API_Python/02_08_Context_管理/02_08_05_函数：_ctx\_get\_sys\_param\_opt.md)
+    - [2.8.6 函数： ctx\_set\_sys\_param\_opt](02_Runtime_API_Python/02_08_Context_管理/02_08_06_函数：_ctx\_set\_sys\_param\_opt.md)
+    - [2.8.7 函数： ctx\_get\_current\_default\_stream](02_Runtime_API_Python/02_08_Context_管理/02_08_07_函数：_ctx\_get\_current\_default\_stream.md)
+    - [2.8.8 函数： get\_primary\_ctx\_state](02_Runtime_API_Python/02_08_Context_管理/02_08_08_函数：_get\_primary\_ctx\_state.md)
+  - [2.9 Stream 管理](02_Runtime_API_Python/02_Runtime_APIPython/02_09_Stream_管理.md)
+    - [2.9.1 函数： create\_stream](02_Runtime_API_Python/02_09_Stream_管理/02_09_01_函数：_create\_stream.md)
+    - [2.9.2 函数： create\_stream\_with\_config](02_Runtime_API_Python/02_09_Stream_管理/02_09_02_函数：_create\_stream\_with\_config.md)
+    - [2.9.3 函数： destroy\_stream](02_Runtime_API_Python/02_09_Stream_管理/02_09_03_函数：_destroy\_stream.md)
+    - [2.9.4 函数： destroy\_stream\_force](02_Runtime_API_Python/02_09_Stream_管理/02_09_04_函数：_destroy\_stream\_force.md)
+    - [2.9.5 函数： set\_stream\_overflow\_switch](02_Runtime_API_Python/02_09_Stream_管理/02_09_05_函数：_set\_stream\_overflow\_switch.md)
+    - [2.9.6 函数： get\_stream\_overflow\_switch](02_Runtime_API_Python/02_09_Stream_管理/02_09_06_函数：_get\_stream\_overflow\_switch.md)
+    - [2.9.7 函数： set\_stream\_failure\_mode](02_Runtime_API_Python/02_09_Stream_管理/02_09_07_函数：_set\_stream\_failure\_mode.md)
+    - [2.9.8 函数： stream\_query](02_Runtime_API_Python/02_09_Stream_管理/02_09_08_函数：_stream\_query.md)
+    - [2.9.9 函数： synchronize\_stream](02_Runtime_API_Python/02_09_Stream_管理/02_09_09_函数：_synchronize\_stream.md)
+    - [2.9.10 函数： synchronize\_stream\_with\_timeout](02_Runtime_API_Python/02_09_Stream_管理/02_09_10_函数：_synchronize\_stream\_with\_timeout.md)
+    - [2.9.11 函数： stream\_abort](02_Runtime_API_Python/02_09_Stream_管理/02_09_11_函数：_stream\_abort.md)
+    - [2.9.12 函数： stream\_get\_id](02_Runtime_API_Python/02_09_Stream_管理/02_09_12_函数：_stream\_get\_id.md)
+    - [2.9.13 函数： get\_stream\_available\_num](02_Runtime_API_Python/02_09_Stream_管理/02_09_13_函数：_get\_stream\_available\_num.md)
+    - [2.9.14 函数： set\_stream\_attribute](02_Runtime_API_Python/02_09_Stream_管理/02_09_14_函数：_set\_stream\_attribute.md)
+    - [2.9.15 函数： get\_stream\_attribute](02_Runtime_API_Python/02_09_Stream_管理/02_09_15_函数：_get\_stream\_attribute.md)
+  - [2.10 Event 管理](02_Runtime_API_Python/02_Runtime_APIPython/02_10_Event_管理.md)
+    - [2.10.1 函数： create\_event](02_Runtime_API_Python/02_10_Event_管理/02_10_01_函数：_create\_event.md)
+    - [2.10.2 函数： create\_event\_with\_flag](02_Runtime_API_Python/02_10_Event_管理/02_10_02_函数：_create\_event\_with\_flag.md)
+    - [2.10.3 函数： create\_event\_ex\_with\_flag](02_Runtime_API_Python/02_10_Event_管理/02_10_03_函数：_create\_event\_ex\_with\_flag.md)
+    - [2.10.4 函数： destroy\_event](02_Runtime_API_Python/02_10_Event_管理/02_10_04_函数：_destroy\_event.md)
+    - [2.10.5 函数： record\_event](02_Runtime_API_Python/02_10_Event_管理/02_10_05_函数：_record\_event.md)
+    - [2.10.6 函数： reset\_event](02_Runtime_API_Python/02_10_Event_管理/02_10_06_函数：_reset\_event.md)
+    - [2.10.7 函数： query\_event](02_Runtime_API_Python/02_10_Event_管理/02_10_07_函数：_query\_event.md)
+    - [2.10.8 函数： query\_event\_status](02_Runtime_API_Python/02_10_Event_管理/02_10_08_函数：_query\_event\_status.md)
+    - [2.10.9 函数： query\_event\_wait\_status](02_Runtime_API_Python/02_10_Event_管理/02_10_09_函数：_query\_event\_wait\_status.md)
+    - [2.10.10 函数： synchronize\_event](02_Runtime_API_Python/02_10_Event_管理/02_10_10_函数：_synchronize\_event.md)
+    - [2.10.11 函数： synchronize\_event\_with\_timeout](02_Runtime_API_Python/02_10_Event_管理/02_10_11_函数：_synchronize\_event\_with\_timeout.md)
+    - [2.10.12 函数： event\_elapsed\_time](02_Runtime_API_Python/02_10_Event_管理/02_10_12_函数：_event\_elapsed\_time.md)
+    - [2.10.13 函数： stream\_wait\_event](02_Runtime_API_Python/02_10_Event_管理/02_10_13_函数：_stream\_wait\_event.md)
+    - [2.10.14 函数： set\_op\_wait\_timeout](02_Runtime_API_Python/02_10_Event_管理/02_10_14_函数：_set\_op\_wait\_timeout.md)
+    - [2.10.15 函数： event\_get\_timestamp](02_Runtime_API_Python/02_10_Event_管理/02_10_15_函数：_event\_get\_timestamp.md)
+    - [2.10.16 函数： get\_event\_id](02_Runtime_API_Python/02_10_Event_管理/02_10_16_函数：_get\_event\_id.md)
+    - [2.10.17 函数： get\_event\_avail\_num](02_Runtime_API_Python/02_10_Event_管理/02_10_17_函数：_get\_event\_avail\_num.md)
+  - [2.11 Notify 管理](02_Runtime_API_Python/02_Runtime_APIPython/02_11_Notify_管理.md)
+    - [2.11.1 函数： create\_notify](02_Runtime_API_Python/02_11_Notify_管理/02_11_01_函数：_create\_notify.md)
+    - [2.11.2 函数： destroy\_notify](02_Runtime_API_Python/02_11_Notify_管理/02_11_02_函数：_destroy\_notify.md)
+    - [2.11.3 函数： record\_notify](02_Runtime_API_Python/02_11_Notify_管理/02_11_03_函数：_record\_notify.md)
+    - [2.11.4 函数： wait\_and\_reset\_notify](02_Runtime_API_Python/02_11_Notify_管理/02_11_04_函数：_wait\_and\_reset\_notify.md)
+    - [2.11.5 函数： get\_notify\_id](02_Runtime_API_Python/02_11_Notify_管理/02_11_05_函数：_get\_notify\_id.md)
+    - [2.11.6 函数： notify\_batch\_reset](02_Runtime_API_Python/02_11_Notify_管理/02_11_06_函数：_notify\_batch\_reset.md)
+    - [2.11.7 函数： notify\_get\_export\_key](02_Runtime_API_Python/02_11_Notify_管理/02_11_07_函数：_notify\_get\_export\_key.md)
+    - [2.11.8 函数： notify\_set\_import\_pid](02_Runtime_API_Python/02_11_Notify_管理/02_11_08_函数：_notify\_set\_import\_pid.md)
+    - [2.11.9 函数： notify\_import\_by\_key](02_Runtime_API_Python/02_11_Notify_管理/02_11_09_函数：_notify\_import\_by\_key.md)
+  - [2.12 内存管理](02_Runtime_API_Python/02_Runtime_APIPython/02_12_内存管理.md)
+    - [2.12.1 总体说明](02_Runtime_API_Python/02_12_内存管理/02_12_01_总体说明.md)
+    - [2.12.3 函数： malloc\_align32](02_Runtime_API_Python/02_12_内存管理/02_12_03_函数：_malloc\_align32.md)
+    - [2.12.4 函数： malloc\_cached](02_Runtime_API_Python/02_12_内存管理/02_12_04_函数：_malloc\_cached.md)
+    - [2.12.6 函数： mem\_invalidate](02_Runtime_API_Python/02_12_内存管理/02_12_06_函数：_mem\_invalidate.md)
+    - [2.12.7 函数： get\_mem\_info](02_Runtime_API_Python/02_12_内存管理/02_12_07_函数：_get\_mem\_info.md)
+    - [2.12.8 函数： free](02_Runtime_API_Python/02_12_内存管理/02_12_08_函数：_free.md)
+    - [2.12.9 函数： malloc\_host](02_Runtime_API_Python/02_12_内存管理/02_12_09_函数：_malloc\_host.md)
+    - [2.12.10 函数： free\_host](02_Runtime_API_Python/02_12_内存管理/02_12_10_函数：_free\_host.md)
+    - [2.12.11 函数： memset](02_Runtime_API_Python/02_12_内存管理/02_12_11_函数：_memset.md)
+    - [2.12.12 函数： memset\_async](02_Runtime_API_Python/02_12_内存管理/02_12_12_函数：_memset\_async.md)
+    - [2.12.13 函数： memcpy](02_Runtime_API_Python/02_12_内存管理/02_12_13_函数：_memcpy.md)
+    - [2.12.14 函数： memcpy\_async](02_Runtime_API_Python/02_12_内存管理/02_12_14_函数：_memcpy\_async.md)
+    - [2.12.15 函数： memcpy\_async\_with\_condition](02_Runtime_API_Python/02_12_内存管理/02_12_15_函数：_memcpy\_async\_with\_condition.md)
+    - [2.12.16 函数： memcpy2d](02_Runtime_API_Python/02_12_内存管理/02_12_16_函数：_memcpy2d.md)
+    - [2.12.17 函数： memcpy2d\_async](02_Runtime_API_Python/02_12_内存管理/02_12_17_函数：_memcpy2d\_async.md)
+    - [2.12.18 函数： allocator\_register](02_Runtime_API_Python/02_12_内存管理/02_12_18_函数：_allocator\_register.md)
+    - [2.12.19 函数： allocator\_unregister](02_Runtime_API_Python/02_12_内存管理/02_12_19_函数：_allocator\_unregister.md)
+    - [2.12.20 函数： malloc\_physical](02_Runtime_API_Python/02_12_内存管理/02_12_20_函数：_malloc\_physical.md)
+    - [2.12.21 函数： free\_physical](02_Runtime_API_Python/02_12_内存管理/02_12_21_函数：_free\_physical.md)
+    - [2.12.22 函数： reserve\_mem\_address](02_Runtime_API_Python/02_12_内存管理/02_12_22_函数：_reserve\_mem\_address.md)
+    - [2.12.23 函数： release\_mem\_address](02_Runtime_API_Python/02_12_内存管理/02_12_23_函数：_release\_mem\_address.md)
+    - [2.12.24 函数： map\_mem](02_Runtime_API_Python/02_12_内存管理/02_12_24_函数：_map\_mem.md)
+    - [2.12.25 函数： unmap\_mem](02_Runtime_API_Python/02_12_内存管理/02_12_25_函数：_unmap\_mem.md)
+    - [2.12.26 函数： mem\_export\_to\_shareable\_handle](02_Runtime_API_Python/02_12_内存管理/02_12_26_函数：_mem\_export\_to\_shareable\_handle.md)
+    - [2.12.27 函数： device\_get\_bare\_tgid](02_Runtime_API_Python/02_12_内存管理/02_12_27_函数：_device\_get\_bare\_tgid.md)
+    - [2.12.28 函数： mem\_set\_pid\_to\_shareable\_handle](02_Runtime_API_Python/02_12_内存管理/02_12_28_函数：_mem\_set\_pid\_to\_shareable\_handle.md)
+    - [2.12.29 函数： mem\_import\_from\_shareable\_handle](02_Runtime_API_Python/02_12_内存管理/02_12_29_函数：_mem\_import\_from\_shareable\_handle.md)
+    - [2.12.30 函数： mem\_get\_allocation\_granularity](02_Runtime_API_Python/02_12_内存管理/02_12_30_函数：_mem\_get\_allocation\_granularity.md)
+    - [2.12.31 函数： cmo\_async](02_Runtime_API_Python/02_12_内存管理/02_12_31_函数：_cmo\_async.md)
+    - [2.12.32 函数： malloc\_with\_cfg](02_Runtime_API_Python/02_12_内存管理/02_12_32_函数：_malloc\_with\_cfg.md)
+    - [2.12.33 函数： malloc\_for\_task\_scheduler](02_Runtime_API_Python/02_12_内存管理/02_12_33_函数：_malloc\_for\_task\_scheduler.md)
+    - [2.12.34 函数： malloc\_host\_with\_cfg](02_Runtime_API_Python/02_12_内存管理/02_12_34_函数：_malloc\_host\_with\_cfg.md)
+    - [2.12.35 函数： memcpy\_async\_with\_desc](02_Runtime_API_Python/02_12_内存管理/02_12_35_函数：_memcpy\_async\_with\_desc.md)
+    - [2.12.36 函数： get\_memcpy\_desc\_size](02_Runtime_API_Python/02_12_内存管理/02_12_36_函数：_get\_memcpy\_desc\_size.md)
+    - [2.12.37 函数： set\_memcpy\_desc](02_Runtime_API_Python/02_12_内存管理/02_12_37_函数：_set\_memcpy\_desc.md)
+    - [2.12.38 函数： pointer\_get\_attributes](02_Runtime_API_Python/02_12_内存管理/02_12_38_函数：_pointer\_get\_attributes.md)
+    - [2.12.39 函数： host\_register](02_Runtime_API_Python/02_12_内存管理/02_12_39_函数：_host\_register.md)
+    - [2.12.40 函数： host\_unregister](02_Runtime_API_Python/02_12_内存管理/02_12_40_函数：_host\_unregister.md)
+    - [2.12.41 函数： value\_write](02_Runtime_API_Python/02_12_内存管理/02_12_41_函数：_value\_write.md)
+    - [2.12.42 函数： value\_wait](02_Runtime_API_Python/02_12_内存管理/02_12_42_函数：_value\_wait.md)
+    - [2.12.43 函数： ipc\_mem\_get\_export\_key](02_Runtime_API_Python/02_12_内存管理/02_12_43_函数：_ipc\_mem\_get\_export\_key.md)
+    - [2.12.44 函数： ipc\_mem\_set\_import\_pid](02_Runtime_API_Python/02_12_内存管理/02_12_44_函数：_ipc\_mem\_set\_import\_pid.md)
+    - [2.12.45 函数： ipc\_mem\_import\_by\_key](02_Runtime_API_Python/02_12_内存管理/02_12_45_函数：_ipc\_mem\_import\_by\_key.md)
+    - [2.12.46 函数： ipc\_mem\_close](02_Runtime_API_Python/02_12_内存管理/02_12_46_函数：_ipc\_mem\_close.md)
+  - [2.13 执行控制](02_Runtime_API_Python/02_Runtime_APIPython/02_13_执行控制.md)
+    - [2.13.1 函数： subscribe\_report](02_Runtime_API_Python/02_13_执行控制/02_13_01_函数：_subscribe\_report.md)
+    - [2.13.2 函数： launch\_callback](02_Runtime_API_Python/02_13_执行控制/02_13_02_函数：_launch\_callback.md)
+    - [2.13.3 函数： process\_report](02_Runtime_API_Python/02_13_执行控制/02_13_03_函数：_process\_report.md)
+    - [2.13.4 函数： unsubscribe\_report](02_Runtime_API_Python/02_13_执行控制/02_13_04_函数：_unsubscribe\_report.md)
+    - [2.13.5 函数： set\_op\_execute\_time\_out](02_Runtime_API_Python/02_13_执行控制/02_13_05_函数：_set\_op\_execute\_time\_out.md)
+    - [2.13.6 函数： get\_thread\_last\_task\_id](02_Runtime_API_Python/02_13_执行控制/02_13_06_函数：_get\_thread\_last\_task\_id.md)
+    - [2.13.7 函数： reduce\_async](02_Runtime_API_Python/02_13_执行控制/02_13_07_函数：_reduce\_async.md)
+  - [2.14 异常处理](02_Runtime_API_Python/02_Runtime_APIPython/02_14_异常处理.md)
+    - [2.14.1 函数： get\_recent\_err\_msg](02_Runtime_API_Python/02_14_异常处理/02_14_01_函数：_get\_recent\_err\_msg.md)
+    - [2.14.2 函数： set\_exception\_info\_callback](02_Runtime_API_Python/02_14_异常处理/02_14_02_函数：_set\_exception\_info\_callback.md)
+    - [2.14.3 函数： get\_task\_id\_from\_exception\_info](02_Runtime_API_Python/02_14_异常处理/02_14_03_函数：_get\_task\_id\_from\_exception\_info.md)
+    - [2.14.4 函数： get\_stream\_id\_from\_exception\_info](02_Runtime_API_Python/02_14_异常处理/02_14_04_函数：_get\_stream\_id\_from\_exception\_info.md)
+    - [2.14.5 函数： get\_thread\_id\_from\_exception\_info](02_Runtime_API_Python/02_14_异常处理/02_14_05_函数：_get\_thread\_id\_from\_exception\_info.md)
+    - [2.14.6 函数： get\_device\_id\_from\_exception\_info](02_Runtime_API_Python/02_14_异常处理/02_14_06_函数：_get\_device\_id\_from\_exception\_info.md)
+    - [2.14.7 函数： get\_error\_code\_from\_exception\_info](02_Runtime_API_Python/02_14_异常处理/02_14_07_函数：_get\_error\_code\_from\_exception\_info.md)
+    - [2.14.8 函数： device\_task\_abort](02_Runtime_API_Python/02_14_异常处理/02_14_08_函数：_device\_task\_abort.md)
+    - [2.14.9 函数： peek\_at\_last\_error](02_Runtime_API_Python/02_14_异常处理/02_14_09_函数：_peek\_at\_last\_error.md)
+    - [2.14.10 函数： get\_last\_error](02_Runtime_API_Python/02_14_异常处理/02_14_10_函数：_get\_last\_error.md)
+  - [2.15 Kernel 加载与执行](02_Runtime_API_Python/02_Runtime_APIPython/02_15_Kernel_加载与执行.md)
+    - [2.15.1 概念及使用说明](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_01_概念及使用说明.md)
+    - [2.15.2 函数： binary\_load\_from\_file](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_02_函数：_binary\_load\_from\_file.md)
+    - [2.15.3 函数： binary\_load\_from\_data](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_03_函数：_binary\_load\_from\_data.md)
+    - [2.15.4 函数： get\_function\_addr](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_04_函数：_get\_function\_addr.md)
+    - [2.15.5 函数： get\_function\_name](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_05_函数：_get\_function\_name.md)
+    - [2.15.6 函数： register\_cpu\_func](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_06_函数：_register\_cpu\_func.md)
+    - [2.15.7 函数： kernel\_args\_init](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_07_函数：_kernel\_args\_init.md)
+    - [2.15.8 函数： kernel\_args\_init\_by\_user\_mem](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_08_函数：_kernel\_args\_init\_by\_user\_mem.md)
+    - [2.15.9 函数： kernel\_args\_get\_mem\_size](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_09_函数：_kernel\_args\_get\_mem\_size.md)
+    - [2.15.10 函数： kernel\_args\_get\_handle\_mem\_size](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_10_函数：_kernel\_args\_get\_handle\_mem\_size.md)
+    - [2.15.11 函数： kernel\_args\_append](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_11_函数：_kernel\_args\_append.md)
+    - [2.15.12 函数： kernel\_args\_append\_place\_holder](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_12_函数：_kernel\_args\_append\_place\_holder.md)
+    - [2.15.13 函数： kernel\_args\_get\_place\_holder\_buffer](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_13_函数：_kernel\_args\_get\_place\_holder\_buffer.md)
+    - [2.15.14 函数： kernel\_args\_para\_update](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_14_函数：_kernel\_args\_para\_update.md)
+    - [2.15.15 函数： kernel\_args\_finalize](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_15_函数：_kernel\_args\_finalize.md)
+    - [2.15.16 函数： launch\_kernel\_with\_config](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_16_函数：_launch\_kernel\_with\_config.md)
+    - [2.15.17 函数： create\_binary](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_17_函数：_create\_binary.md)
+    - [2.15.18 函数： destroy\_binary](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_18_函数：_destroy\_binary.md)
+    - [2.15.19 函数： binary\_load](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_19_函数：_binary\_load.md)
+    - [2.15.20 函数： binary\_unload](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_20_函数：_binary\_unload.md)
+    - [2.15.21 函数： binary\_get\_function](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_21_函数：_binary\_get\_function.md)
+    - [2.15.22 函数： launch\_kernel](02_Runtime_API_Python/02_15_Kernel_加载与执行/02_15_22_函数：_launch\_kernel.md)
+  - [2.16 Profiling 数据采集](02_Runtime_API_Python/02_Runtime_APIPython/02_16_Profiling_数据采集.md)
+    - [2.16.1 Profiling 数据采集接口](02_Runtime_API_Python/02_16_Profiling_数据采集/02_16_01_Profiling_数据采集接口.md)
+      - [2.16.1.1 总体说明](02_Runtime_API_Python/02_16_01_Profiling_数据采集接口/02_16_01_01_总体说明.md)
+      - [2.16.1.2 函数： create\_config](02_Runtime_API_Python/02_16_01_Profiling_数据采集接口/02_16_01_02_函数：_create\_config.md)
+      - [2.16.1.3 函数： set\_config](02_Runtime_API_Python/02_16_01_Profiling_数据采集接口/02_16_01_03_函数：_set\_config.md)
+      - [2.16.1.4 函数： destroy\_config](02_Runtime_API_Python/02_16_01_Profiling_数据采集接口/02_16_01_04_函数：_destroy\_config.md)
+      - [2.16.1.5 函数： init](02_Runtime_API_Python/02_16_01_Profiling_数据采集接口/02_16_01_05_函数：_init.md)
+      - [2.16.1.7 函数： stop](02_Runtime_API_Python/02_16_01_Profiling_数据采集接口/02_16_01_07_函数：_stop.md)
+    - [2.16.2 msproftx 扩展接口](02_Runtime_API_Python/02_16_Profiling_数据采集/02_16_02_msproftx_扩展接口.md)
+      - [2.16.2.1 总体说明](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_01_总体说明.md)
+      - [2.16.2.2 函数： create\_stamp](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_02_函数：_create\_stamp.md)
+      - [2.16.2.3 函数： set\_stamp\_trace\_message](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_03_函数：_set\_stamp\_trace\_message.md)
+      - [2.16.2.5 函数： mark\_ex](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_05_函数：_mark\_ex.md)
+      - [2.16.2.6 函数： push](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_06_函数：_push.md)
+      - [2.16.2.7 函数： pop](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_07_函数：_pop.md)
+      - [2.16.2.8 函数： range\_start](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_08_函数：_range\_start.md)
+      - [2.16.2.9 函数： range\_stop](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_09_函数：_range\_stop.md)
+      - [2.16.2.10 函数： destroy\_stamp](02_Runtime_API_Python/02_16_02_msproftx_扩展接口/02_16_02_10_函数：_destroy\_stamp.md)
+    - [2.16.3 订阅算子信息](02_Runtime_API_Python/02_16_Profiling_数据采集/02_16_03_订阅算子信息.md)
+      - [2.16.3.1 总体说明](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_01_总体说明.md)
+      - [2.16.3.2 函数： create\_subscribe\_config](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_02_函数：_create\_subscribe\_config.md)
+      - [2.16.3.3 函数： destroy\_subscribe\_config](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_03_函数：_destroy\_subscribe\_config.md)
+      - [2.16.3.4 函数： model\_subscribe](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_04_函数：_model\_subscribe.md)
+      - [2.16.3.5 函数： model\_un\_subscribe](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_05_函数：_model\_un\_subscribe.md)
+      - [2.16.3.6 函数： model\_unsubscribe](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_06_函数：_model\_unsubscribe.md)
+      - [2.16.3.7 函数： get\_op\_desc\_size](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_07_函数：_get\_op\_desc\_size.md)
+      - [2.16.3.8 函数： get\_op\_num](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_08_函数：_get\_op\_num.md)
+      - [2.16.3.9 函数： get\_op\_type\_len](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_09_函数：_get\_op\_type\_len.md)
+      - [2.16.3.10 函数： get\_op\_name\_len](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_10_函数：_get\_op\_name\_len.md)
+      - [2.16.3.11 函数： get\_op\_type](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_11_函数：_get\_op\_type.md)
+      - [2.16.3.12 函数： get\_op\_type\_v2](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_12_函数：_get\_op\_type\_v2.md)
+      - [2.16.3.13 函数： get\_op\_name](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_13_函数：_get\_op\_name.md)
+      - [2.16.3.14 函数： get\_op\_name\_v2](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_14_函数：_get\_op\_name\_v2.md)
+      - [2.16.3.15 函数： get\_op\_start](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_15_函数：_get\_op\_start.md)
+      - [2.16.3.16 函数： get\_op\_end](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_16_函数：_get\_op\_end.md)
+      - [2.16.3.17 函数： get\_op\_duration](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_17_函数：_get\_op\_duration.md)
+      - [2.16.3.18 函数： get\_model\_id](02_Runtime_API_Python/02_16_03_订阅算子信息/02_16_03_18_函数：_get\_model\_id.md)
+    - [2.16.4 PyTorch 场景标记迭代时间](02_Runtime_API_Python/02_16_Profiling_数据采集/02_16_04_PyTorch_场景标记迭代时间.md)
+      - [2.16.4.1 函数： get\_step\_timestamp](02_Runtime_API_Python/02_16_04_PyTorch_场景标记迭代时间/02_16_04_01_函数：_get\_step\_timestamp.md)
+      - [2.16.4.2 函数： create\_step\_info](02_Runtime_API_Python/02_16_04_PyTorch_场景标记迭代时间/02_16_04_02_函数：_create\_step\_info.md)
+      - [2.16.4.3 函数： destroy\_step\_info](02_Runtime_API_Python/02_16_04_PyTorch_场景标记迭代时间/02_16_04_03_函数：_destroy\_step\_info.md)
+  - [2.17 Dump 配置](02_Runtime_API_Python/02_Runtime_APIPython/02_17_Dump_配置.md)
+    - [2.17.1 函数： init\_dump](02_Runtime_API_Python/02_17_Dump_配置/02_17_01_函数：_init\_dump.md)
+    - [2.17.2 函数： set\_dump](02_Runtime_API_Python/02_17_Dump_配置/02_17_02_函数：_set\_dump.md)
+    - [2.17.3 函数： dump\_reg\_callback](02_Runtime_API_Python/02_17_Dump_配置/02_17_03_函数：_dump\_reg\_callback.md)
+    - [2.17.4 函数： dump\_unreg\_callback](02_Runtime_API_Python/02_17_Dump_配置/02_17_04_函数：_dump\_unreg\_callback.md)
+    - [2.17.5 函数：fi nalize\_dump](02_Runtime_API_Python/02_17_Dump_配置/02_17_05_函数：fi_nalize\_dump.md)
+  - [2.18 其他接口](02_Runtime_API_Python/02_Runtime_APIPython/02_18_其他接口.md)
+    - [2.18.1 函数： app\_log](02_Runtime_API_Python/02_18_其他接口/02_18_01_函数：_app\_log.md)
+    - [2.18.2 函数： data\_type\_size](02_Runtime_API_Python/02_18_其他接口/02_18_02_函数：_data\_type\_size.md)
+    - [2.18.3 函数：fl oat16\_to\_float](02_Runtime_API_Python/02_18_其他接口/02_18_03_函数：fl_oat16\_to\_float.md)
+    - [2.18.4 函数：fl oat\_to\_float16](02_Runtime_API_Python/02_18_其他接口/02_18_04_函数：fl_oat\_to\_float16.md)
+    - [2.18.5 函数： get\_version](02_Runtime_API_Python/02_18_其他接口/02_18_05_函数：_get\_version.md)
+    - [2.18.6 函数： get\_cann\_version](02_Runtime_API_Python/02_18_其他接口/02_18_06_函数：_get\_cann\_version.md)
+    - [2.18.7 函数： get\_cann\_attribute](02_Runtime_API_Python/02_18_其他接口/02_18_07_函数：_get\_cann\_attribute.md)
+    - [2.18.8 函数： get\_cann\_attribute\_list](02_Runtime_API_Python/02_18_其他接口/02_18_08_函数：_get\_cann\_attribute\_list.md)
+    - [2.18.9 函数： get\_device\_capability](02_Runtime_API_Python/02_18_其他接口/02_18_09_函数：_get\_device\_capability.md)
+  - [2.19 数据类型及其操作接口](02_Runtime_API_Python/02_Runtime_APIPython/02_19_数据类型及其操作接口.md)
+    - [2.19.1 aclError](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_01_aclError.md)
+    - [2.19.2 aclCannAttr](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_02_aclCannAttr.md)
+    - [2.19.3 aclCANNPackageName](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_03_aclCANNPackageName.md)
+    - [2.19.4 aclCANNPackageVersion](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_04_aclCANNPackageVersion.md)
+    - [2.19.5 aclDataType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_05_aclDataType.md)
+    - [2.19.6 aclDeviceInfo](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_06_aclDeviceInfo.md)
+    - [2.19.7 aclFloat16](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_07_aclFloat16.md)
+    - [2.19.8 aclFormat](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_08_aclFormat.md)
+    - [2.19.9 aclrtAllocatorDesc](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_09_aclrtAllocatorDesc.md)
+      - [2.19.9.1 函数： allocator\_create\_desc](02_Runtime_API_Python/02_19_09_aclrtAllocatorDesc/02_19_09_01_函数：_allocator\_create\_desc.md)
+      - [2.19.9.2 函数： allocator\_destroy\_desc](02_Runtime_API_Python/02_19_09_aclrtAllocatorDesc/02_19_09_02_函数：_allocator\_destroy\_desc.md)
+      - [2.19.9.3 函数： allocator\_set\_obj\_to\_desc](02_Runtime_API_Python/02_19_09_aclrtAllocatorDesc/02_19_09_03_函数：_allocator\_set\_obj\_to\_desc.md)
+      - [2.19.9.4 函数： allocator\_set\_alloc\_func\_to\_desc](02_Runtime_API_Python/02_19_09_aclrtAllocatorDesc/02_19_09_04_函数：_allocator\_set\_alloc\_func\_to\_desc.md)
+      - [2.19.9.5 函数： allocator\_set\_alloc\_advise\_func\_to\_desc](02_Runtime_API_Python/02_19_09_aclrtAllocatorDesc/02_19_09_05_函数：_allocator\_set\_alloc\_advise\_func\_to\_desc.md)
+      - [2.19.9.6 函数： allocator\_set\_free\_func\_to\_desc](02_Runtime_API_Python/02_19_09_aclrtAllocatorDesc/02_19_09_06_函数：_allocator\_set\_free\_func\_to\_desc.md)
+      - [2.19.9.7 函数： allocator\_set\_get\_addr\_from\_block\_func\_to\_desc](02_Runtime_API_Python/02_19_09_aclrtAllocatorDesc/02_19_09_07_函数：_allocator\_set\_get\_addr\_from\_block\_func\_.md)
+    - [2.19.10 aclDataBuffer](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_10_aclDataBuffer.md)
+      - [2.19.10.1 函数： create\_data\_buffer](02_Runtime_API_Python/02_19_10_aclDataBuffer/02_19_10_01_函数：_create\_data\_buffer.md)
+      - [2.19.10.2 函数： destroy\_data\_buffer](02_Runtime_API_Python/02_19_10_aclDataBuffer/02_19_10_02_函数：_destroy\_data\_buffer.md)
+      - [2.19.10.3 函数： get\_data\_buffer\_addr](02_Runtime_API_Python/02_19_10_aclDataBuffer/02_19_10_03_函数：_get\_data\_buffer\_addr.md)
+      - [2.19.10.4 函数： get\_data\_buffer\_size](02_Runtime_API_Python/02_19_10_aclDataBuffer/02_19_10_04_函数：_get\_data\_buffer\_size.md)
+      - [2.19.10.5 函数： get\_data\_buffer\_size\_v2](02_Runtime_API_Python/02_19_10_aclDataBuffer/02_19_10_05_函数：_get\_data\_buffer\_size\_v2.md)
+      - [2.19.10.6 函数： update\_data\_buffer](02_Runtime_API_Python/02_19_10_aclDataBuffer/02_19_10_06_函数：_update\_data\_buffer.md)
+    - [2.19.11 aclMemType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_11_aclMemType.md)
+    - [2.19.12 aclprofAicoreMetrics](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_12_aclprofAicoreMetrics.md)
+    - [2.19.13 aclprofStepTag](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_13_aclprofStepTag.md)
+    - [2.19.14 aclproftype](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_14_aclproftype.md)
+    - [2.19.15 aclrtBinaryLoadOptions](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_15_aclrtBinaryLoadOptions.md)
+    - [2.19.16 aclrtBinaryLoadOptionType/ aclrtBinaryLoadOptionValue](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_16_aclrtBinaryLoadOptionType__aclrtBinaryLoadOptionVa.md)
+    - [2.19.17 aclrtCmoType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_17_aclrtCmoType.md)
+    - [2.19.18 aclrtDevAttr](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_18_aclrtDevAttr.md)
+    - [2.19.19 aclrtDevFeatureType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_19_aclrtDevFeatureType.md)
+    - [2.19.20 aclrtDeviceStatus](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_20_aclrtDeviceStatus.md)
+    - [2.19.21 aclrtDevResLimitType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_21_aclrtDevResLimitType.md)
+    - [2.19.22 aclrtEngineType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_22_aclrtEngineType.md)
+    - [2.19.23 aclrtEventRecordedStatus](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_23_aclrtEventRecordedStatus.md)
+    - [2.19.24 aclrtEventStatus](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_24_aclrtEventStatus.md)
+    - [2.19.25 aclrtEventWaitStatus](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_25_aclrtEventWaitStatus.md)
+    - [2.19.26 aclrtFloatOverflowMode](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_26_aclrtFloatOverflowMode.md)
+    - [2.19.27 aclrtGroupAttr](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_27_aclrtGroupAttr.md)
+    - [2.19.28 aclrtHostRegisterType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_28_aclrtHostRegisterType.md)
+    - [2.19.29 aclrtLastErrLevel](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_29_aclrtLastErrLevel.md)
+    - [2.19.30 aclrtLaunchKernelAttrId/aclrtLaunchKernelAttrValue](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_30_aclrtLaunchKernelAttrId_aclrtLaunchKernelAttrValue.md)
+    - [2.19.31 aclrtLaunchKernelCfg](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_31_aclrtLaunchKernelCfg.md)
+    - [2.19.32 aclrtMallocAttribute](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_32_aclrtMallocAttribute.md)
+    - [2.19.33 aclrtMallocAttrType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_33_aclrtMallocAttrType.md)
+    - [2.19.34 aclrtMallocAttrValue](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_34_aclrtMallocAttrValue.md)
+    - [2.19.35 aclrtMallocConfig](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_35_aclrtMallocConfig.md)
+    - [2.19.36 aclrtMemAttr](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_36_aclrtMemAttr.md)
+    - [2.19.37 aclrtMemGranularityOptions](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_37_aclrtMemGranularityOptions.md)
+    - [2.19.38 aclrtMemHandleType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_38_aclrtMemHandleType.md)
+    - [2.19.39 aclrtMemLocation](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_39_aclrtMemLocation.md)
+    - [2.19.40 aclrtMemLocationType](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_40_aclrtMemLocationType.md)
+    - [2.19.41 aclrtMemMallocPolicy](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_41_aclrtMemMallocPolicy.md)
+    - [2.19.42 aclrtPhysicalMemProp](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_42_aclrtPhysicalMemProp.md)
+    - [2.19.43 aclrtPtrAttributes](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_43_aclrtPtrAttributes.md)
+    - [2.19.44 aclrtReduceKind](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_44_aclrtReduceKind.md)
+    - [2.19.45 aclrtRunMode](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_45_aclrtRunMode.md)
+    - [2.19.46 aclrtStreamAttr](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_46_aclrtStreamAttr.md)
+    - [2.19.47 aclrtStreamAttrValue](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_47_aclrtStreamAttrValue.md)
+    - [2.19.48 aclrtStreamStatus](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_48_aclrtStreamStatus.md)
+    - [2.19.49 aclrtUtilizationInfo](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_49_aclrtUtilizationInfo.md)
+    - [2.19.50 aclSysParamOpt](02_Runtime_API_Python/02_19_数据类型及其操作接口/02_19_50_aclSysParamOpt.md)

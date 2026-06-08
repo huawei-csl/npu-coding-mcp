@@ -2,157 +2,157 @@
 
 > **Source**: CCE-9.0.0.pdf (140 pages)
 
-- 1 简介
-- 2 异构编程环境配置与编译器使用
-  - 3.1 异构编程
-- 3 CCE Intrinsic 介绍
-  - 3.2 Kernel 函数
-  - 3.3 并行模型
-    - 3.3.1 Host 和 Device 异构并行
-    - 3.3.2 Kernel 函数 SPMD 并行
-    - 3.3.3 Kernel 内多流水异步并行
-  - 4.1 函数执行空间限定符
-- 4 CCE Intrinsic 特性
-  - 4.2 地址空间限定符
-  - 4.3 预定义宏
-  - 4.4 全局变量
-  - 4.5 标量
-  - 5.1 Vector 算子示例
-    - 5.1.1 Host 侧代码与说明
-- 5 CCE Intrinsic 样例
-    - 5.1.2 Device 侧代码与说明
-  - 5.2 Cube 算子示例
-    - 5.1.3 运行样例
-    - 5.2.1 示例 1
-      - 5.2.1.1 Host 侧代码与说明
-      - 5.2.1.2 Device 侧代码与说明
-      - 5.2.1.3 运行样例
-    - 5.2.2 示例 2
-      - 5.2.2.1 Host 侧代码与说明
-      - 5.2.2.2 Device 侧代码与说明
-      - 5.2.2.3 运行样例
-  - 5.3 Mix 算子示例
-    - 5.3.1 Host 侧代码与说明
-    - 5.3.2 Device 侧代码与说明
-    - 5.3.3 运行样例
-  - 6.1 简介
-  - 6.2 典型语义
-    - 6.2.1 向量计算典型语义
-    - 6.2.2 数据搬运典型语义
-  - 6.3 向量计算接口
-    - 6.3.1 通用参数说明
-      - 6.3.1.1 单目与双目模板参数说明
-    - 6.3.2 Mask
-      - 6.3.1.2 Mask 规则说明
-      - 6.3.2.1 Mask 模式设置
-      - 6.3.2.2 set\_vector\_mask
-    - 6.3.3 CMPMASK
-      - 6.3.3.1 set\_cmpmask
-      - 6.3.3.2 get\_cmpmask
-    - 6.3.4 双目运算
-      - 6.3.4.1 vadd/vsub/vmul/vdiv
-      - 6.3.4.2 vaddrelu/vsubrelu
-      - 6.3.4.3 vmla
-      - 6.3.4.4 vmadd
-      - 6.3.4.5 vmaddrelu
-      - 6.3.4.6 vadds/vmuls
-      - 6.3.4.7 vshl
-      - 6.3.4.8 vshr
-      - 6.3.4.9 vaxpy
-      - 6.3.4.10 vlrelu
-      - 6.3.4.11 vmulconv
-      - 6.3.4.12 vaddreluconv
-      - 6.3.4.13 vsubreluconv
-    - 6.3.5 单目运算
-      - 6.3.5.1 vexp
-      - 6.3.5.2 vsqrt
-      - 6.3.5.3 vrsqrt
-      - 6.3.5.4 vrelu
-      - 6.3.5.5 vrec
-      - 6.3.5.6 vabs
-      - 6.3.5.7 vln
-      - 6.3.5.8 vbrcb
-    - 6.3.6 规约运算
-      - 6.3.6.1 vcmax/vcmin
-      - 6.3.6.2 vcadd
-      - 6.3.6.3 vcgadd/vcgmax/vcgmin
-      - 6.3.6.4 vcpadd
-      - 6.3.6.5 vreducev2
-    - 6.3.7 选择运算
-      - 6.3.7.1 vsel
-    - 6.3.8 比较运算
-      - 6.3.8.1 vmax/vmin
-      - 6.3.8.2 vmaxs/vmins
-      - 6.3.8.3 vcmp
-      - 6.3.8.4 vcmpv
-      - 6.3.8.5 vcmpvs
-    - 6.3.9 逻辑运算
-      - 6.3.9.1 vand
-      - 6.3.9.2 vor
-      - 6.3.9.3 vnot
-    - 6.3.10 数据类型转换
-      - 6.3.10.1 vconv
-    - 6.3.11 UB 内搬移
-      - 6.3.11.1 vector\_dup
-      - 6.3.11.2 vgather
-      - 6.3.11.3 vgatherb
-      - 6.3.11.4 scatter\_vnchwconv
-      - 6.3.11.5 vtranspose
-      - 6.3.11.6 vcopy
-  - 6.4 矩阵计算接口
-    - 6.4.1 mad
-  - 6.5 数据搬运接口
-    - 6.5.1 通用说明
-    - 6.5.2 Atomic 原子操作
-    - 6.5.3 通用搬运
-      - 6.5.3.1 接口基本信息
-      - 6.5.3.2 copy\_gm\_to\_ubuf
-      - 6.5.3.3 copy\_ubuf\_to\_gm
-      - 6.5.3.4 copy\_ubuf\_to\_ubuf
-      - 6.5.3.5 copy\_gm\_to\_cbuf
-      - 6.5.3.6 copy\_cbuf\_to\_gm
-    - 6.5.4 矩阵输入搬运
-      - 6.5.4.1 接口基本信息
-      - 6.5.4.2 load\_cbuf\_to\_ca
-      - 6.5.4.3 load\_cbuf\_to\_cb
-      - 6.5.4.4 load\_gm\_to\_ca
-      - 6.5.4.5 load\_gm\_to\_cb
-    - 6.5.5 具备转置的矩阵输入搬运
-      - 6.5.5.1 接口基本信息
-      - 6.5.5.2 load\_cbuf\_to\_ca\_transpose
-      - 6.5.5.3 load\_cbuf\_to\_cb\_transpose
-    - 6.5.6 矩阵广播搬入
-      - 6.5.6.1 接口基本信息
-      - 6.5.6.2 set\_l1\_2d
-      - 6.5.6.3 set\_l0a\_2d
-      - 6.5.6.4 set\_l0b\_2d
-    - 6.5.7 卷积输入搬运
-      - 6.5.7.1 接口基本信息
-      - 6.5.7.2 img2colv2\_cbuf\_to\_ca
-      - 6.5.7.3 img2colv2\_cbuf\_to\_cb
-    - 6.5.8 图像输入预处理搬入
-      - 6.5.8.1 load\_image\_to\_cbuf (AIPP)
-    - 6.5.9 搬运并补 padding
-      - 6.5.9.1 接口基本信息
-      - 6.5.9.2 copy\_gm\_to\_ubuf\_align
-      - 6.5.9.3 copy\_ubuf\_to\_gm\_align
-      - 6.5.9.4 set\_mov\_pad\_val
-    - 6.5.10 矩阵搬运格式转换
-      - 6.5.10.1 copy\_gm\_to\_cbuf\_multi\_nd2nz
-    - 6.5.11 矩阵计算偏置表搬运
-      - 6.5.11.1 copy\_cbuf\_to\_bt
-    - 6.5.12 矩阵输出搬运（ Fixpipe ）
-      - 6.5.12.1 接口基本信息
-      - 6.5.12.2 copy\_matrix\_cc\_to\_cbuf/copy\_matrix\_cc\_to\_gm
-  - 6.6 同步接口
-    - 6.6.1 流水类型介绍
-    - 6.6.2 pipe\_barrier
-    - 6.6.3 set\_flag &amp; wait\_flag
-    - 6.6.4 hset\_flag &amp; hwait\_flag
-    - 6.6.5 DCCI
-    - 6.6.6 Vec 与 Cube 核间同步
-      - 6.6.6.1 核间同步介绍
-      - 6.6.6.2 set\_ffts\_base\_addr
-      - 6.6.6.3 ffts\_cross\_core\_sync
-      - 6.6.6.4 wait\_flag\_dev
-      - 6.6.6.5 st\_dev
+- [1 简介](01_简介/01_简介.md)
+- [2 异构编程环境配置与编译器使用](02_异构编程环境配置与编译器使用/02_异构编程环境配置与编译器使用.md)
+  - [3.1 异构编程](03_CCEIntrinsic介绍/03_CCEIntrinsic介绍/03_01_异构编程.md)
+- [3 CCE Intrinsic 介绍](03_CCEIntrinsic介绍/03_CCEIntrinsic介绍.md)
+  - [3.2 Kernel 函数](03_CCEIntrinsic介绍/03_CCEIntrinsic介绍/03_02_Kernel函数.md)
+  - [3.3 并行模型](03_CCEIntrinsic介绍/03_CCEIntrinsic介绍/03_03_并行模型.md)
+    - [3.3.1 Host 和 Device 异构并行](03_CCEIntrinsic介绍/03_03_并行模型/03_03_01_Host和Device异构并行.md)
+    - [3.3.2 Kernel 函数 SPMD 并行](03_CCEIntrinsic介绍/03_03_并行模型/03_03_02_Kernel函数SPMD并行.md)
+    - [3.3.3 Kernel 内多流水异步并行](03_CCEIntrinsic介绍/03_03_并行模型/03_03_03_Kernel内多流水异步并行.md)
+  - [4.1 函数执行空间限定符](04_CCEIntrinsic特性/04_CCEIntrinsic特性/04_01_函数执行空间限定符.md)
+- [4 CCE Intrinsic 特性](04_CCEIntrinsic特性/04_CCEIntrinsic特性.md)
+  - [4.2 地址空间限定符](04_CCEIntrinsic特性/04_CCEIntrinsic特性/04_02_地址空间限定符.md)
+  - [4.3 预定义宏](04_CCEIntrinsic特性/04_CCEIntrinsic特性/04_03_预定义宏.md)
+  - [4.4 全局变量](04_CCEIntrinsic特性/04_CCEIntrinsic特性/04_04_全局变量.md)
+  - [4.5 标量](04_CCEIntrinsic特性/04_CCEIntrinsic特性/04_05_标量.md)
+  - [5.1 Vector 算子示例](05_CCEIntrinsic样例/05_CCEIntrinsic样例/05_01_Vector算子示例.md)
+    - [5.1.1 Host 侧代码与说明](05_CCEIntrinsic样例/05_01_Vector算子示例/05_01_01_Host侧代码与说明.md)
+- [5 CCE Intrinsic 样例](05_CCEIntrinsic样例/05_CCEIntrinsic样例.md)
+    - [5.1.2 Device 侧代码与说明](05_CCEIntrinsic样例/05_01_Vector算子示例/05_01_02_Device侧代码与说明.md)
+  - [5.2 Cube 算子示例](05_CCEIntrinsic样例/05_CCEIntrinsic样例/05_02_Cube算子示例.md)
+    - [5.1.3 运行样例](05_CCEIntrinsic样例/05_01_Vector算子示例/05_01_03_运行样例.md)
+    - [5.2.1 示例 1](05_CCEIntrinsic样例/05_02_Cube算子示例/05_02_01_示例1.md)
+      - [5.2.1.1 Host 侧代码与说明](05_CCEIntrinsic样例/05_02_01_示例1/05_02_01_01_Host侧代码与说明.md)
+      - [5.2.1.2 Device 侧代码与说明](05_CCEIntrinsic样例/05_02_01_示例1/05_02_01_02_Device侧代码与说明.md)
+      - [5.2.1.3 运行样例](05_CCEIntrinsic样例/05_02_01_示例1/05_02_01_03_运行样例.md)
+    - [5.2.2 示例 2](05_CCEIntrinsic样例/05_02_Cube算子示例/05_02_02_示例2.md)
+      - [5.2.2.1 Host 侧代码与说明](05_CCEIntrinsic样例/05_02_02_示例2/05_02_02_01_Host侧代码与说明.md)
+      - [5.2.2.2 Device 侧代码与说明](05_CCEIntrinsic样例/05_02_02_示例2/05_02_02_02_Device侧代码与说明.md)
+      - [5.2.2.3 运行样例](05_CCEIntrinsic样例/05_02_02_示例2/05_02_02_03_运行样例.md)
+  - [5.3 Mix 算子示例](05_CCEIntrinsic样例/05_CCEIntrinsic样例/05_03_Mix算子示例.md)
+    - [5.3.1 Host 侧代码与说明](05_CCEIntrinsic样例/05_03_Mix算子示例/05_03_01_Host侧代码与说明.md)
+    - [5.3.2 Device 侧代码与说明](05_CCEIntrinsic样例/05_03_Mix算子示例/05_03_02_Device侧代码与说明.md)
+    - [5.3.3 运行样例](05_CCEIntrinsic样例/05_03_Mix算子示例/05_03_03_运行样例.md)
+  - [6.1 简介](06_API参考/06_01_简介.md)
+  - [6.2 典型语义](06_API参考/06_02_典型语义.md)
+    - [6.2.1 向量计算典型语义](06_API参考/06_02_典型语义/06_02_01_向量计算典型语义.md)
+    - [6.2.2 数据搬运典型语义](06_API参考/06_02_典型语义/06_02_02_数据搬运典型语义.md)
+  - [6.3 向量计算接口](06_API参考/06_03_向量计算接口.md)
+    - [6.3.1 通用参数说明](06_API参考/06_03_向量计算接口/06_03_01_通用参数说明.md)
+      - [6.3.1.1 单目与双目模板参数说明](06_API参考/06_03_01_通用参数说明/06_03_01_01_单目与双目模板参数说明.md)
+    - [6.3.2 Mask](06_API参考/06_03_向量计算接口/06_03_02_Mask.md)
+      - [6.3.1.2 Mask 规则说明](06_API参考/06_03_01_通用参数说明/06_03_01_02_Mask规则说明.md)
+      - [6.3.2.1 Mask 模式设置](06_API参考/06_03_02_Mask/06_03_02_01_Mask模式设置.md)
+      - [6.3.2.2 set\_vector\_mask](06_API参考/06_03_02_Mask/06_03_02_02_set\_vector\_mask.md)
+    - [6.3.3 CMPMASK](06_API参考/06_03_向量计算接口/06_03_03_CMPMASK.md)
+      - [6.3.3.1 set\_cmpmask](06_API参考/06_03_03_CMPMASK/06_03_03_01_set\_cmpmask.md)
+      - [6.3.3.2 get\_cmpmask](06_API参考/06_03_03_CMPMASK/06_03_03_02_get\_cmpmask.md)
+    - [6.3.4 双目运算](06_API参考/06_03_向量计算接口/06_03_04_双目运算.md)
+      - [6.3.4.1 vadd/vsub/vmul/vdiv](06_API参考/06_03_04_双目运算/06_03_04_01_vadd_vsub_vmul_vdiv.md)
+      - [6.3.4.2 vaddrelu/vsubrelu](06_API参考/06_03_04_双目运算/06_03_04_02_vaddrelu_vsubrelu.md)
+      - [6.3.4.3 vmla](06_API参考/06_03_04_双目运算/06_03_04_03_vmla.md)
+      - [6.3.4.4 vmadd](06_API参考/06_03_04_双目运算/06_03_04_04_vmadd.md)
+      - [6.3.4.5 vmaddrelu](06_API参考/06_03_04_双目运算/06_03_04_05_vmaddrelu.md)
+      - [6.3.4.6 vadds/vmuls](06_API参考/06_03_04_双目运算/06_03_04_06_vadds_vmuls.md)
+      - [6.3.4.7 vshl](06_API参考/06_03_04_双目运算/06_03_04_07_vshl.md)
+      - [6.3.4.8 vshr](06_API参考/06_03_04_双目运算/06_03_04_08_vshr.md)
+      - [6.3.4.9 vaxpy](06_API参考/06_03_04_双目运算/06_03_04_09_vaxpy.md)
+      - [6.3.4.10 vlrelu](06_API参考/06_03_04_双目运算/06_03_04_10_vlrelu.md)
+      - [6.3.4.11 vmulconv](06_API参考/06_03_04_双目运算/06_03_04_11_vmulconv.md)
+      - [6.3.4.12 vaddreluconv](06_API参考/06_03_04_双目运算/06_03_04_12_vaddreluconv.md)
+      - [6.3.4.13 vsubreluconv](06_API参考/06_03_04_双目运算/06_03_04_13_vsubreluconv.md)
+    - [6.3.5 单目运算](06_API参考/06_03_向量计算接口/06_03_05_单目运算.md)
+      - [6.3.5.1 vexp](06_API参考/06_03_05_单目运算/06_03_05_01_vexp.md)
+      - [6.3.5.2 vsqrt](06_API参考/06_03_05_单目运算/06_03_05_02_vsqrt.md)
+      - [6.3.5.3 vrsqrt](06_API参考/06_03_05_单目运算/06_03_05_03_vrsqrt.md)
+      - [6.3.5.4 vrelu](06_API参考/06_03_05_单目运算/06_03_05_04_vrelu.md)
+      - [6.3.5.5 vrec](06_API参考/06_03_05_单目运算/06_03_05_05_vrec.md)
+      - [6.3.5.6 vabs](06_API参考/06_03_05_单目运算/06_03_05_06_vabs.md)
+      - [6.3.5.7 vln](06_API参考/06_03_05_单目运算/06_03_05_07_vln.md)
+      - [6.3.5.8 vbrcb](06_API参考/06_03_05_单目运算/06_03_05_08_vbrcb.md)
+    - [6.3.6 规约运算](06_API参考/06_03_向量计算接口/06_03_06_规约运算.md)
+      - [6.3.6.1 vcmax/vcmin](06_API参考/06_03_06_规约运算/06_03_06_01_vcmax_vcmin.md)
+      - [6.3.6.2 vcadd](06_API参考/06_03_06_规约运算/06_03_06_02_vcadd.md)
+      - [6.3.6.3 vcgadd/vcgmax/vcgmin](06_API参考/06_03_06_规约运算/06_03_06_03_vcgadd_vcgmax_vcgmin.md)
+      - [6.3.6.4 vcpadd](06_API参考/06_03_06_规约运算/06_03_06_04_vcpadd.md)
+      - [6.3.6.5 vreducev2](06_API参考/06_03_06_规约运算/06_03_06_05_vreducev2.md)
+    - [6.3.7 选择运算](06_API参考/06_03_向量计算接口/06_03_07_选择运算.md)
+      - [6.3.7.1 vsel](06_API参考/06_03_07_选择运算/06_03_07_01_vsel.md)
+    - [6.3.8 比较运算](06_API参考/06_03_向量计算接口/06_03_08_比较运算.md)
+      - [6.3.8.1 vmax/vmin](06_API参考/06_03_08_比较运算/06_03_08_01_vmax_vmin.md)
+      - [6.3.8.2 vmaxs/vmins](06_API参考/06_03_08_比较运算/06_03_08_02_vmaxs_vmins.md)
+      - [6.3.8.3 vcmp](06_API参考/06_03_08_比较运算/06_03_08_03_vcmp.md)
+      - [6.3.8.4 vcmpv](06_API参考/06_03_08_比较运算/06_03_08_04_vcmpv.md)
+      - [6.3.8.5 vcmpvs](06_API参考/06_03_08_比较运算/06_03_08_05_vcmpvs.md)
+    - [6.3.9 逻辑运算](06_API参考/06_03_向量计算接口/06_03_09_逻辑运算.md)
+      - [6.3.9.1 vand](06_API参考/06_03_09_逻辑运算/06_03_09_01_vand.md)
+      - [6.3.9.2 vor](06_API参考/06_03_09_逻辑运算/06_03_09_02_vor.md)
+      - [6.3.9.3 vnot](06_API参考/06_03_09_逻辑运算/06_03_09_03_vnot.md)
+    - [6.3.10 数据类型转换](06_API参考/06_03_向量计算接口/06_03_10_数据类型转换.md)
+      - [6.3.10.1 vconv](06_API参考/06_03_10_数据类型转换/06_03_10_01_vconv.md)
+    - [6.3.11 UB 内搬移](06_API参考/06_03_向量计算接口/06_03_11_UB内搬移.md)
+      - [6.3.11.1 vector\_dup](06_API参考/06_03_11_UB内搬移/06_03_11_01_vector\_dup.md)
+      - [6.3.11.2 vgather](06_API参考/06_03_11_UB内搬移/06_03_11_02_vgather.md)
+      - [6.3.11.3 vgatherb](06_API参考/06_03_11_UB内搬移/06_03_11_03_vgatherb.md)
+      - [6.3.11.4 scatter\_vnchwconv](06_API参考/06_03_11_UB内搬移/06_03_11_04_scatter\_vnchwconv.md)
+      - [6.3.11.5 vtranspose](06_API参考/06_03_11_UB内搬移/06_03_11_05_vtranspose.md)
+      - [6.3.11.6 vcopy](06_API参考/06_03_11_UB内搬移/06_03_11_06_vcopy.md)
+  - [6.4 矩阵计算接口](06_API参考/06_04_矩阵计算接口.md)
+    - [6.4.1 mad](06_API参考/06_04_矩阵计算接口/06_04_01_mad.md)
+  - [6.5 数据搬运接口](06_API参考/06_05_数据搬运接口.md)
+    - [6.5.1 通用说明](06_API参考/06_05_数据搬运接口/06_05_01_通用说明.md)
+    - [6.5.2 Atomic 原子操作](06_API参考/06_05_数据搬运接口/06_05_02_Atomic原子操作.md)
+    - [6.5.3 通用搬运](06_API参考/06_05_数据搬运接口/06_05_03_通用搬运.md)
+      - [6.5.3.1 接口基本信息](06_API参考/06_05_03_通用搬运/06_05_03_01_接口基本信息.md)
+      - [6.5.3.2 copy\_gm\_to\_ubuf](06_API参考/06_05_03_通用搬运/06_05_03_02_copy\_gm\_to\_ubuf.md)
+      - [6.5.3.3 copy\_ubuf\_to\_gm](06_API参考/06_05_03_通用搬运/06_05_03_03_copy\_ubuf\_to\_gm.md)
+      - [6.5.3.4 copy\_ubuf\_to\_ubuf](06_API参考/06_05_03_通用搬运/06_05_03_04_copy\_ubuf\_to\_ubuf.md)
+      - [6.5.3.5 copy\_gm\_to\_cbuf](06_API参考/06_05_03_通用搬运/06_05_03_05_copy\_gm\_to\_cbuf.md)
+      - [6.5.3.6 copy\_cbuf\_to\_gm](06_API参考/06_05_03_通用搬运/06_05_03_06_copy\_cbuf\_to\_gm.md)
+    - [6.5.4 矩阵输入搬运](06_API参考/06_05_数据搬运接口/06_05_04_矩阵输入搬运.md)
+      - [6.5.4.1 接口基本信息](06_API参考/06_05_04_矩阵输入搬运/06_05_04_01_接口基本信息.md)
+      - [6.5.4.2 load\_cbuf\_to\_ca](06_API参考/06_05_04_矩阵输入搬运/06_05_04_02_load\_cbuf\_to\_ca.md)
+      - [6.5.4.3 load\_cbuf\_to\_cb](06_API参考/06_05_04_矩阵输入搬运/06_05_04_03_load\_cbuf\_to\_cb.md)
+      - [6.5.4.4 load\_gm\_to\_ca](06_API参考/06_05_04_矩阵输入搬运/06_05_04_04_load\_gm\_to\_ca.md)
+      - [6.5.4.5 load\_gm\_to\_cb](06_API参考/06_05_04_矩阵输入搬运/06_05_04_05_load\_gm\_to\_cb.md)
+    - [6.5.5 具备转置的矩阵输入搬运](06_API参考/06_05_数据搬运接口/06_05_05_具备转置的矩阵输入搬运.md)
+      - [6.5.5.1 接口基本信息](06_API参考/06_05_05_具备转置的矩阵输入搬运/06_05_05_01_接口基本信息.md)
+      - [6.5.5.2 load\_cbuf\_to\_ca\_transpose](06_API参考/06_05_05_具备转置的矩阵输入搬运/06_05_05_02_load\_cbuf\_to\_ca\_transpose.md)
+      - [6.5.5.3 load\_cbuf\_to\_cb\_transpose](06_API参考/06_05_05_具备转置的矩阵输入搬运/06_05_05_03_load\_cbuf\_to\_cb\_transpose.md)
+    - [6.5.6 矩阵广播搬入](06_API参考/06_05_数据搬运接口/06_05_06_矩阵广播搬入.md)
+      - [6.5.6.1 接口基本信息](06_API参考/06_05_06_矩阵广播搬入/06_05_06_01_接口基本信息.md)
+      - [6.5.6.2 set\_l1\_2d](06_API参考/06_05_06_矩阵广播搬入/06_05_06_02_set\_l1\_2d.md)
+      - [6.5.6.3 set\_l0a\_2d](06_API参考/06_05_06_矩阵广播搬入/06_05_06_03_set\_l0a\_2d.md)
+      - [6.5.6.4 set\_l0b\_2d](06_API参考/06_05_06_矩阵广播搬入/06_05_06_04_set\_l0b\_2d.md)
+    - [6.5.7 卷积输入搬运](06_API参考/06_05_数据搬运接口/06_05_07_卷积输入搬运.md)
+      - [6.5.7.1 接口基本信息](06_API参考/06_05_07_卷积输入搬运/06_05_07_01_接口基本信息.md)
+      - [6.5.7.2 img2colv2\_cbuf\_to\_ca](06_API参考/06_05_07_卷积输入搬运/06_05_07_02_img2colv2\_cbuf\_to\_ca.md)
+      - [6.5.7.3 img2colv2\_cbuf\_to\_cb](06_API参考/06_05_07_卷积输入搬运/06_05_07_03_img2colv2\_cbuf\_to\_cb.md)
+    - [6.5.8 图像输入预处理搬入](06_API参考/06_05_数据搬运接口/06_05_08_图像输入预处理搬入.md)
+      - [6.5.8.1 load\_image\_to\_cbuf (AIPP)](06_API参考/06_05_08_图像输入预处理搬入/06_05_08_01_load\_image\_to\_cbuf(AIPP).md)
+    - [6.5.9 搬运并补 padding](06_API参考/06_05_数据搬运接口/06_05_09_搬运并补padding.md)
+      - [6.5.9.1 接口基本信息](06_API参考/06_05_09_搬运并补padding/06_05_09_01_接口基本信息.md)
+      - [6.5.9.2 copy\_gm\_to\_ubuf\_align](06_API参考/06_05_09_搬运并补padding/06_05_09_02_copy\_gm\_to\_ubuf\_align.md)
+      - [6.5.9.3 copy\_ubuf\_to\_gm\_align](06_API参考/06_05_09_搬运并补padding/06_05_09_03_copy\_ubuf\_to\_gm\_align.md)
+      - [6.5.9.4 set\_mov\_pad\_val](06_API参考/06_05_09_搬运并补padding/06_05_09_04_set\_mov\_pad\_val.md)
+    - [6.5.10 矩阵搬运格式转换](06_API参考/06_05_数据搬运接口/06_05_10_矩阵搬运格式转换.md)
+      - [6.5.10.1 copy\_gm\_to\_cbuf\_multi\_nd2nz](06_API参考/06_05_10_矩阵搬运格式转换/06_05_10_01_copy\_gm\_to\_cbuf\_multi\_nd2nz.md)
+    - [6.5.11 矩阵计算偏置表搬运](06_API参考/06_05_数据搬运接口/06_05_11_矩阵计算偏置表搬运.md)
+      - [6.5.11.1 copy\_cbuf\_to\_bt](06_API参考/06_05_11_矩阵计算偏置表搬运/06_05_11_01_copy\_cbuf\_to\_bt.md)
+    - [6.5.12 矩阵输出搬运（ Fixpipe ）](06_API参考/06_05_数据搬运接口/06_05_12_矩阵输出搬运（Fixpipe）.md)
+      - [6.5.12.1 接口基本信息](06_API参考/06_05_12_矩阵输出搬运（Fixpipe）/06_05_12_01_接口基本信息.md)
+      - [6.5.12.2 copy\_matrix\_cc\_to\_cbuf/copy\_matrix\_cc\_to\_gm](06_API参考/06_05_12_矩阵输出搬运（Fixpipe）/06_05_12_02_copy\_matrix\_cc\_to\_cbuf_copy\_matrix\.md)
+  - [6.6 同步接口](06_API参考/06_06_同步接口.md)
+    - [6.6.1 流水类型介绍](06_API参考/06_06_同步接口/06_06_01_流水类型介绍.md)
+    - [6.6.2 pipe\_barrier](06_API参考/06_06_同步接口/06_06_02_pipe\_barrier.md)
+    - [6.6.3 set\_flag &amp; wait\_flag](06_API参考/06_06_同步接口/06_06_03_set\_flag&wait\_flag.md)
+    - [6.6.4 hset\_flag &amp; hwait\_flag](06_API参考/06_06_同步接口/06_06_04_hset\_flag&hwait\_flag.md)
+    - [6.6.5 DCCI](06_API参考/06_06_同步接口/06_06_05_DCCI.md)
+    - [6.6.6 Vec 与 Cube 核间同步](06_API参考/06_06_同步接口/06_06_06_Vec与Cube核间同步.md)
+      - [6.6.6.1 核间同步介绍](06_API参考/06_06_06_Vec与Cube核间同步/06_06_06_01_核间同步介绍.md)
+      - [6.6.6.2 set\_ffts\_base\_addr](06_API参考/06_06_06_Vec与Cube核间同步/06_06_06_02_set\_ffts\_base\_addr.md)
+      - [6.6.6.3 ffts\_cross\_core\_sync](06_API参考/06_06_06_Vec与Cube核间同步/06_06_06_03_ffts\_cross\_core\_sync.md)
+      - [6.6.6.4 wait\_flag\_dev](06_API参考/06_06_06_Vec与Cube核间同步/06_06_06_04_wait\_flag\_dev.md)
+      - [6.6.6.5 st\_dev](06_API参考/06_06_06_Vec与Cube核间同步/06_06_06_05_st\_dev.md)

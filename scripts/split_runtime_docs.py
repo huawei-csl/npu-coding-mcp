@@ -119,6 +119,25 @@ def _fix_merged_content(entries: list[dict]) -> list[dict]:
     return fixed
 
 
+def _compute_relative_path(sec_num: str, title: str, lookup: dict[str, str]) -> str:
+    """Compute the relative file path for a section within the output dir."""
+    chapter_num = sec_num.split(".")[0]
+    chapter_dir = _section_to_dirname(chapter_num, CHAPTER_TITLES.get(chapter_num, f"Chapter{chapter_num}"))
+
+    if "." not in sec_num:
+        filename = _section_to_filename(sec_num, title)
+        return f"{chapter_dir}/{filename}"
+
+    parent_num = sec_num.rsplit(".", 1)[0]
+    parent_title = lookup.get(parent_num, "")
+    filename = _section_to_filename(sec_num, title)
+    if parent_title:
+        parent_dir = _section_to_dirname(parent_num, parent_title)
+        return f"{chapter_dir}/{parent_dir}/{filename}"
+    else:
+        return f"{chapter_dir}/{filename}"
+
+
 def split_docs(input_path: Path, output_dir: Path) -> int:
     text = input_path.read_text(encoding="utf-8")
     lines = text.splitlines()
@@ -155,18 +174,21 @@ def split_docs(input_path: Path, output_dir: Path) -> int:
 
     section_entries = _fix_merged_content(section_entries)
 
+    sec_title_lookup: dict[str, str] = {e["section_number"]: e["title"] for e in section_entries}
+
     toc_content = "# CANN Runtime API 开发指南 — 目录\n\n"
     toc_content += "> **Source**: CANN-9.0.0-Runtime-zh.pdf (950 pages)\n\n"
     for e in section_entries:
-        indent = "  " * (e["section_number"].count("."))
-        toc_content += f"{indent}- {e['section_number']} {e['title']}\n"
+        sec_num = e["section_number"]
+        title = e["title"]
+        indent = "  " * (sec_num.count("."))
+        link_path = _compute_relative_path(sec_num, title, sec_title_lookup)
+        toc_content += f"{indent}- [{sec_num} {title}]({link_path})\n"
 
     output_dir.mkdir(parents=True, exist_ok=True)
     (output_dir / "00-index.md").write_text(toc_content, encoding="utf-8")
 
     _copy_images(input_path, output_dir)
-
-    sec_title_lookup: dict[str, str] = {e["section_number"]: e["title"] for e in section_entries}
 
     count = 0
     for entry in section_entries:
