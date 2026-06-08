@@ -6,9 +6,10 @@
 python -m venv .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
-# Build the AscendC + CCE FTS5 search indexes (one-time, committed but server auto-builds if missing)
+# Build the AscendC + CCE + Runtime FTS5 search indexes (one-time, committed but server auto-builds if missing)
 python -m npu_coding_mcp build-ascendc-index
 python -m npu_coding_mcp build-cce-index
+python -m npu_coding_mcp build-runtime-index
 ```
 
 CI uses `uv sync --all-groups` and `uv run` — works as an alternative to pip.
@@ -36,6 +37,8 @@ python -m npu_coding_mcp serve /path/to/pto-isa/docs
 # Rebuild indexes
 python -m npu_coding_mcp build-ascendc-index
 python -m npu_coding_mcp build-cce-index
+python -m npu_coding_mcp build-runtime-index
+python -m npu_coding_mcp build-runtime-index
 ```
 
 The CLI accepts bare positional args without the `serve` subcommand for backward compat: `python -m npu_coding_mcp /path/to/docs --stdio`.
@@ -51,7 +54,7 @@ Only two test modules exist: `test_loader.py` (PTO-ISA, 28+ tests) and `test_cce
 ## Architecture
 
 - **Single package** at `src/npu_coding_mcp/`
-- **Three domains**: PTO-ISA (14 tools in `tools.py`) + AscendC (6 tools in `ascendc/tools.py`) + CCE (6 tools in `cce/tools.py`) = 26 total
+- **Four domains**: PTO-ISA (14 tools in `tools.py`) + AscendC (6 tools in `ascendc/tools.py`) + CCE (6 tools in `cce/tools.py`) = 32 total
 - **Startup**: `loader.py` parses all markdown docs into an in-memory `ISAStore` (Pydantic models in `models.py`). AscendC loader lives in `ascendc/loader.py`, CCE loader in `cce/loader.py`
 - **Auto-clone**: when no `docs_path` given, `repo_manager.py` clones `https://gitcode.com/cann/pto-isa.git` into `~/.cache/npu-coding-mcp/` (NB: README.md still references the old path `~/.cache/pto-isa-mcp/` — the code uses `npu-coding-mcp`)
 - **Transport**: FastMCP supports `--stdio` and HTTP (`streamable-http`)
@@ -76,13 +79,19 @@ Requires: `g++` on PATH, PTO headers at `/usr/local/Ascend/cann-9.0.0/x86_64-lin
 - FTS5 index at `data/ascendc_index.db` (committed; auto-built on startup if missing)
 - All 6 AscendC tools use `ascendc_` prefix and accept `language` param: `"en"` (default, prepends translation instruction) or `"zh"` (raw Chinese)
 
-## CCE documentation
-
-- 154 markdown sections across 6 chapters, all in Chinese, committed to `data/cce_docs/`
+## - 154 markdown sections across 6 chapters, all in Chinese, committed to `data/cce_docs/`
 - FTS5 index at `data/cce_index.db` (committed; auto-built on startup if missing)
 - Source PDF converted via pdf-to-markdown, then split by `scripts/split_cce_docs.py`
 - All 6 CCE tools use `cce_` prefix and accept `language` param, same pattern as AscendC
 - Tools: `cce_search_docs`, `cce_get_section`, `cce_list_chapters`, `cce_get_chapter_tree`, `cce_search_api`, `cce_get_toc`
+
+## Runtime documentation
+
+- 940 markdown sections across 2 chapters, all in Chinese, committed to `data/runtime_docs/`
+- FTS5 index at `data/runtime_index.db` (committed; auto-built on startup if missing)
+- Source PDF converted via pdf-to-markdown, then split by `scripts/split_runtime_docs.py`
+- All 6 Runtime tools use `runtime_` prefix and accept `language` param
+- Tools: `runtime_search_docs`, `runtime_get_section`, `runtime_list_chapters`, `runtime_get_chapter_tree`, `runtime_search_api`, `runtime_get_toc`
 
 ## Maintenance note
 

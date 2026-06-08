@@ -31,7 +31,7 @@ Programs are written in C++ using PTO intrinsics (e.g. `TADD(dst, src0, src1)`)
 or in PTO-AS assembly (an MLIR-inspired text format with SSA values and typed
 tile operands).
 
-## Available Tools (26)
+## Available Tools (32)
 
 ### PTO-ISA — Discovery & search
 | Tool | When to use |
@@ -79,13 +79,23 @@ tile operands).
 | `cce_search_api(api_name)` | Fast API lookup in the API Reference chapter |
 | `cce_get_toc()` | Complete CCE document table of contents |
 
+### Runtime API Documentation
+| Tool | When to use |
+|------|-------------|
+| `runtime_search_docs(query, max_results, language)` | Full-text search across 940 CANN Runtime API sections |
+| `runtime_get_section(path, language)` | Read a specific section by file path |
+| `runtime_list_chapters()` | List the 2 Runtime API chapters |
+| `runtime_get_chapter_tree(chapter_path)` | Hierarchy of sections within a chapter |
+| `runtime_search_api(api_name)` | Fast API lookup by function name |
+| `runtime_get_toc()` | Complete Runtime API document table of contents |
+
 ## Recommended Workflow
 
-1. **Orient**: Call `list_categories()` for PTO-ISA, `ascendc_list_chapters()` for AscendC, or `cce_list_chapters()` for CCE.
+1. **Orient**: Call `list_categories()` for PTO-ISA, `ascendc_list_chapters()` for AscendC, `cce_list_chapters()` for CCE, or `runtime_list_chapters()` for Runtime.
 2. **Find**: Use `search_instructions("multiply")` for PTO-ISA, `ascendc_search_docs("SIMT model")` for AscendC, or `cce_search_docs("vadd")` for CCE.
 3. **Inspect**: Call `get_instruction("TMATMUL")` for PTO-ISA, `ascendc_get_section(path)` for AscendC, or `cce_get_section(path)` for CCE.
 4. **Drill down**: Use `get_constraints("TMATMUL", backend="a5")` or `get_assembly_format("TMATMUL")` for PTO-ISA. Use `ascendc_get_chapter_tree()` or `cce_get_chapter_tree()` for docs.
-5. **APIs**: Use `ascendc_search_api("Matmul")` or `cce_search_api("copy_gm_to_ubuf")` for fast API reference lookups.
+5. **APIs**: Use `ascendc_search_api("Matmul")`, `cce_search_api("copy_gm_to_ubuf")`, or `runtime_search_api("aclInit")` for fast API reference lookups.
 
 ## Key Concepts
 
@@ -171,6 +181,43 @@ instruction. Use `language="zh"` to receive raw Chinese text.
 5. `cce_search_api("copy_gm_to_ubuf")` — quick API lookups only in the API Reference
 """
 
+_RUNTIME_GUIDE = """\
+# CANN Runtime API Documentation — Agent Guide
+
+CANN 9.0.0 Runtime API Reference — 940 sections across 2 chapters.
+
+## Chapters
+
+| Chapter | Sections | Topic |
+|---------|----------|-------|
+| Runtime API (C) | ~600 | C API — aclInit, aclrt*, aclmdl*, aclprof*, memory, streams, events |
+| Runtime API (Python) | ~340 | Python bindings (pyACL) mirroring the C API |
+
+## Language Support
+
+All content is in Chinese. By default, tools return content with a translation
+instruction. Use `language="zh"` to receive raw Chinese text.
+
+## Tools (6)
+
+| Tool | When to use |
+|------|-------------|
+| `runtime_search_docs(query, max_results, language)` | Full-text search across all Runtime API docs |
+| `runtime_get_section(path, language)` | Read a specific API section by file path |
+| `runtime_list_chapters()` | List the 2 Runtime API chapters |
+| `runtime_get_chapter_tree(chapter_path)` | Hierarchy of sections within a chapter |
+| `runtime_search_api(api_name)` | Fast lookup by function name (e.g., 'aclrtMalloc') |
+| `runtime_get_toc()` | Complete Runtime API table of contents |
+
+## Workflow
+
+1. `runtime_list_chapters()` — see what's available
+2. `runtime_search_api("aclInit")` — quick API lookup by name
+3. `runtime_search_docs("memory allocation")` — full-text search
+4. `runtime_get_chapter_tree("01_Runtime_API_C/01_06_Device_管理/")` — section hierarchy
+5. `runtime_get_section(path)` — read full content
+"""
+
 
 def create_server(
     docs_path: str | Path,
@@ -178,6 +225,8 @@ def create_server(
     ascendc_index_path: str | Path | None = None,
     cce_docs_path: str | Path | None = None,
     cce_index_path: str | Path | None = None,
+    runtime_docs_path: str | Path | None = None,
+    runtime_index_path: str | Path | None = None,
 ) -> FastMCP:
     """Create and configure the PTO-ISA + AscendC + CCE MCP server.
 
@@ -192,11 +241,10 @@ def create_server(
         A fully configured FastMCP server with all tools registered.
     """
     instructions = (
-        "PTO-ISA, AscendC, and CCE documentation server. Provides access to PTO Tile Library "
+        "PTO-ISA, AscendC, CCE, and Runtime documentation server. Provides access to PTO Tile Library "
         "instruction documentation, the CANN 9.0.0 AscendC operator development guide, "
-        "and the CCE Intrinsic development guide. "
-        "Read the resource at npu-coding://guide for a full orientation, or start with "
-        "list_categories(), ascendc_list_chapters(), cce_list_chapters(), or search_instructions() to explore."
+        "the CCE Intrinsic development guide, and the CANN Runtime API reference. "
+        "Read the resource at npu-coding://guide for a full orientation."
     )
 
     mcp = FastMCP(name="npu-coding-mcp", instructions=instructions)
@@ -293,5 +341,41 @@ def create_server(
             logger.warning("CCE index not found and could not be built.")
     else:
         logger.info("CCE documentation not configured — skipping.")
+
+    # --- Load Runtime store (if available) ---
+    runtime_store = None
+    if runtime_docs_path and runtime_index_path:
+        runtime_docs = Path(runtime_docs_path)
+        runtime_index = Path(runtime_index_path)
+
+        if runtime_docs.exists() and not runtime_index.exists():
+            logger.info("Runtime index not found — building ...")
+            from .runtime.index_builder import build_index
+
+            build_index(runtime_docs, runtime_index)
+            logger.info("Runtime index built successfully.")
+
+        if runtime_index.exists():
+            from .runtime.loader import load_store as load_runtime_store
+
+            runtime_store = load_runtime_store(runtime_docs, runtime_index)
+            from .runtime.tools import register_tools as register_runtime_tools
+
+            register_runtime_tools(mcp, runtime_store)
+            logger.info("Runtime tools registered (6).")
+
+            @mcp.resource(
+                "runtime://guide",
+                name="runtime-guide",
+                title="Runtime API Documentation Guide",
+                description="Orientation guide for the CANN 9.0.0 Runtime API documentation.",
+                mime_type="text/markdown",
+            )
+            def runtime_guide() -> str:
+                return _RUNTIME_GUIDE
+        else:
+            logger.warning("Runtime index not found and could not be built.")
+    else:
+        logger.info("Runtime documentation not configured — skipping.")
 
     return mcp

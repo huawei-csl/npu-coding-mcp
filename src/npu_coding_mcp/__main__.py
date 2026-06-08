@@ -71,6 +71,30 @@ def _default_cce_index() -> Path:
     return candidates[0]
 
 
+def _default_runtime_docs() -> Path:
+    """Auto-detect Runtime docs directory."""
+    candidates = [
+        _default_package_dir() / "data" / "runtime_docs",
+        Path.cwd() / "data" / "runtime_docs",
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0]
+
+
+def _default_runtime_index() -> Path:
+    """Auto-detect Runtime index path."""
+    candidates = [
+        _default_package_dir() / "data" / "runtime_index.db",
+        Path.cwd() / "data" / "runtime_index.db",
+    ]
+    for c in candidates:
+        if c.exists():
+            return c
+    return candidates[0]
+
+
 def _cmd_build_index(args: argparse.Namespace) -> None:
     from .ascendc.index_builder import build_index
 
@@ -101,12 +125,28 @@ def _cmd_build_cce_index(args: argparse.Namespace) -> None:
     print(f"Index built: {count} documents -> {index} ({size_mb:.1f} MB)")
 
 
+def _cmd_build_runtime_index(args: argparse.Namespace) -> None:
+    from .runtime.index_builder import build_index
+
+    docs = Path(args.runtime_docs or _default_runtime_docs())
+    index = Path(args.runtime_index or _default_runtime_index())
+
+    if not docs.exists():
+        print(f"Error: Runtime docs directory not found: {docs}")
+        sys.exit(1)
+
+    count = build_index(docs, index)
+    size_mb = index.stat().st_size / (1024 * 1024)
+    print(f"Index built: {count} documents -> {index} ({size_mb:.1f} MB)")
+
+
 def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(
         prog="npu-coding-mcp",
         description=(
             "MCP server exposing PTO-ISA instruction documentation, "
-            "CANN 9.0.0 AscendC operator development guide, and CCE Intrinsic development guide."
+            "CANN 9.0.0 AscendC operator development guide, CCE Intrinsic development guide, "
+            "and CANN Runtime API reference."
         ),
     )
     sub = parser.add_subparsers(dest="command")
@@ -120,6 +160,11 @@ def main(argv: list[str] | None = None) -> None:
     build_cce_p = sub.add_parser("build-cce-index", help="Rebuild the CCE FTS5 search index")
     build_cce_p.add_argument("--cce-docs", help="Path to cce_docs/ directory")
     build_cce_p.add_argument("--cce-index", help="Output path for index.db")
+
+    # build-runtime-index subcommand
+    build_runtime_p = sub.add_parser("build-runtime-index", help="Rebuild the Runtime FTS5 search index")
+    build_runtime_p.add_argument("--runtime-docs", help="Path to runtime_docs/ directory")
+    build_runtime_p.add_argument("--runtime-index", help="Output path for index.db")
 
     # serve (default)
     serve_p = sub.add_parser("serve", help="Start the MCP server")
@@ -138,6 +183,8 @@ def main(argv: list[str] | None = None) -> None:
     serve_p.add_argument("--ascendc-index", help="Path to AscendC index.db")
     serve_p.add_argument("--cce-docs", help="Path to CCE docs directory")
     serve_p.add_argument("--cce-index", help="Path to CCE index.db")
+    serve_p.add_argument("--runtime-docs", help="Path to Runtime docs directory")
+    serve_p.add_argument("--runtime-index", help="Path to Runtime index.db")
 
     # Backward compat: accept positional args without subcommand
     args, unknown = parser.parse_known_args(argv)
@@ -156,6 +203,10 @@ def main(argv: list[str] | None = None) -> None:
 
     if args.command == "build-cce-index":
         _cmd_build_cce_index(args)
+        return
+
+    if args.command == "build-runtime-index":
+        _cmd_build_runtime_index(args)
         return
 
     # --- serve ---
@@ -206,9 +257,24 @@ def main(argv: list[str] | None = None) -> None:
         log.info("CCE docs: %s", cce_docs)
         log.info("CCE index: %s", cce_index)
 
+    # Resolve Runtime paths
+    runtime_docs = Path(args.runtime_docs) if args.runtime_docs else None
+    if runtime_docs is None:
+        runtime_docs = _default_runtime_docs()
+        if not runtime_docs.exists():
+            runtime_docs = None
+
+    runtime_index = Path(args.runtime_index) if args.runtime_index else None
+    if runtime_index is None:
+        runtime_index = _default_runtime_index()
+
+    if runtime_docs:
+        log.info("Runtime docs: %s", runtime_docs)
+        log.info("Runtime index: %s", runtime_index)
+
     from .server import create_server
 
-    mcp = create_server(docs_path, ascendc_docs, ascendc_index, cce_docs, cce_index)
+    mcp = create_server(docs_path, ascendc_docs, ascendc_index, cce_docs, cce_index, runtime_docs, runtime_index)
 
     if args.stdio:
         mcp.run(transport="stdio")

@@ -1,0 +1,43 @@
+# aclrtMemcpyAsyncWithOffset
+
+> **Section**: 1.13.27
+
+
+## 产品支持情况
+
+| 产品                               | 是否支持   |
+|----------------------------------|--------|
+| Atlas 350 加速卡                    | √      |
+| Atlas A3 训练系列产品 /Atlas A3 推理系列产品 | √      |
+| Atlas A2 训练系列产品 /Atlas A2 推理系列产品 | √      |
+
+## 功能说明
+
+## 函数原型
+
+## 参数说明
+
+## 返回值说明
+
+| 产品                     | 是否支持   |
+|------------------------|--------|
+| Atlas 200I/500 A2 推理产品 | ☓      |
+| Atlas 推理系列产品           | ☓      |
+| Atlas 训练系列产品           | √      |
+
+实现内存复制，适用于基地址是二级指针、有地址偏移的场景。异步接口。
+
+aclError aclrtMemcpyAsyncWithOffset(void **dst, size\_t destMax, size\_t dstDataOffset, const void **src, size\_t count, size\_t srcDataOffset, aclrtMemcpyKind kind, aclrtStream stream)
+
+| 参数名            | 输入 / 输 出   | 说明                                                                                                |
+|----------------|------------|---------------------------------------------------------------------------------------------------|
+| dst            | 输入         | 目的内存地址指针。                                                                                         |
+| destMax        | 输入         | 目的内存地址的最大内存长度，单位 Byte 。                                                                           |
+| dstData Offset | 输入         | 目的内存地址偏移。                                                                                         |
+| src            | 输入         | 源内存地址指针。                                                                                          |
+| count          | 输入         | 内存复制的长度，单位 Byte 。                                                                                 |
+| srcDataOf fset | 输入         | 源内存地址偏移。                                                                                          |
+| kind           | 输入         | 内存复制的类型。类型定义请参见 aclrtMemcpyKind 。 当前 kind 只支持 ACL_MEMCPY_INNER_DEVICE_TO_DEVICE （ Device 内的内存复制）。 |
+| stream         | 输入         | 指定执行内存复制任务的 Stream 。类型定义请参见 aclrtStream 。                                                         |
+
+返回 0 表示成功，返回其他值表示失败，请参见 1.28.1 aclError 。

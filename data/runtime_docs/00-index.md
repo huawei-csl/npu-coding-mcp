@@ -1,0 +1,944 @@
+# CANN Runtime API 开发指南 — 目录
+
+> **Source**: CANN-9.0.0-Runtime-zh.pdf (950 pages)
+
+  - 1.1 废弃接口 &amp; 返回码列表
+  - 1.2 同步 &amp; 异步 API 说明
+  - 1.3 头文件和库文件说明
+  - 1.4 初始化和去初始化
+    - 1.4.1 aclInit
+    - 1.4.2 aclFinalize
+    - 1.4.3 aclFinalizeReference
+    - 1.4.4 aclInitCallbackRegister
+    - 1.4.5 aclInitCallbackUnRegister
+    - 1.4.6 aclFinalizeCallbackRegister
+    - 1.4.7 aclFinalizeCallbackUnRegister
+  - 1.5 运行时配置
+    - 1.5.1 aclrtSetSysParamOpt
+    - 1.5.2 aclrtGetSysParamOpt
+    - 1.5.3 aclrtGetDeviceResLimit
+    - 1.5.4 aclrtSetDeviceResLimit
+    - 1.5.5 aclrtResetDeviceResLimit
+    - 1.5.6 aclrtGetStreamResLimit
+    - 1.5.7 aclrtSetStreamResLimit
+    - 1.5.8 aclrtResetStreamResLimit
+    - 1.5.9 aclrtUseStreamResInCurrentThread
+    - 1.5.10 aclrtUnuseStreamResInCurrentThread
+    - 1.5.11 aclrtGetResInCurrentThread
+  - 1.6 Device 管理
+    - 1.6.1 aclrtSetDevice
+    - 1.6.2 aclrtResetDevice
+    - 1.6.3 aclrtResetDeviceForce
+    - 1.6.4 aclrtGetDevice
+    - 1.6.5 aclrtGetRunMode
+    - 1.6.6 aclrtSetTsDevice
+    - 1.6.7 aclrtGetDeviceCount
+    - 1.6.8 aclrtGetDeviceUtilizationRate
+    - 1.6.9 aclrtQueryDeviceStatus
+    - 1.6.10 aclrtGetSocName
+    - 1.6.11 aclrtSetDeviceSatMode
+    - 1.6.12 aclrtGetDeviceSatMode
+    - 1.6.13 aclrtDeviceCanAccessPeer
+    - 1.6.14 aclrtDeviceEnablePeerAccess
+    - 1.6.15 aclrtDeviceDisablePeerAccess
+    - 1.6.16 aclrtDevicePeerAccessStatus
+    - 1.6.17 aclrtGetOverflowStatus
+    - 1.6.18 aclrtResetOverflowStatus
+    - 1.6.19 aclrtSynchronizeDevice
+    - 1.6.20 aclrtSynchronizeDeviceWithTimeout
+    - 1.6.21 aclrtGetDeviceInfo
+    - 1.6.22 aclrtDeviceGetStreamPriorityRange
+    - 1.6.23 aclrtGetDeviceCapability
+    - 1.6.24 aclrtGetDevicesTopo
+    - 1.6.25 aclrtRegDeviceStateCallback
+    - 1.6.26 aclrtGetLogicDevIdByUserDevId
+    - 1.6.27 aclrtGetUserDevIdByLogicDevId
+    - 1.6.28 aclrtGetLogicDevIdByPhyDevId
+    - 1.6.29 aclrtGetPhyDevIdByLogicDevId
+    - 1.6.30 aclrtDeviceGetUuid
+  - 1.7 Context 管理
+    - 1.7.1 aclrtCreateContext
+    - 1.7.2 aclrtDestroyContext
+    - 1.7.3 aclrtSetCurrentContext
+    - 1.7.4 aclrtGetCurrentContext
+    - 1.7.5 aclrtCtxSetSysParamOpt
+    - 1.7.6 aclrtCtxGetSysParamOpt
+    - 1.7.7 aclrtCtxGetCurrentDefaultStream
+    - 1.7.8 aclrtGetPrimaryCtxState
+    - 1.7.9 aclrtCtxGetFloatOverflowAddr
+  - 1.8 Stream 管理
+    - 1.8.1 aclrtCreateStream
+    - 1.8.2 aclrtCreateStreamWithConfig
+    - 1.8.3 aclrtDestroyStream
+    - 1.8.4 aclrtDestroyStreamForce
+    - 1.8.5 aclrtSetStreamOverflowSwitch
+    - 1.8.6 aclrtGetStreamOverflowSwitch
+    - 1.8.7 aclrtSetStreamFailureMode
+    - 1.8.8 aclrtStreamQuery
+    - 1.8.9 aclrtSynchronizeStream
+    - 1.8.10 aclrtSynchronizeStreamWithTimeout
+    - 1.8.11 aclrtStreamAbort
+    - 1.8.12 aclrtStreamGetId
+    - 1.8.13 aclrtGetStreamAvailableNum
+    - 1.8.14 aclrtSetStreamAttribute
+    - 1.8.15 aclrtGetStreamAttribute
+    - 1.8.16 aclrtActiveStream
+    - 1.8.17 aclrtSwitchStream
+    - 1.8.18 aclrtRegStreamStateCallback
+    - 1.8.19 aclrtStreamStop
+    - 1.8.20 aclrtPersistentTaskClean
+    - 1.8.21 aclrtStreamGetPriority
+    - 1.8.22 aclrtStreamGetFlags
+  - 1.9 Event 管理
+    - 1.9.1 aclrtCreateEvent
+    - 1.9.2 aclrtCreateEventWithFlag
+    - 1.9.3 aclrtCreateEventExWithFlag
+    - 1.9.4 aclrtDestroyEvent
+    - 1.9.5 aclrtRecordEvent
+    - 1.9.6 aclrtResetEvent
+    - 1.9.7 aclrtQueryEvent （废弃）
+    - 1.9.8 aclrtQueryEventStatus
+    - 1.9.9 aclrtQueryEventWaitStatus
+    - 1.9.10 aclrtSynchronizeEvent
+    - 1.9.11 aclrtSynchronizeEventWithTimeout
+    - 1.9.12 aclrtEventElapsedTime
+    - 1.9.13 aclrtStreamWaitEvent
+    - 1.9.14 aclrtStreamWaitEventWithTimeout
+    - 1.9.15 aclrtSetOpWaitTimeout
+    - 1.9.16 aclrtEventGetTimestamp
+    - 1.9.17 aclrtGetEventId
+    - 1.9.18 aclrtGetEventAvailNum
+    - 1.9.19 aclrtIpcGetEventHandle
+    - 1.9.20 aclrtIpcOpenEventHandle
+  - 1.10 Notify 管理
+    - 1.10.1 aclrtCreateNotify
+    - 1.10.2 aclrtDestroyNotify
+    - 1.10.3 aclrtRecordNotify
+    - 1.10.4 aclrtWaitAndResetNotify
+    - 1.10.5 aclrtGetNotifyId
+    - 1.10.6 aclrtNotifyBatchReset
+    - 1.10.7 aclrtNotifyGetExportKey
+    - 1.10.8 aclrtNotifySetImportPid
+    - 1.10.9 aclrtNotifySetImportPidInterServer
+    - 1.10.10 aclrtNotifyImportByKey
+  - 1.11 CntNotify 管理
+    - 1.11.1 aclrtCntNotifyCreate
+    - 1.11.2 aclrtCntNotifyRecord
+    - 1.11.3 aclrtCntNotifyWaitWithTimeout
+    - 1.11.4 aclrtCntNotifyReset
+    - 1.11.5 aclrtCntNotifyGetId
+    - 1.11.6 aclrtCntNotifyDestroy
+  - 1.12 Label 管理
+    - 1.12.1 aclrtCreateLabel
+    - 1.12.2 aclrtSetLabel
+    - 1.12.3 aclrtDestroyLabel
+    - 1.12.4 aclrtCreateLabelList
+    - 1.12.5 aclrtDestroyLabelList
+    - 1.12.6 aclrtSwitchLabelByIndex
+  - 1.13 内存管理
+    - 1.13.1 内存使用说明
+    - 1.13.2 aclrtMalloc
+    - 1.13.3 aclrtMallocAlign32
+    - 1.13.4 aclrtMallocCached
+    - 1.13.5 aclrtMemFlush
+    - 1.13.6 aclrtMemInvalidate
+    - 1.13.7 aclrtMallocWithCfg
+    - 1.13.8 aclrtMallocForTaskScheduler
+    - 1.13.9 aclrtFree
+    - 1.13.10 aclrtFreeWithDevSync
+    - 1.13.11 aclrtMallocHost
+    - 1.13.12 aclrtMallocHostWithCfg
+    - 1.13.13 aclrtFreeHost
+    - 1.13.14 aclrtFreeHostWithDevSync
+    - 1.13.15 aclrtMemset
+    - 1.13.16 aclrtMemsetAsync
+    - 1.13.17 aclrtMemcpy
+    - 1.13.18 aclrtMemcpyAsync
+    - 1.13.19 aclrtMemcpyAsyncWithCondition
+    - 1.13.20 aclrtMemcpyBatch
+    - 1.13.21 aclrtMemcpyBatchAsync
+    - 1.13.22 aclrtMemcpy2d
+    - 1.13.23 aclrtMemcpy2dAsync
+    - 1.13.24 aclrtGetMemcpyDescSize
+    - 1.13.25 aclrtSetMemcpyDesc
+    - 1.13.26 aclrtMemcpyAsyncWithDesc
+    - 1.13.27 aclrtMemcpyAsyncWithOffset
+    - 1.13.28 aclrtMallocPhysical
+    - 1.13.29 aclrtFreePhysical
+    - 1.13.30 aclrtReserveMemAddress
+    - 1.13.31 aclrtReserveMemAddressNoUCMemory
+    - 1.13.32 aclrtReleaseMemAddress
+    - 1.13.33 aclrtMapMem
+    - 1.13.34 aclrtUnmapMem
+    - 1.13.35 aclrtMemExportToShareableHandle
+    - 1.13.36 aclrtMemSetPidToShareableHandle
+    - 1.13.37 aclrtMemImportFromShareableHandle
+    - 1.13.38 aclrtMemExportToShareableHandleV2
+    - 1.13.39 aclrtMemSetPidToShareableHandleV2
+    - 1.13.40 aclrtMemImportFromShareableHandleV2
+    - 1.13.41 aclrtDeviceGetBareTgid
+    - 1.13.42 aclrtMemGetAllocationGranularity
+    - 1.13.43 aclrtMemSetAccess
+    - 1.13.44 aclrtMemGetAccess
+    - 1.13.45 aclrtMemRetainAllocationHandle
+    - 1.13.46 aclrtMemGetAllocationPropertiesFromHandle
+    - 1.13.47 aclrtMemGetAddressRange
+    - 1.13.48 aclrtMemAllocManaged
+    - 1.13.49 aclrtMemP2PMap
+    - 1.13.50 aclrtCmoAsync
+    - 1.13.51 aclrtCmoAsyncWithBarrier
+    - 1.13.52 aclrtCmoWaitBarrier
+    - 1.13.53 aclrtCmoGetDescSize
+    - 1.13.54 aclrtCmoSetDesc
+    - 1.13.55 aclrtCmoAsyncWithDesc
+    - 1.13.56 aclrtPointerGetAttributes
+    - 1.13.57 aclrtHostRegister
+    - 1.13.58 aclrtHostRegisterV2
+    - 1.13.59 aclrtHostGetDevicePointer
+    - 1.13.60 aclrtHostUnregister
+    - 1.13.61 aclrtHostMemMapCapabilities
+    - 1.13.62 aclrtValueWrite
+    - 1.13.63 aclrtValueWait
+    - 1.13.64 aclrtIpcMemGetExportKey
+    - 1.13.65 aclrtIpcMemSetImportPid
+    - 1.13.66 aclrtIpcMemImportPidInterServer
+    - 1.13.67 aclrtIpcMemImportByKey
+    - 1.13.68 aclrtIpcMemSetAttr
+    - 1.13.69 aclrtIpcMemClose
+    - 1.13.70 aclrtGetMemInfo
+    - 1.13.71 aclrtCheckMemType
+    - 1.13.72 aclrtGetMemUsageInfo
+    - 1.13.73 aclrtAllocatorRegister
+    - 1.13.74 aclrtAllocatorGetByStream
+    - 1.13.75 aclrtAllocatorUnregister
+  - 1.14 执行控制
+    - 1.14.1 aclrtLaunchCallback
+    - 1.14.2 aclrtSubscribeReport
+    - 1.14.3 aclrtProcessReport
+    - 1.14.4 aclrtUnSubscribeReport
+    - 1.14.5 aclrtGetOpTimeoutInterval
+    - 1.14.6 aclrtSetOpExecuteTimeOut
+    - 1.14.7 aclrtSetOpExecuteTimeOutV2
+    - 1.14.8 aclrtSetOpExecuteTimeOutWithMs
+    - 1.14.9 aclrtGetOpExecuteTimeOut
+    - 1.14.10 aclrtGetThreadLastTaskId
+    - 1.14.11 aclrtReduceAsync
+    - 1.14.12 aclrtLaunchHostFunc
+    - 1.14.13 aclrtRandomNumAsync
+    - 1.14.14 aclrtTaskUpdateAsync
+  - 1.15 异常处理
+    - 1.15.1 aclGetRecentErrMsg
+    - 1.15.2 aclrtSetExceptionInfoCallback
+    - 1.15.3 aclrtGetTaskIdFromExceptionInfo
+    - 1.15.4 aclrtGetStreamIdFromExceptionInfo
+    - 1.15.5 aclrtGetThreadIdFromExceptionInfo
+    - 1.15.6 aclrtGetDeviceIdFromExceptionInfo
+    - 1.15.7 aclrtGetErrorCodeFromExceptionInfo
+    - 1.15.8 aclrtPeekAtLastError
+    - 1.15.9 aclrtGetLastError
+    - 1.15.10 aclrtGetMemUceInfo
+    - 1.15.11 aclrtMemUceRepair
+    - 1.15.12 aclrtDeviceTaskAbort
+    - 1.15.13 aclRecoverAllHcclTasks
+    - 1.15.14 aclrtGetErrorVerbose
+    - 1.15.15 aclrtRepairError
+    - 1.15.16 aclrtSetDeviceTaskAbortCallback
+  - 1.16 Kernel 加载与执行
+    - 1.16.1 概念及使用说明
+    - 1.16.2 aclrtBinaryLoadFromFile
+    - 1.16.3 aclrtBinaryLoadFromData
+    - 1.16.4 aclrtBinaryGetFunction
+    - 1.16.5 aclrtBinaryGetFunctionByEntry
+    - 1.16.6 aclrtBinaryGetDevAddress
+    - 1.16.7 aclrtBinarySetExceptionCallback
+    - 1.16.8 aclrtGetArgsFromExceptionInfo
+    - 1.16.9 aclrtGetFuncHandleFromExceptionInfo
+    - 1.16.10 aclrtGetFunctionAddr
+    - 1.16.11 aclrtGetFunctionName
+    - 1.16.12 aclrtGetFunctionAttribute
+    - 1.16.13 aclrtGetHardwareSyncAddr
+    - 1.16.14 aclrtRegisterCpuFunc
+    - 1.16.15 aclrtKernelArgsInit
+    - 1.16.16 aclrtKernelArgsInitByUserMem
+    - 1.16.17 aclrtKernelArgsGetMemSize
+    - 1.16.18 aclrtKernelArgsGetHandleMemSize
+    - 1.16.19 aclrtKernelArgsAppend
+    - 1.16.20 aclrtKernelArgsAppendPlaceHolder
+    - 1.16.21 aclrtKernelArgsGetPlaceHolderBuffer
+    - 1.16.22 aclrtKernelArgsParaUpdate
+    - 1.16.23 aclrtKernelArgsFinalize
+    - 1.16.24 aclrtLaunchKernel
+    - 1.16.25 aclrtLaunchKernelV2
+    - 1.16.26 aclrtLaunchKernelWithConfig
+    - 1.16.27 aclrtLaunchKernelWithHostArgs
+    - 1.16.28 aclrtCreateBinary
+    - 1.16.29 aclrtDestroyBinary
+    - 1.16.30 aclrtBinaryLoad
+    - 1.16.31 aclrtBinaryUnLoad
+  - 1.17 模型运行实例管理
+    - 1.17.1 aclmdlRICaptureBegin
+    - 1.17.2 aclmdlRICaptureGetInfo
+    - 1.17.3 aclmdlRICaptureThreadExchangeMode
+    - 1.17.4 aclmdlRICaptureEnd
+    - 1.17.5 aclmdlRICaptureTaskGrpBegin
+    - 1.17.6 aclmdlRICaptureTaskGrpEnd
+    - 1.17.7 aclmdlRICaptureTaskUpdateBegin
+    - 1.17.8 aclmdlRICaptureTaskUpdateEnd
+    - 1.17.9 aclmdlRIDebugJsonPrint
+    - 1.17.10 aclmdlRIDebugPrint
+    - 1.17.11 aclmdlRIBuildBegin
+    - 1.17.12 aclmdlRIBindStream
+    - 1.17.13 aclmdlRIEndTask
+    - 1.17.14 aclmdlRIBuildEnd
+    - 1.17.15 aclmdlRIUnbindStream
+    - 1.17.16 aclmdlRIExecute
+    - 1.17.17 aclmdlRIExecuteAsync
+    - 1.17.18 aclmdlRIDestroy
+    - 1.17.19 aclmdlRISetName
+    - 1.17.20 aclmdlRIGetName
+    - 1.17.21 aclrtCheckArchCompatibility
+    - 1.17.22 aclmdlRIAbort
+  - 1.18 算力 Group 查询与设置
+    - 1.18.1 aclrtSetGroup
+    - 1.18.2 aclrtGetGroupCount
+    - 1.18.3 aclrtGetAllGroupInfo
+    - 1.18.4 aclrtGetGroupInfoDetail
+    - 1.18.5 aclrtCreateGroupInfo
+    - 1.18.6 aclrtDestroyGroupInfo
+  - 1.19 数据传输
+    - 1.19.1 Tensor 数据传输
+      - 1.19.1.1 acltdtCreateChannel
+      - 1.19.1.2 acltdtCreateChannelWithCapacity
+      - 1.19.1.3 acltdtSendTensor
+      - 1.19.1.4 acltdtReceiveTensor
+      - 1.19.1.5 acltdtStopChannel
+      - 1.19.1.6 acltdtDestroyChannel
+      - 1.19.1.7 acltdtQueryChannelSize
+      - 1.19.1.8 acltdtGetSliceInfoFromItem
+      - 1.19.1.9 acltdtCleanChannel
+    - 1.19.2 共享队列管理
+      - 1.19.2.1 共享队列管理使用说明
+      - 1.19.2.2 acltdtCreateQueue
+      - 1.19.2.3 acltdtDestroyQueue
+      - 1.19.2.4 acltdtEnqueueData
+      - 1.19.2.5 acltdtDequeueData
+      - 1.19.2.6 acltdtEnqueue
+      - 1.19.2.7 acltdtDequeue
+      - 1.19.2.8 acltdtBindQueueRoutes
+      - 1.19.2.9 acltdtUnbindQueueRoutes
+      - 1.19.2.10 acltdtQueryQueueRoutes
+      - 1.19.2.11 acltdtGrantQueue
+      - 1.19.2.12 acltdtAttachQueue
+    - 1.19.3 共享 Buffer 管理
+      - 1.19.3.1 共享 Buffer 管理使用说明
+      - 1.19.3.2 acltdtAllocBuf
+      - 1.19.3.3 acltdtFreeBuf
+      - 1.19.3.4 acltdtGetBufData
+      - 1.19.3.5 acltdtSetBufUserData
+      - 1.19.3.6 acltdtGetBufUserData
+      - 1.19.3.7 acltdtSetBufDataLen
+      - 1.19.3.8 acltdtGetBufDataLen
+      - 1.19.3.9 acltdtCopyBufRef
+      - 1.19.3.10 acltdtAppendBufChain
+      - 1.19.3.11 acltdtGetBufChainNum
+      - 1.19.3.12 acltdtGetBufFromChain
+  - 1.20 Dump 配置
+    - 1.20.1 aclmdlInitDump
+    - 1.20.2 aclmdlSetDump
+    - 1.20.3 acldumpRegCallback
+    - 1.20.4 acldumpUnregCallback
+    - 1.20.5 acldumpGetPath
+    - 1.20.6 aclmdlFinalizeDump
+    - 1.20.7 aclopStartDumpArgs
+    - 1.20.8 aclopStopDumpArgs
+  - 1.21 Profiling 数据采集
+    - 1.21.1 Profiling 数据采集接口
+      - 1.21.1.1 数据采集说明
+      - 1.21.1.2 aclprofInit
+      - 1.21.1.3 aclprofSetConfig
+      - 1.21.1.4 aclprofStart
+      - 1.21.1.5 aclprofStop
+      - 1.21.1.6 aclprofFinalize
+    - 1.21.2 msproftx 扩展接口
+      - 1.21.2.1 扩展接口使用说明
+      - 1.21.2.2 aclprofCreateStamp
+      - 1.21.2.3 aclprofSetStampTraceMessage
+      - 1.21.2.4 aclprofMark
+      - 1.21.2.5 aclprofMarkEx
+      - 1.21.2.6 aclprofPush
+      - 1.21.2.7 aclprofPop
+      - 1.21.2.8 aclprofRangeStart
+      - 1.21.2.9 aclprofRangeStop
+      - 1.21.2.10 aclprofDestroyStamp
+      - 1.21.2.11 aclprofStr2Id
+      - 1.21.2.12 aclprofRangePushEx
+      - 1.21.2.13 aclprofRangePop
+    - 1.21.3 订阅算子信息
+      - 1.21.3.1 订阅接口使用说明
+      - 1.21.3.2 aclprofModelSubscribe
+      - 1.21.3.3 aclprofModelUnSubscribe
+      - 1.21.3.4 aclprofGetOpDescSize
+      - 1.21.3.5 aclprofGetOpNum
+      - 1.21.3.6 aclprofGetOpTypeLen
+      - 1.21.3.7 aclprofGetOpType
+      - 1.21.3.8 aclprofGetOpNameLen
+      - 1.21.3.9 aclprofGetOpName
+      - 1.21.3.10 aclprofGetOpStart
+      - 1.21.3.11 aclprofGetOpEnd
+      - 1.21.3.12 aclprofGetOpDuration
+      - 1.21.3.13 aclprofGetModelId
+    - 1.21.4 PyTorch 场景标记迭代时间
+      - 1.21.4.1 aclprofGetStepTimestamp
+  - 1.22 共享 Buffer 管理（预留，暂不支持）
+    - 1.22.1 aclrtAllocBuf
+    - 1.22.2 aclrtFreeBuf
+    - 1.22.3 aclrtGetBufData
+    - 1.22.4 aclrtSetBufUserData
+    - 1.22.5 aclrtGetBufUserData
+    - 1.22.6 aclrtGetBufDataLen
+    - 1.22.7 aclrtSetBufDataLen
+    - 1.22.8 aclrtCopyBufRef
+    - 1.22.9 aclrtAppendBufChain
+    - 1.22.10 aclrtGetBufFromChain
+    - 1.22.11 aclrtGetBufChainNum
+  - 1.23 快照管理
+    - 1.23.1 aclrtSnapShotProcessLock
+    - 1.23.2 aclrtSnapShotProcessBackup
+    - 1.23.3 aclrtSnapShotProcessRestore
+    - 1.23.4 aclrtSnapShotProcessUnlock
+    - 1.23.5 aclrtSnapShotCallbackRegister
+    - 1.23.6 aclrtSnapShotCallbackUnregister
+  - 1.24 Stream 有序内存分配
+    - 1.24.1 aclrtMemPoolCreate
+    - 1.24.2 aclrtMemPoolDestroy
+    - 1.24.3 aclrtMemPoolGetAttr
+    - 1.24.4 aclrtMemPoolSetAttr
+  - 1.25 错误上报接口
+    - 1.25.1 使用须知
+    - 1.25.2 ReportInnerErrMsg
+    - 1.25.3 ReportPredefinedErrMsg
+    - 1.25.4 ReportUserDefinedErrMsg
+    - 1.25.5 RegisterFormatErrorMessage
+  - 1.26 日志接口
+    - 1.26.1 使用须知
+    - 1.26.2 AlogRecord
+    - 1.26.3 AlogCheckDebugLevel
+    - 1.26.4 数据类型定义
+  - 1.27 其他接口
+    - 1.27.1 aclAppLog
+    - 1.27.2 aclDataTypeSize
+    - 1.27.3 aclFloat16ToFloat
+    - 1.27.4 aclFloatToFloat16
+    - 1.27.5 aclrtGetVersion
+    - 1.27.6 aclsysGetCANNVersion （废弃）
+    - 1.27.7 aclGetCannAttributeList
+    - 1.27.8 aclGetCannAttribute
+    - 1.27.9 aclGetDeviceCapability
+    - 1.27.10 aclrtCacheLastTaskOpInfo
+    - 1.27.11 aclrtProfTrace
+    - 1.27.12 aclsysGetVersionStr
+    - 1.27.13 aclsysGetVersionNum
+    - 1.27.14 aclrtCreateStreamV2
+    - 1.27.15 aclrtSetStreamConfigOpt
+    - 1.27.16 aclrtSubscribeHostFunc
+    - 1.27.17 aclrtProcessHostFunc
+    - 1.27.18 aclrtUnSubscribeHostFunc
+  - 1.28 数据类型及其操作接口
+    - 1.28.1 aclError
+    - 1.28.2 aclCannAttr
+    - 1.28.3 aclCANNPackageName
+    - 1.28.4 aclCANNPackageVersion
+    - 1.28.5 aclDataBuffer
+      - 1.28.5.1 aclCreateDataBuffer
+      - 1.28.5.2 aclDestroyDataBuffer
+      - 1.28.5.3 aclGetDataBufferAddr
+      - 1.28.5.4 aclGetDataBufferSize （废弃）
+      - 1.28.5.5 aclGetDataBufferSizeV2
+      - 1.28.5.6 aclUpdateDataBuffer
+    - 1.28.6 aclDataType
+    - 1.28.7 aclDeviceInfo
+    - 1.28.8 acldumpType
+    - 1.28.9 aclFloat16
+    - 1.28.10 aclFormat
+    - 1.28.11 aclmdlRI
+    - 1.28.12 aclmdlRICaptureMode
+    - 1.28.13 aclmdlRICaptureStatus
+    - 1.28.14 aclMemType
+    - 1.28.15 aclprofAicoreMetrics
+    - 1.28.16 aclprofConfig
+      - 1.28.16.1 aclprofCreateConfig
+      - 1.28.16.2 aclprofDestroyConfig
+    - 1.28.17 aclprofConfigType
+    - 1.28.18 aclprofEventAttributes
+    - 1.28.19 aclprofStepInfo
+      - 1.28.19.1 aclprofCreateStepInfo
+      - 1.28.19.2 aclprofDestroyStepInfo
+    - 1.28.20 aclprofStepTag
+    - 1.28.21 aclprofSubscribeConfig
+      - 1.28.21.1 aclprofCreateSubscribeConfig
+      - 1.28.21.2 aclprofDestroySubscribeConfig
+    - 1.28.22 aclRegisterCallbackType
+    - 1.28.23 aclrtAicAivTaskUpdateAttr
+    - 1.28.24 aclrtAllocator
+    - 1.28.25 aclrtAllocatorAddr
+    - 1.28.26 aclrtAllocatorBlock
+    - 1.28.27 aclrtAllocatorDesc
+      - 1.28.27.1 aclrtAllocatorCreateDesc
+      - 1.28.27.2 aclrtAllocatorDestroyDesc
+      - 1.28.27.3 aclrtAllocatorSetObjToDesc
+      - 1.28.27.4 aclrtAllocatorSetAllocFuncToDesc
+      - 1.28.27.5 aclrtAllocatorSetAllocAdviseFuncToDesc
+      - 1.28.27.6 aclrtAllocatorSetFreeFuncToDesc
+      - 1.28.27.7 aclrtAllocatorSetGetAddrFromBlockFuncToDesc
+    - 1.28.28 aclrtArgsHandle
+    - 1.28.29 aclrtBarrierCmoInfo
+    - 1.28.30 aclrtBarrierTaskInfo
+    - 1.28.31 aclrtBinaryLoadOption
+    - 1.28.32 aclrtBinaryLoadOptions
+    - 1.28.33 aclrtBinaryLoadOptionType
+    - 1.28.34 aclrtBinaryLoadOptionValue
+    - 1.28.35 aclrtBinHandle
+    - 1.28.36 aclrtCmoType
+    - 1.28.37 aclrtCntNotify
+    - 1.28.38 aclrtCntNotifyRecordInfo
+    - 1.28.39 aclrtCntNotifyRecordMode
+    - 1.28.40 aclrtCntNotifyWaitInfo
+    - 1.28.41 aclrtCntNotifyWaitMode
+    - 1.28.42 aclrtCompareDataType
+    - 1.28.43 aclrtCondition
+    - 1.28.44 aclrtContext
+    - 1.28.45 aclrtDevAttr
+    - 1.28.46 aclrtDevFeatureType
+    - 1.28.47 aclrtDeviceStatus
+    - 1.28.48 aclrtDevResLimitType
+    - 1.28.49 aclrtDropoutBitmaskInfo
+    - 1.28.50 aclrtDrvMemHandle
+    - 1.28.51 aclrtEngineType
+    - 1.28.52 aclrtEvent
+    - 1.28.53 aclrtEventRecordedStatus
+    - 1.28.54 aclrtEventStatus
+    - 1.28.55 aclrtEventWaitStatus
+    - 1.28.56 aclrtFloatOverflowMode
+    - 1.28.57 aclrtFuncAttribute
+    - 1.28.58 aclrtFuncHandle
+    - 1.28.59 aclrtGroupAttr
+    - 1.28.60 aclrtHacType
+    - 1.28.61 aclrtHostMemMapCapability
+    - 1.28.62 aclrtHostRegisterType
+    - 1.28.63 aclrtIpcEventHandle
+    - 1.28.64 aclrtIpcMemAttrType
+    - 1.28.65 aclrtKernelType
+    - 1.28.66 aclrtLabel
+    - 1.28.67 aclrtLabelList
+    - 1.28.68 aclrtLastErrLevel
+    - 1.28.69 aclrtLaunchKernelAttr
+    - 1.28.70 aclrtLaunchKernelAttrId
+    - 1.28.71 aclrtLaunchKernelAttrValue
+    - 1.28.72 aclrtLaunchKernelCfg
+    - 1.28.73 aclrtMallocAttribute
+    - 1.28.74 aclrtMallocAttrType
+    - 1.28.75 aclrtMallocAttrValue
+    - 1.28.76 aclrtMallocConfig
+    - 1.28.77 aclrtMbuf
+    - 1.28.78 aclrtMemAccessDesc
+    - 1.28.79 aclrtMemAccessFlags
+    - 1.28.80 aclrtMemAllocationType
+    - 1.28.81 aclrtMemAttr
+    - 1.28.82 aclrtMemcpyBatchAttr
+    - 1.28.83 aclrtMemcpyKind
+    - 1.28.84 aclrtMemGranularityOptions
+    - 1.28.85 aclrtMemHandleType
+    - 1.28.86 aclrtMemLocation
+    - 1.28.87 aclrtMemLocationType
+    - 1.28.88 aclrtMemMallocPolicy
+    - 1.28.89 aclrtMemPool
+    - 1.28.90 aclrtMemPoolAttr
+    - 1.28.91 aclrtMemPoolProps
+    - 1.28.92 aclrtMemSharedHandleType
+    - 1.28.93 aclrtMemUceInfo
+    - 1.28.94 aclrtMemUsageInfo
+    - 1.28.95 aclrtNormalDisInfo
+    - 1.28.96 aclrtNotify
+    - 1.28.97 aclrtParamHandle
+    - 1.28.98 aclrtPhysicalMemProp
+    - 1.28.99 aclrtPtrAttributes
+    - 1.28.100 aclrtRandomNumFuncParaInfo
+    - 1.28.101 aclrtRandomNumFuncType
+    - 1.28.102 aclrtRandomNumTaskInfo
+    - 1.28.103 aclrtRandomParaInfo
+    - 1.28.104 aclrtRandomTaskUpdateAttr
+    - 1.28.105 aclrtReduceKind
+    - 1.28.106 aclrtRunMode
+    - 1.28.107 aclrtServerPid
+    - 1.28.108 aclrtSnapShotStage
+    - 1.28.109 aclrtStream
+    - 1.28.110 aclrtStreamAttr
+    - 1.28.111 aclrtStreamAttrValue
+    - 1.28.112 aclrtStreamConfigAttr
+    - 1.28.113 aclrtStreamConfigHandle
+      - 1.28.113.1 aclrtCreateStreamConfigHandle
+      - 1.28.113.2 aclrtDestroyStreamConfigHandle
+    - 1.28.114 aclrtStreamStatus
+    - 1.28.115 aclrtTaskGrp
+    - 1.28.116 aclrtTaskUpdateInfo
+    - 1.28.117 aclrtTimeoutUs
+    - 1.28.118 aclrtUniformDisInfo
+    - 1.28.119 aclrtUpdateTaskAttrId
+    - 1.28.120 aclrtUpdateTaskAttrVal
+    - 1.28.121 aclrtUtilizationInfo
+    - 1.28.122 aclrtUuid
+    - 1.28.123 aclSysParamOpt
+    - 1.28.124 acltdtBuf
+    - 1.28.125 acltdtDataItem
+      - 1.28.125.1 acltdtCreateDataItem
+      - 1.28.125.2 acltdtDestroyDataItem
+      - 1.28.125.3 acltdtGetTensorTypeFromItem
+      - 1.28.125.4 acltdtGetDataTypeFromItem
+      - 1.28.125.5 acltdtGetDataAddrFromItem
+      - 1.28.125.6 acltdtGetDataSizeFromItem
+      - 1.28.125.7 acltdtGetDimNumFromItem
+      - 1.28.125.8 acltdtGetDimsFromItem
+    - 1.28.126 acltdtDataset
+      - 1.28.126.1 acltdtCreateDataset
+      - 1.28.126.2 acltdtDestroyDataset
+      - 1.28.126.3 acltdtGetDataItem
+      - 1.28.126.4 acltdtAddDataItem
+      - 1.28.126.5 acltdtGetDatasetSize
+      - 1.28.126.6 acltdtGetDatasetName
+    - 1.28.127 acltdtQueueAttr
+      - 1.28.127.1 acltdtCreateQueueAttr
+      - 1.28.127.2 acltdtDestroyQueueAttr
+      - 1.28.127.3 acltdtSetQueueAttr
+      - 1.28.127.4 acltdtGetQueueAttr
+    - 1.28.128 acltdtQueueAttrType
+    - 1.28.129 acltdtQueueRoute
+      - 1.28.129.1 acltdtCreateQueueRoute
+      - 1.28.129.2 acltdtDestroyQueueRoute
+      - 1.28.129.3 acltdtGetQueueRouteParam
+    - 1.28.130 acltdtQueueRouteList
+      - 1.28.130.1 acltdtCreateQueueRouteList
+      - 1.28.130.2 acltdtDestroyQueueRouteList
+      - 1.28.130.3 acltdtAddQueueRoute
+      - 1.28.130.4 acltdtGetQueueRoute
+      - 1.28.130.5 acltdtGetQueueRouteNum
+    - 1.28.131 acltdtQueueRouteParamType
+    - 1.28.132 acltdtQueueRouteQueryInfo
+      - 1.28.132.1 acltdtCreateQueueRouteQueryInfo
+      - 1.28.132.2 acltdtDestroyQueueRouteQueryInfo
+      - 1.28.132.3 acltdtSetQueueRouteQueryInfo
+    - 1.28.133 acltdtQueueRouteQueryInfoParamType
+    - 1.28.134 acltdtQueueRouteQueryMode
+    - 1.28.135 acltdtTensorType
+- 2 Runtime API(Python)
+  - 2.1 废弃接口 / 返回码列表
+  - 2.2 同步 &amp; 异步 API 说明
+  - 2.3 pyACL 表达约定
+  - 2.4 util 模块
+    - 2.4.1 函数： numpy\_to\_ptr
+    - 2.4.2 函数： numpy\_contiguous\_to\_ptr
+    - 2.4.3 函数： ptr\_to\_numpy
+    - 2.4.4 函数： bytes\_to\_ptr
+    - 2.4.5 函数： ptr\_to\_bytes
+    - 2.4.6 thread
+      - 2.4.6.1 函数： start\_thread
+      - 2.4.6.2 函数： stop\_thread
+  - 2.5 初始化 &amp; 去初始化
+    - 2.5.2 函数：fi nalize
+    - 2.5.3 函数：fi nalize\_reference
+  - 2.6 运行时配置
+    - 2.6.1 函数： set\_sys\_param\_opt
+    - 2.6.2 函数： get\_sys\_param\_opt
+    - 2.6.3 函数： get\_device\_res\_limit
+    - 2.6.4 函数： set\_device\_res\_limit
+    - 2.6.5 函数： reset\_device\_res\_limit
+    - 2.6.6 函数： get\_stream\_res\_limit
+    - 2.6.7 函数： set\_stream\_res\_limit
+    - 2.6.8 函数： reset\_stream\_res\_limit
+    - 2.6.9 函数： use\_stream\_res\_in\_current\_thread
+    - 2.6.10 函数： unuse\_stream\_res\_in\_current\_thread
+    - 2.6.11 函数： get\_res\_in\_current\_thread
+  - 2.7 Device 管理
+    - 2.7.1 函数： set\_device
+    - 2.7.2 函数： reset\_device
+    - 2.7.3 函数： get\_device
+    - 2.7.4 函数： reset\_device\_force
+    - 2.7.5 函数： get\_run\_mode
+    - 2.7.6 函数： set\_ts\_device
+    - 2.7.7 函数： get\_device\_count
+    - 2.7.8 函数： get\_device\_utilization\_rate
+    - 2.7.9 函数： query\_device\_status
+    - 2.7.10 函数： get\_soc\_name
+    - 2.7.11 函数： set\_device\_sat\_mode
+    - 2.7.12 函数： get\_device\_sat\_mode
+    - 2.7.13 函数： device\_can\_access\_peer
+    - 2.7.14 函数： device\_enable\_peer\_access
+    - 2.7.15 函数： device\_disable\_peer\_access
+    - 2.7.16 函数： get\_overflow\_status
+    - 2.7.17 函数： reset\_overflow\_status
+    - 2.7.18 函数： synchronize\_device
+    - 2.7.19 函数： synchronize\_device\_with\_timeout
+    - 2.7.20 函数： get\_device\_info
+    - 2.7.21 函数： device\_get\_stream\_priority\_range
+    - 2.7.22 函数： get\_device\_capability
+    - 2.7.23 函数： get\_devices\_topo
+  - 2.8 Context 管理
+    - 2.8.1 函数： create\_context
+    - 2.8.2 函数： destroy\_context
+    - 2.8.3 函数： set\_context
+    - 2.8.4 函数： get\_context
+    - 2.8.5 函数： ctx\_get\_sys\_param\_opt
+    - 2.8.6 函数： ctx\_set\_sys\_param\_opt
+    - 2.8.7 函数： ctx\_get\_current\_default\_stream
+    - 2.8.8 函数： get\_primary\_ctx\_state
+  - 2.9 Stream 管理
+    - 2.9.1 函数： create\_stream
+    - 2.9.2 函数： create\_stream\_with\_config
+    - 2.9.3 函数： destroy\_stream
+    - 2.9.4 函数： destroy\_stream\_force
+    - 2.9.5 函数： set\_stream\_overflow\_switch
+    - 2.9.6 函数： get\_stream\_overflow\_switch
+    - 2.9.7 函数： set\_stream\_failure\_mode
+    - 2.9.8 函数： stream\_query
+    - 2.9.9 函数： synchronize\_stream
+    - 2.9.10 函数： synchronize\_stream\_with\_timeout
+    - 2.9.11 函数： stream\_abort
+    - 2.9.12 函数： stream\_get\_id
+    - 2.9.13 函数： get\_stream\_available\_num
+    - 2.9.14 函数： set\_stream\_attribute
+    - 2.9.15 函数： get\_stream\_attribute
+  - 2.10 Event 管理
+    - 2.10.1 函数： create\_event
+    - 2.10.2 函数： create\_event\_with\_flag
+    - 2.10.3 函数： create\_event\_ex\_with\_flag
+    - 2.10.4 函数： destroy\_event
+    - 2.10.5 函数： record\_event
+    - 2.10.6 函数： reset\_event
+    - 2.10.7 函数： query\_event
+    - 2.10.8 函数： query\_event\_status
+    - 2.10.9 函数： query\_event\_wait\_status
+    - 2.10.10 函数： synchronize\_event
+    - 2.10.11 函数： synchronize\_event\_with\_timeout
+    - 2.10.12 函数： event\_elapsed\_time
+    - 2.10.13 函数： stream\_wait\_event
+    - 2.10.14 函数： set\_op\_wait\_timeout
+    - 2.10.15 函数： event\_get\_timestamp
+    - 2.10.16 函数： get\_event\_id
+    - 2.10.17 函数： get\_event\_avail\_num
+  - 2.11 Notify 管理
+    - 2.11.1 函数： create\_notify
+    - 2.11.2 函数： destroy\_notify
+    - 2.11.3 函数： record\_notify
+    - 2.11.4 函数： wait\_and\_reset\_notify
+    - 2.11.5 函数： get\_notify\_id
+    - 2.11.6 函数： notify\_batch\_reset
+    - 2.11.7 函数： notify\_get\_export\_key
+    - 2.11.8 函数： notify\_set\_import\_pid
+    - 2.11.9 函数： notify\_import\_by\_key
+  - 2.12 内存管理
+    - 2.12.1 总体说明
+    - 2.12.3 函数： malloc\_align32
+    - 2.12.4 函数： malloc\_cached
+    - 2.12.6 函数： mem\_invalidate
+    - 2.12.7 函数： get\_mem\_info
+    - 2.12.8 函数： free
+    - 2.12.9 函数： malloc\_host
+    - 2.12.10 函数： free\_host
+    - 2.12.11 函数： memset
+    - 2.12.12 函数： memset\_async
+    - 2.12.13 函数： memcpy
+    - 2.12.14 函数： memcpy\_async
+    - 2.12.15 函数： memcpy\_async\_with\_condition
+    - 2.12.16 函数： memcpy2d
+    - 2.12.17 函数： memcpy2d\_async
+    - 2.12.18 函数： allocator\_register
+    - 2.12.19 函数： allocator\_unregister
+    - 2.12.20 函数： malloc\_physical
+    - 2.12.21 函数： free\_physical
+    - 2.12.22 函数： reserve\_mem\_address
+    - 2.12.23 函数： release\_mem\_address
+    - 2.12.24 函数： map\_mem
+    - 2.12.25 函数： unmap\_mem
+    - 2.12.26 函数： mem\_export\_to\_shareable\_handle
+    - 2.12.27 函数： device\_get\_bare\_tgid
+    - 2.12.28 函数： mem\_set\_pid\_to\_shareable\_handle
+    - 2.12.29 函数： mem\_import\_from\_shareable\_handle
+    - 2.12.30 函数： mem\_get\_allocation\_granularity
+    - 2.12.31 函数： cmo\_async
+    - 2.12.32 函数： malloc\_with\_cfg
+    - 2.12.33 函数： malloc\_for\_task\_scheduler
+    - 2.12.34 函数： malloc\_host\_with\_cfg
+    - 2.12.35 函数： memcpy\_async\_with\_desc
+    - 2.12.36 函数： get\_memcpy\_desc\_size
+    - 2.12.37 函数： set\_memcpy\_desc
+    - 2.12.38 函数： pointer\_get\_attributes
+    - 2.12.39 函数： host\_register
+    - 2.12.40 函数： host\_unregister
+    - 2.12.41 函数： value\_write
+    - 2.12.42 函数： value\_wait
+    - 2.12.43 函数： ipc\_mem\_get\_export\_key
+    - 2.12.44 函数： ipc\_mem\_set\_import\_pid
+    - 2.12.45 函数： ipc\_mem\_import\_by\_key
+    - 2.12.46 函数： ipc\_mem\_close
+  - 2.13 执行控制
+    - 2.13.1 函数： subscribe\_report
+    - 2.13.2 函数： launch\_callback
+    - 2.13.3 函数： process\_report
+    - 2.13.4 函数： unsubscribe\_report
+    - 2.13.5 函数： set\_op\_execute\_time\_out
+    - 2.13.6 函数： get\_thread\_last\_task\_id
+    - 2.13.7 函数： reduce\_async
+  - 2.14 异常处理
+    - 2.14.1 函数： get\_recent\_err\_msg
+    - 2.14.2 函数： set\_exception\_info\_callback
+    - 2.14.3 函数： get\_task\_id\_from\_exception\_info
+    - 2.14.4 函数： get\_stream\_id\_from\_exception\_info
+    - 2.14.5 函数： get\_thread\_id\_from\_exception\_info
+    - 2.14.6 函数： get\_device\_id\_from\_exception\_info
+    - 2.14.7 函数： get\_error\_code\_from\_exception\_info
+    - 2.14.8 函数： device\_task\_abort
+    - 2.14.9 函数： peek\_at\_last\_error
+    - 2.14.10 函数： get\_last\_error
+  - 2.15 Kernel 加载与执行
+    - 2.15.1 概念及使用说明
+    - 2.15.2 函数： binary\_load\_from\_file
+    - 2.15.3 函数： binary\_load\_from\_data
+    - 2.15.4 函数： get\_function\_addr
+    - 2.15.5 函数： get\_function\_name
+    - 2.15.6 函数： register\_cpu\_func
+    - 2.15.7 函数： kernel\_args\_init
+    - 2.15.8 函数： kernel\_args\_init\_by\_user\_mem
+    - 2.15.9 函数： kernel\_args\_get\_mem\_size
+    - 2.15.10 函数： kernel\_args\_get\_handle\_mem\_size
+    - 2.15.11 函数： kernel\_args\_append
+    - 2.15.12 函数： kernel\_args\_append\_place\_holder
+    - 2.15.13 函数： kernel\_args\_get\_place\_holder\_buffer
+    - 2.15.14 函数： kernel\_args\_para\_update
+    - 2.15.15 函数： kernel\_args\_finalize
+    - 2.15.16 函数： launch\_kernel\_with\_config
+    - 2.15.17 函数： create\_binary
+    - 2.15.18 函数： destroy\_binary
+    - 2.15.19 函数： binary\_load
+    - 2.15.20 函数： binary\_unload
+    - 2.15.21 函数： binary\_get\_function
+    - 2.15.22 函数： launch\_kernel
+  - 2.16 Profiling 数据采集
+    - 2.16.1 Profiling 数据采集接口
+      - 2.16.1.1 总体说明
+      - 2.16.1.2 函数： create\_config
+      - 2.16.1.3 函数： set\_config
+      - 2.16.1.4 函数： destroy\_config
+      - 2.16.1.5 函数： init
+      - 2.16.1.7 函数： stop
+    - 2.16.2 msproftx 扩展接口
+      - 2.16.2.1 总体说明
+      - 2.16.2.2 函数： create\_stamp
+      - 2.16.2.3 函数： set\_stamp\_trace\_message
+      - 2.16.2.5 函数： mark\_ex
+      - 2.16.2.6 函数： push
+      - 2.16.2.7 函数： pop
+      - 2.16.2.8 函数： range\_start
+      - 2.16.2.9 函数： range\_stop
+      - 2.16.2.10 函数： destroy\_stamp
+    - 2.16.3 订阅算子信息
+      - 2.16.3.1 总体说明
+      - 2.16.3.2 函数： create\_subscribe\_config
+      - 2.16.3.3 函数： destroy\_subscribe\_config
+      - 2.16.3.4 函数： model\_subscribe
+      - 2.16.3.5 函数： model\_un\_subscribe
+      - 2.16.3.6 函数： model\_unsubscribe
+      - 2.16.3.7 函数： get\_op\_desc\_size
+      - 2.16.3.8 函数： get\_op\_num
+      - 2.16.3.9 函数： get\_op\_type\_len
+      - 2.16.3.10 函数： get\_op\_name\_len
+      - 2.16.3.11 函数： get\_op\_type
+      - 2.16.3.12 函数： get\_op\_type\_v2
+      - 2.16.3.13 函数： get\_op\_name
+      - 2.16.3.14 函数： get\_op\_name\_v2
+      - 2.16.3.15 函数： get\_op\_start
+      - 2.16.3.16 函数： get\_op\_end
+      - 2.16.3.17 函数： get\_op\_duration
+      - 2.16.3.18 函数： get\_model\_id
+    - 2.16.4 PyTorch 场景标记迭代时间
+      - 2.16.4.1 函数： get\_step\_timestamp
+      - 2.16.4.2 函数： create\_step\_info
+      - 2.16.4.3 函数： destroy\_step\_info
+  - 2.17 Dump 配置
+    - 2.17.1 函数： init\_dump
+    - 2.17.2 函数： set\_dump
+    - 2.17.3 函数： dump\_reg\_callback
+    - 2.17.4 函数： dump\_unreg\_callback
+    - 2.17.5 函数：fi nalize\_dump
+  - 2.18 其他接口
+    - 2.18.1 函数： app\_log
+    - 2.18.2 函数： data\_type\_size
+    - 2.18.3 函数：fl oat16\_to\_float
+    - 2.18.4 函数：fl oat\_to\_float16
+    - 2.18.5 函数： get\_version
+    - 2.18.6 函数： get\_cann\_version
+    - 2.18.7 函数： get\_cann\_attribute
+    - 2.18.8 函数： get\_cann\_attribute\_list
+    - 2.18.9 函数： get\_device\_capability
+  - 2.19 数据类型及其操作接口
+    - 2.19.1 aclError
+    - 2.19.2 aclCannAttr
+    - 2.19.3 aclCANNPackageName
+    - 2.19.4 aclCANNPackageVersion
+    - 2.19.5 aclDataType
+    - 2.19.6 aclDeviceInfo
+    - 2.19.7 aclFloat16
+    - 2.19.8 aclFormat
+    - 2.19.9 aclrtAllocatorDesc
+      - 2.19.9.1 函数： allocator\_create\_desc
+      - 2.19.9.2 函数： allocator\_destroy\_desc
+      - 2.19.9.3 函数： allocator\_set\_obj\_to\_desc
+      - 2.19.9.4 函数： allocator\_set\_alloc\_func\_to\_desc
+      - 2.19.9.5 函数： allocator\_set\_alloc\_advise\_func\_to\_desc
+      - 2.19.9.6 函数： allocator\_set\_free\_func\_to\_desc
+      - 2.19.9.7 函数： allocator\_set\_get\_addr\_from\_block\_func\_to\_desc
+    - 2.19.10 aclDataBuffer
+      - 2.19.10.1 函数： create\_data\_buffer
+      - 2.19.10.2 函数： destroy\_data\_buffer
+      - 2.19.10.3 函数： get\_data\_buffer\_addr
+      - 2.19.10.4 函数： get\_data\_buffer\_size
+      - 2.19.10.5 函数： get\_data\_buffer\_size\_v2
+      - 2.19.10.6 函数： update\_data\_buffer
+    - 2.19.11 aclMemType
+    - 2.19.12 aclprofAicoreMetrics
+    - 2.19.13 aclprofStepTag
+    - 2.19.14 aclproftype
+    - 2.19.15 aclrtBinaryLoadOptions
+    - 2.19.16 aclrtBinaryLoadOptionType/ aclrtBinaryLoadOptionValue
+    - 2.19.17 aclrtCmoType
+    - 2.19.18 aclrtDevAttr
+    - 2.19.19 aclrtDevFeatureType
+    - 2.19.20 aclrtDeviceStatus
+    - 2.19.21 aclrtDevResLimitType
+    - 2.19.22 aclrtEngineType
+    - 2.19.23 aclrtEventRecordedStatus
+    - 2.19.24 aclrtEventStatus
+    - 2.19.25 aclrtEventWaitStatus
+    - 2.19.26 aclrtFloatOverflowMode
+    - 2.19.27 aclrtGroupAttr
+    - 2.19.28 aclrtHostRegisterType
+    - 2.19.29 aclrtLastErrLevel
+    - 2.19.30 aclrtLaunchKernelAttrId/aclrtLaunchKernelAttrValue
+    - 2.19.31 aclrtLaunchKernelCfg
+    - 2.19.32 aclrtMallocAttribute
+    - 2.19.33 aclrtMallocAttrType
+    - 2.19.34 aclrtMallocAttrValue
+    - 2.19.35 aclrtMallocConfig
+    - 2.19.36 aclrtMemAttr
+    - 2.19.37 aclrtMemGranularityOptions
+    - 2.19.38 aclrtMemHandleType
+    - 2.19.39 aclrtMemLocation
+    - 2.19.40 aclrtMemLocationType
+    - 2.19.41 aclrtMemMallocPolicy
+    - 2.19.42 aclrtPhysicalMemProp
+    - 2.19.43 aclrtPtrAttributes
+    - 2.19.44 aclrtReduceKind
+    - 2.19.45 aclrtRunMode
+    - 2.19.46 aclrtStreamAttr
+    - 2.19.47 aclrtStreamAttrValue
+    - 2.19.48 aclrtStreamStatus
+    - 2.19.49 aclrtUtilizationInfo
+    - 2.19.50 aclSysParamOpt

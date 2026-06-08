@@ -1,0 +1,8 @@
+# aclrtDevFeatureType
+
+> **Section**: 1.28.46
+
+
+```
+typedef enum { ACL_FEATURE_TSCPU_TASK_UPDATE_SUPPORT_AIC_AIV = 1, // 更新 AI Core 算子的计算任务 ACL_FEATURE_SYSTEM_MEMQ_EVENT_CROSS_DEV      = 21, // 跨设备发送队列事件消息 } aclrtDevFeatureType;
+```
