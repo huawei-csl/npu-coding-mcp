@@ -1,16 +1,17 @@
 # npu-coding-mcp
 
-MCP server exposing **PTO-ISA tile instruction documentation**, the complete **CANN 9.0.0 AscendC operator development guide**, and the **CCE Intrinsic development guide** for code-generation and optimization agents.
+MCP server exposing **PTO-ISA tile instruction documentation**, the **CANN 9.0.0 AscendC operator development guide**, the **CCE Intrinsic development guide**, and the **CANN Runtime API reference** for code-generation and optimization agents.
 
 ## Overview
 
-This server provides three documentation domains through a single FastMCP server:
+This server provides four documentation domains through a single FastMCP server:
 
 | Domain | Content | Tools |
 |--------|---------|-------|
 | **PTO-ISA** | ~143 tile instructions (assembly, C++ intrinsics, constraints, examples) | 14 tools |
 | **AscendC** | CANN 9.0.0 operator development guide — 1,771 sections across 7 chapters (Chinese) | 6 tools |
 | **CCE** | CANN 9.0.0 CCE Intrinsic development guide — 154 sections across 6 chapters (Chinese) | 6 tools |
+| **Runtime** | CANN 9.0.0 Runtime API reference — 940 sections across 2 chapters (Chinese) | 6 tools |
 
 **Zero-setup for PTO-ISA**: When no `docs_path` is provided, the server auto-clones [pto-isa](https://gitcode.com/cann/pto-isa) into `~/.cache/pto-isa-mcp/`.
 
@@ -83,7 +84,7 @@ python -m npu_coding_mcp build-cce-index
 | `--stdio` | off | Run in stdio transport mode |
 | `--log-level` | `INFO` | Logging level |
 
-## MCP Tools (26 total)
+## MCP Tools (32 total)
 
 ### PTO-ISA — Discovery & search
 
@@ -136,17 +137,29 @@ python -m npu_coding_mcp build-cce-index
 | `cce_search_api(api_name)` | Fast API lookup in `06_API参考/` only |
 | `cce_get_toc()` | Complete document table of contents |
 
+### Runtime — Documentation
+
+| Tool | Description |
+|------|-------------|
+| `runtime_search_docs(query, max_results, language)` | Full-text FTS5 search across 940 sections. `language="en"` (default) for translation instruction, `"zh"` for raw Chinese |
+| `runtime_get_section(path, language)` | Read a section by file path |
+| `runtime_list_chapters()` | List 2 chapters with descriptions and section counts |
+| `runtime_get_chapter_tree(chapter_path)` | Section hierarchy for a chapter |
+| `runtime_search_api(api_name)` | Fast API lookup by function name (e.g., `aclrtMalloc`) |
+| `runtime_get_toc()` | Complete document table of contents |
+
 All tools are read-only and idempotent.
 
 ## Agent Orientation Resources
 
-The server exposes three MCP resources that agents load automatically:
+The server exposes four MCP resources that agents load automatically:
 
 | Resource | Content |
 |----------|---------|
-| `npu-coding://guide` | PTO-ISA + AscendC + CCE orientation: all 26 tools, recommended workflow, key concepts |
+| `npu-coding://guide` | PTO-ISA + AscendC + CCE + Runtime orientation: all 32 tools, recommended workflow, key concepts |
 | `ascendc://guide` | AscendC-specific guide: chapter overview, language support, search patterns |
 | `cce://guide` | CCE-specific guide: chapter overview, language support, search patterns |
+| `runtime://guide` | Runtime API-specific guide: chapter overview, language support, search patterns |
 
 ## OpenCode Integration
 
@@ -166,9 +179,33 @@ After `uv sync --all-groups`, add to `opencode.json`:
 
 Works globally — data dirs auto-detect from the package location, independent of cwd.
 
-## Language support (AscendC and CCE)
+## Claude Code Integration
 
-All AscendC and CCE content is in Chinese. Every content-returning tool accepts a `language` parameter:
+After `uv sync --all-groups`, add to `.mcp.json` in your project (or `~/.claude.json` for all projects):
+
+```json
+{
+  "mcpServers": {
+    "npu-coding": {
+      "type": "stdio",
+      "command": "/home/ebezati/git/workflow/npu-coding-mcp/.venv/bin/python",
+      "args": ["-m", "npu_coding_mcp.__main__", "serve", "--stdio"]
+    }
+  }
+}
+```
+
+Or via CLI:
+
+```bash
+claude mcp add --transport stdio npu-coding -- \
+  /home/ebezati/git/workflow/npu-coding-mcp/.venv/bin/python \
+  -m npu_coding_mcp.__main__ serve --stdio
+```
+
+## Language support (all doc domains)
+
+All documentation content is in Chinese. Every content-returning tool accepts a `language` parameter:
 
 | Value | Behavior |
 |-------|----------|
